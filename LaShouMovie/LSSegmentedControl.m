@@ -42,7 +42,7 @@
 
 - (void)valueChanged:(UISegmentedControl*)sender
 {
-    [_delegate LSSegmentedControl:self didChangeValue:sender.selectedSegmentIndex];
+    [_delegate LSSegmentedControl:self didSelectSegmentIndex:sender.selectedSegmentIndex];
 }
 
 @end

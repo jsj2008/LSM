@@ -15,10 +15,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor=[UIColor clearColor];
-        self.clipsToBounds=YES;
-        self.selectionStyle=UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -33,7 +29,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGRect rect=UIEdgeInsetsInsetRect(self.contentView.frame, UIEdgeInsetsMake(3, 3, 3, 3));
+    CGRect rect=UIEdgeInsetsInsetRect(self.contentView.frame, UIEdgeInsetsMake(5, 5, 5, 5));
     self.imageView.frame=rect;
 }
 

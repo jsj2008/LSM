@@ -663,9 +663,9 @@
 }
 
 #pragma mark- LSSegmentedControl委托方法
-- (void)LSSegmentedControl:(LSSegmentedControl *)segmentedControl didChangeValue:(LSFilmShowStatus)filmShowStatus
+- (void)LSSegmentedControl:(LSSegmentedControl *)segmentedControl didSelectSegmentIndex:(NSInteger)index
 {
-    _filmShowStatus=filmShowStatus;
+    _filmShowStatus=index;
     
     if(_filmShowStatus==LSFilmShowStatusShowing)
     {

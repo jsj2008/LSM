@@ -17,7 +17,7 @@
 
 + (CGFloat)heightOfFilm:(LSFilm*)film
 {
-    return [film.description boundingRectWithSize:CGSizeMake(300.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontFilmBrief] context:nil].size.height+44.f;
+    return [film.description boundingRectWithSize:CGSizeMake(300.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontFilmBrief] context:nil].size.height+34.f;
 }
 
 - (void)dealloc
@@ -47,10 +47,10 @@
     //绘制信息
     if(_film.description)
     {
-        [_film.description drawInRect:CGRectMake(gap, gap, rect.size.width-gap*2, rect.size.height-44.f) withAttributes:[LSAttribute attributeFont:LSFontFilmBrief lineBreakMode:NSLineBreakByTruncatingTail]];
+        [_film.description drawInRect:CGRectMake(gap, gap, rect.size.width-gap*2, rect.size.height-34.f) withAttributes:[LSAttribute attributeFont:LSFontFilmBrief lineBreakMode:NSLineBreakByTruncatingTail]];
     }
     
-    [[UIImage lsImageNamed:_isSpread?@"":@""] drawInRect:CGRectMake(gap, rect.size.height-44.f, rect.size.width-gap*2, 44.f)];
+    [[UIImage lsImageNamed:_isSpread?@"":@""] drawInRect:CGRectMake(gap, rect.size.height-44.f, rect.size.width-gap*2, 34.f)];
 }
 
 @end

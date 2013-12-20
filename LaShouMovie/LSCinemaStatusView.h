@@ -7,23 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSSegmentedControl.h"
 
 @protocol LSCinemaStatusViewDelegate;
-@interface LSCinemaStatusView : UIView<UITableViewDelegate,UITableViewDataSource>
+@interface LSCinemaStatusView : UIView<LSSegmentedControlDelegate>
 {
-    LSCinemaStatus _cinemaStatus;//选项
-    NSArray* _statusArray;//影院状态数组
-    UITableView* _tableView;
-    
     id<LSCinemaStatusViewDelegate> _delegate;
 }
-@property(nonatomic,assign) LSCinemaStatus cinemaStatus;
 @property(nonatomic,assign) id<LSCinemaStatusViewDelegate> delegate;
 
 @end
 
 @protocol LSCinemaStatusViewDelegate <NSObject>
 
-- (void)LSCinemaStatusView:(LSCinemaStatusView*)cinemaStatusView didSelectRowAtIndexPath:(LSCinemaStatus)cinemaStatus;
+@required
+- (void)LSCinemaStatusView:(LSCinemaStatusView*)cinemaStatusView didSelectCinemaStatus:(LSCinemaStatus)cinemaStatus;
 
 @end

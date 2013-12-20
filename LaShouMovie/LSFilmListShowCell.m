@@ -27,6 +27,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+        
         _filmImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_filmImageView];
         [_filmImageView release];
@@ -36,6 +38,10 @@
         _starImageView.contentMode = UIViewContentModeLeft;
         [self addSubview:_starImageView];
         [_starImageView release];
+        
+        UISwipeGestureRecognizer* swipeGestureRecognizer=[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(selfSwipe:)];
+        [self addGestureRecognizer:swipeGestureRecognizer];
+        [swipeGestureRecognizer release];
     }
     return self;
 }
@@ -44,6 +50,12 @@
 {
     [super layoutSubviews];
     _filmImageView.frame=CGRectMake(gap, gap, 55.f, 70.f);
+    
+    //绘制星级信息
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(gap+70.f+gap, 50.f, 70.f, 15.f)];
+    //设置点亮的星星
+    _starImageView.frame=CGRectMake(gap+70.f+gap, 50.f, 70.f*[_film.grade floatValue]/10, 15.f);
+    _starImageView.image = [UIImage imageNamed:@""];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -84,13 +96,7 @@
     [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
-    
-    //绘制星级信息
-    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(contentX, contentY, 70.f, 15.f)];
-    //设置点亮的星星
-    _starImageView.frame=CGRectMake(contentX, contentY, 70.f*[_film.grade floatValue]/10, 13.f);
-    _starImageView.image = [UIImage imageNamed:@""];
-    
+
     contentY+=1.f;
     NSString* text = [NSString stringWithFormat:@"%@分", _film.grade];
     [text drawInRect:CGRectMake(contentX+70.f+10.f, contentY, rect.size.width-(contentX+70.f+10.f)-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextRed lineBreakMode:NSLineBreakByTruncatingTail]];
@@ -114,6 +120,24 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)selfSwope:(UISwipeGestureRecognizer*)recognizer
+{
+    if(recognizer.direction==UISwipeGestureRecognizerDirectionLeft)
+    {
+        [UIView animateWithDuration:0.3 delay:0.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            
+            self.frame=CGRectMake(-60.f, self.top, self.width, self.height);
+        } completion:^(BOOL finished) { }];
+    }
+    else if(recognizer.direction==UISwipeGestureRecognizerDirectionRight)
+    {
+        [UIView animateWithDuration:0.3 delay:0.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            
+            self.frame=CGRectMake(0.f, self.top, self.width, self.height);
+        } completion:^(BOOL finished) { }];
+    }
 }
 
 @end

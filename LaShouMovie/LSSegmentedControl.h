@@ -20,6 +20,6 @@
 @protocol LSSegmentedControlDelegate <NSObject>
 
 @required
-- (void)LSSegmentedControl:(LSSegmentedControl*)control didChangeValue:(LSFilmShowStatus)filmShowStatus;
+- (void)LSSegmentedControl:(LSSegmentedControl*)control didSelectSegmentIndex:(NSInteger)index;
 
 @end

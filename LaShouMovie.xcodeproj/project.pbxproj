@@ -148,6 +148,8 @@
 		186A645E1862EF6C002F8B4C /* LSFilmPosterShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A645D1862EF6C002F8B4C /* LSFilmPosterShowCell.m */; };
 		186A64611862EF7D002F8B4C /* LSFilmPosterWillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A64601862EF7D002F8B4C /* LSFilmPosterWillCell.m */; };
 		186A64651863D734002F8B4C /* LSFilmInfoFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */; };
+		186A647618642B8D002F8B4C /* LSDistrictSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647518642B8D002F8B4C /* LSDistrictSelectorView.m */; };
+		186A647A18642DD7002F8B4C /* LSDistrictSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */; };
 		186CF1851822312800A567D4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 186CF1841822312800A567D4 /* libxml2.dylib */; };
 		186CF2D6182360D100A567D4 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CF2D5182360D100A567D4 /* iCarousel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		186D76751846E6EE00F36035 /* LSCouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76741846E6EE00F36035 /* LSCouponViewController.m */; };
@@ -478,7 +480,6 @@
 		18D4AF41184F3E50000AAE01 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF3E184F3E50000AAE01 /* Reachability.m */; };
 		18D4AF42184F3E50000AAE01 /* ReachabilityAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */; };
 		18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */; };
-		18DCE35017F0289F00016442 /* LSCinemaStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE34F17F0289F00016442 /* LSCinemaStatusCell.m */; };
 		18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE35E17F1796400016442 /* LSQQWBAuthViewController.m */; };
 		18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE36417F1893600016442 /* LSSinaWBAuthViewController.m */; };
 		18DCE36B17F3CAE700016442 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE36817F3CAE400016442 /* NSObject+SBJSON.m */; };
@@ -844,6 +845,10 @@
 		186A64601862EF7D002F8B4C /* LSFilmPosterWillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSFilmPosterWillCell.m; sourceTree = "<group>"; };
 		186A64631863D734002F8B4C /* LSFilmInfoFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSFilmInfoFooterView.h; sourceTree = "<group>"; };
 		186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSFilmInfoFooterView.m; sourceTree = "<group>"; };
+		186A647418642B8D002F8B4C /* LSDistrictSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSDistrictSelectorView.h; sourceTree = "<group>"; };
+		186A647518642B8D002F8B4C /* LSDistrictSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSDistrictSelectorView.m; sourceTree = "<group>"; };
+		186A647818642DD7002F8B4C /* LSDistrictSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSDistrictSelectorCell.h; sourceTree = "<group>"; };
+		186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSDistrictSelectorCell.m; sourceTree = "<group>"; };
 		186CF1841822312800A567D4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		186CF2D4182360D100A567D4 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		186CF2D5182360D100A567D4 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
@@ -1263,8 +1268,6 @@
 		18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityAppDelegate.m; sourceTree = "<group>"; };
 		18DCE34A17F027FD00016442 /* LSCinemaStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaStatusView.h; sourceTree = "<group>"; };
 		18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaStatusView.m; sourceTree = "<group>"; };
-		18DCE34E17F0289F00016442 /* LSCinemaStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaStatusCell.h; sourceTree = "<group>"; };
-		18DCE34F17F0289F00016442 /* LSCinemaStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaStatusCell.m; sourceTree = "<group>"; };
 		18DCE35D17F1796400016442 /* LSQQWBAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSQQWBAuthViewController.h; sourceTree = "<group>"; };
 		18DCE35E17F1796400016442 /* LSQQWBAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSQQWBAuthViewController.m; sourceTree = "<group>"; };
 		18DCE36317F1893500016442 /* LSSinaWBAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSSinaWBAuthViewController.h; sourceTree = "<group>"; };
@@ -2708,6 +2711,25 @@
 			name = FilmInfoFooterView;
 			sourceTree = "<group>";
 		};
+		186A647218642B49002F8B4C /* DistrictSelectorView */ = {
+			isa = PBXGroup;
+			children = (
+				186A647718642DAE002F8B4C /* DistrictSelectorCell */,
+				186A647418642B8D002F8B4C /* LSDistrictSelectorView.h */,
+				186A647518642B8D002F8B4C /* LSDistrictSelectorView.m */,
+			);
+			name = DistrictSelectorView;
+			sourceTree = "<group>";
+		};
+		186A647718642DAE002F8B4C /* DistrictSelectorCell */ = {
+			isa = PBXGroup;
+			children = (
+				186A647818642DD7002F8B4C /* LSDistrictSelectorCell.h */,
+				186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */,
+			);
+			name = DistrictSelectorCell;
+			sourceTree = "<group>";
+		};
 		186CF21818223CD000A567D4 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -2827,11 +2849,13 @@
 		186F745A17DF2EBE001B61D3 /* BasicView */ = {
 			isa = PBXGroup;
 			children = (
+				186A647218642B49002F8B4C /* DistrictSelectorView */,
 				18F4F0761815218800F155CE /* WelcomeView */,
 				184836B117DDC50F00417C3C /* AdView */,
 				1DACCF6517FBA92100855F27 /* NothingCell */,
 				18EC155517F95DDB008AAE60 /* MySectionHeader */,
 				18DCE37017F443DB00016442 /* CountDownView */,
+				187AB16317E1930E008D3E47 /* DateSectionHeader */,
 				18DCE34917F027AD00016442 /* CinemaStatusView */,
 				187AB13817E064DF008D3E47 /* SelectorView */,
 				186F744E17DF0326001B61D3 /* PositionSectionHeader */,
@@ -3465,21 +3489,10 @@
 		18DCE34917F027AD00016442 /* CinemaStatusView */ = {
 			isa = PBXGroup;
 			children = (
-				187AB16317E1930E008D3E47 /* DateSectionHeader */,
-				18DCE34D17F0287A00016442 /* CinemaStatusCell */,
 				18DCE34A17F027FD00016442 /* LSCinemaStatusView.h */,
 				18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */,
 			);
 			name = CinemaStatusView;
-			sourceTree = "<group>";
-		};
-		18DCE34D17F0287A00016442 /* CinemaStatusCell */ = {
-			isa = PBXGroup;
-			children = (
-				18DCE34E17F0289F00016442 /* LSCinemaStatusCell.h */,
-				18DCE34F17F0289F00016442 /* LSCinemaStatusCell.m */,
-			);
-			name = CinemaStatusCell;
 			sourceTree = "<group>";
 		};
 		18DCE37017F443DB00016442 /* CountDownView */ = {
@@ -4142,6 +4155,7 @@
 				1871DFD717D8819500B285F5 /* LSFilmInfoViewController.m in Sources */,
 				1871DFDA17D9782200B285F5 /* LSFilmStillCell.m in Sources */,
 				1871DFDD17D99F5E00B285F5 /* LSCitiesViewController.m in Sources */,
+				186A647A18642DD7002F8B4C /* LSDistrictSelectorCell.m in Sources */,
 				1871DFE017D9AB0400B285F5 /* LSSave.m in Sources */,
 				1871DFE817D9B80B00B285F5 /* LSCity.m in Sources */,
 				1871DFEF17D9D64E00B285F5 /* LSCityCell.m in Sources */,
@@ -4191,7 +4205,6 @@
 				181BB24D17E7024500745B70 /* LSSeatView.m in Sources */,
 				1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */,
 				18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */,
-				18DCE35017F0289F00016442 /* LSCinemaStatusCell.m in Sources */,
 				1DACCF5B17F0966700855F27 /* LSCreateOrderViewController.m in Sources */,
 				1DACCF5F17F0977200855F27 /* LSOrderView.m in Sources */,
 				1DACCF6317F0A21100855F27 /* LSAlertView.m in Sources */,
@@ -4276,6 +4289,7 @@
 				18072AEF1807ED310013CCA6 /* LSGroupCreateOrderSectionFooter.m in Sources */,
 				18072AF21808E11B0013CCA6 /* LSGroupCreateOrderMobileCell.m in Sources */,
 				18072AF7180925AB0013CCA6 /* LSRootAnnotation.m in Sources */,
+				186A647618642B8D002F8B4C /* LSDistrictSelectorView.m in Sources */,
 				18072AFB1809270D0013CCA6 /* LSCinemaMapViewController.m in Sources */,
 				183441C91845E2E0003D1AB6 /* LSPayFilmCell.m in Sources */,
 				18072AFF180929B40013CCA6 /* LSAnnotation.m in Sources */,

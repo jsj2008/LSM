@@ -48,7 +48,7 @@
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmInfoByFilmID object:nil];
     
-    LSFilmInfoFooterView* filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectMake(0.f, self.view.height-(44.f+20.f), self.view.width, 44.f+20.f)];
+    LSFilmInfoFooterView* filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectMake(0.f, self.view.height-(44.f)-10.f, self.view.width, 44.f)];
     filmInfoFooterView.delegate=self;
     [self.view addSubview:filmInfoFooterView];
     [filmInfoFooterView release];
@@ -192,12 +192,12 @@
         }
         else
         {
-            return HeightOfiPhoneX(self.view.height-120.f-130.f-20.f-20.f);
+            return HeightOfiPhoneX(self.view.height-120.f-84.f-20.f-20.f-54.f);
         }
     }
     else
     {
-        return 130.f;
+        return 84.f;
     }
 }
 

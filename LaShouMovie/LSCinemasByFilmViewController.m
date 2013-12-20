@@ -35,9 +35,8 @@ typedef enum
     self.film=nil;
     LSRELEASE(_cinemaMArray)
     
-    LSRELEASE(_seatPositionMArray)
-    LSRELEASE(_groupPositionMArray)
-    LSRELEASE(_allPositionMArray)
+    LSRELEASE(_districtMArray)
+    LSRELEASE(_areaMArray)
     
     LSRELEASE(_selectMArray)
     [super dealloc];
@@ -56,47 +55,26 @@ typedef enum
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title=@"影院";
+    self.title=_film.filmName;
     
     //实例化数组
     _cinemaMArray=[[NSMutableArray alloc] initWithCapacity:0];
     
-    _seatPositionMArray=[[NSMutableArray alloc] initWithCapacity:0];
-    _groupPositionMArray=[[NSMutableArray alloc] initWithCapacity:0];
-    _allPositionMArray=[[NSMutableArray alloc] initWithCapacity:0];
-    
+    _districtMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    _areaMArray=[[NSMutableArray alloc] initWithCapacity:0];
+
     _selectMArray=[[NSMutableArray alloc] initWithCapacity:0];
     
     //添加通知
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmCinemasByFilmID object:nil];
-    
-    UILabel* titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44.f)];
-    titleLabel.font=LSFont18;
-    titleLabel.textColor=LSColorBlackRedColor;
-    titleLabel.text=_film.filmName;
-    [self.view addSubview:titleLabel];
-    [titleLabel release];
-    
     
     _cinemaStatusView=[[LSCinemaStatusView alloc] initWithFrame:CGRectMake(0, 44.f, self.view.width, 44.f)];
     _cinemaStatusView.delegate=self;
     [self.view addSubview:_cinemaStatusView];
     [_cinemaStatusView release];
     
-    
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 44.f+44.f, self.view.width, HeightOfiPhoneX(480-20.0-44.f-44.f-44.f)) style:UITableViewStylePlain];
-    //_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _tableView.backgroundColor=[UIColor clearColor];
-    _tableView.backgroundView=nil;
-    _tableView.showsVerticalScrollIndicator=NO;
-    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    _tableView.delegate=self;
-    _tableView.dataSource=self;
-    [self.view addSubview:_tableView];
-    [_tableView release];
-    
-    [messageCenter LSMCFilmCinemasWithFilmID:_film.filmID];
     [hud show:YES];
+    [messageCenter LSMCFilmCinemasWithFilmID:_film.filmID];
 }
 
 - (void)didReceiveMemoryWarning
@@ -215,64 +193,55 @@ typedef enum
                 //如果没有影院，添加字符串占位
                 if(_selectMArray.count==0)
                 {
-                    [_selectMArray addObject:@"没有影院"];
+                    [_selectMArray addObject:@"暂无影院"];
                 }
                 else
                 {
                     [_selectMArray sortUsingSelector:@selector(distanceSort:)];
                 }
+
+                //可以首先刷新视图
+                dispatch_async(dispatch_get_main_queue(),^{
+                    
+                    [self.tableView reloadData];
+                });
                 
+                
+                NSMutableDictionary* seatDistrictMDic=[NSMutableDictionary dictionaryWithCapacity:0];
                 //可订座影院位置数组
-                [_seatPositionMArray addObject:@"附近的影院"];
-                for (LSCinema* cinema in seatCinemaMArray)
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeat])
                 {
-                    if(![_seatPositionMArray containsObject:cinema.districtName])
-                    {
-                        [_seatPositionMArray addObject:cinema.districtName];
-                    }
+                    [seatDistrictMDic setObject:[NSNumber numberWithInt:[[seatDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
-                for (LSCinema* cinema in seatgroupCinemaMArray)
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
                 {
-                    if(![_seatPositionMArray containsObject:cinema.districtName])
-                    {
-                        [_seatPositionMArray addObject:cinema.districtName];
-                    }
+                    [seatDistrictMDic setObject:[NSNumber numberWithInt:[[seatDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
                 
+                NSMutableDictionary* groupDistrictMDic=[NSMutableDictionary dictionaryWithCapacity:0];
                 //可团购影院位置数组
-                [_groupPositionMArray addObject:@"附近的影院"];
-                for (LSCinema* cinema in groupCinemaMArray)
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexGroup])
                 {
-                    if(![_groupPositionMArray containsObject:cinema.districtName])
-                    {
-                        [_groupPositionMArray addObject:cinema.districtName];
-                    }
+                    [groupDistrictMDic setObject:[NSNumber numberWithInt:[[groupDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
-                for (LSCinema* cinema in seatgroupCinemaMArray)
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
                 {
-                    if(![_groupPositionMArray containsObject:cinema.districtName])
-                    {
-                        [_groupPositionMArray addObject:cinema.districtName];
-                    }
+                    [groupDistrictMDic setObject:[NSNumber numberWithInt:[[groupDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
                 
+                NSMutableDictionary* seatgroupDistrictMDic=[NSMutableDictionary dictionaryWithCapacity:0];
                 //全部影院位置数组,需要包含四个数组
-                [_allPositionMArray addObject:@"附近的影院"];
                 for(int i=1;i<_cinemaMArray.count;i++)
                 {
                     for (LSCinema* cinema in [_cinemaMArray objectAtIndex:i])
                     {
-                        if(![_allPositionMArray containsObject:cinema.districtName])
-                        {
-                            [_allPositionMArray addObject:cinema.districtName];
-                        }
+                        [seatgroupDistrictMDic setObject:[NSNumber numberWithInt:[[seatgroupDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                     }
                 }
                 
-                dispatch_async(dispatch_get_main_queue(),^{
-                    
-                    [_tableView reloadData];
-                });
+                [_districtMArray addObject:seatDistrictMDic];
+                [_districtMArray addObject:groupDistrictMDic];
+                [_districtMArray addObject:seatgroupDistrictMDic];
             });
             dispatch_release(queue_0);
         }
@@ -281,14 +250,11 @@ typedef enum
 
 
 #pragma mark- LSStatusView委托方法
-- (void)LSCinemaStatusView:(LSCinemaStatusView *)cinemaStatusView didSelectRowAtIndexPath:(LSCinemaStatus)status
+- (void)LSCinemaStatusView:(LSCinemaStatusView *)cinemaStatusView didSelectCinemaStatus:(LSCinemaStatus)status
 {
     [_selectMArray removeAllObjects];
     _selectPositionIndex=0;
     _cinemaStatus=status;
-    
-    if(_cinemaMArray.count==0)
-        return;
     
     if(_cinemaStatus==LSCinemaStatusSeat)
     {
@@ -318,7 +284,7 @@ typedef enum
         [_selectMArray sortUsingSelector:@selector(distanceSort:)];
     }
     
-    [_tableView reloadData];
+    [self.tableView reloadData];
 }
 
 
@@ -333,7 +299,7 @@ typedef enum
     if(_cinemaStatus==LSCinemaStatusSeat)
     {
         height=(30*_seatPositionMArray.count > 160 ? 160 : 30*_seatPositionMArray.count);
-        positionArray=_seatPositionMArray;
+        positionArray=_districtMArray;
     }
     else if(_cinemaStatus==LSCinemaStatusGroup)
     {
@@ -663,36 +629,6 @@ typedef enum
     [self.navigationController pushViewController:schedulesByFilmCinemaViewController animated:YES];
     [schedulesByFilmCinemaViewController release];
 }
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
-//    {
-//        [self soapSmooth];
-//    }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-//    [self soapSmooth];
-}
 
-
-#pragma mark 肥皂滑代码实现
-- (void)soapSmooth
-{
-    NSArray* cellArray=[_tableView visibleCells];
-    for(LSCinemaCell* cell in cellArray)
-    {
-//        NSIndexPath* indexPath=[_tableView indexPathForCell:cell];
-//        LSCinema* cinema=nil;
-//        if(_cinemaStatus==LSCinemaStatusOnline)
-//        {
-//            cinema=[_onlineCinemaMArray objectAtIndex:indexPath.row];
-//        }
-//        else if(_cinemaStatus==LSCinemaStatusAll)
-//        {
-//            cinema=[_allCinemaMArray objectAtIndex:indexPath.row];
-//        }
-    }
-}
 
 @end
