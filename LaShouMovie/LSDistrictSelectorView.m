@@ -7,36 +7,21 @@
 //
 
 #import "LSDistrictSelectorView.h"
+#import "LSDistrictSelectorCell.h"
 
 @implementation LSDistrictSelectorView
 
-@synthesize positionArray=_positionArray;
+@synthesize districtDic=_districtDic;
 @synthesize selectIndex=_selectIndex;
-@synthesize contentFrame=_contentFrame;
+@synthesize contentSize=_contentSize;
 @synthesize delegate=_delegate;
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 #pragma mark- 生命周期
 - (void)dealloc
 {
-    self.positionArray=nil;
+    LSRELEASE(_categoryArray)
+    LSRELEASE(_districtArray)
+    self.districtDic=nil;
     [super dealloc];
 }
 
@@ -48,16 +33,31 @@
         self.backgroundColor = LSRGBA(0, 0, 0, 0.6);
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
-        _tableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        //_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _tableView.backgroundColor=[UIColor clearColor];
-        _tableView.backgroundView=nil;
-        _tableView.showsVerticalScrollIndicator=NO;
-        _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-        _tableView.delegate=self;
-        _tableView.dataSource=self;
-        [self addSubview:_tableView];
-        [_tableView release];
+        _categoryArray=[[NSArray alloc] initWithObjects:@"地区分类", nil];
+
+        _blurView=[[FXBlurView alloc] initWithFrame:CGRectZero];
+        _blurView.dynamic = NO;
+        _blurView.tintColor = [UIColor colorWithRed:0 green:0.5 blue:0.5 alpha:1];
+        [_blurView.layer displayIfNeeded]; //force immediate redraw
+        _blurView.contentMode = UIViewContentModeBottom;
+        [self addSubview:_blurView];
+        [_blurView release];
+        
+        _categoryTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _categoryTableView.backgroundColor=LSColorBackgroundGray;
+        _categoryTableView.showsHorizontalScrollIndicator=NO;
+        _categoryTableView.delegate=self;
+        _categoryTableView.dataSource=self;
+        [self addSubview:_categoryTableView];
+        [_categoryTableView release];
+        
+        _districtTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _districtTableView.backgroundColor=LSColorBackgroundGray;
+        _districtTableView.showsHorizontalScrollIndicator=NO;
+        _districtTableView.delegate=self;
+        _districtTableView.dataSource=self;
+        [self addSubview:_districtTableView];
+        [_districtTableView release];
     }
     return self;
 }
@@ -65,10 +65,10 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (_selectorViewType == LSSelectorViewTypeSection)
-    {
-        _tableView.scrollEnabled=NO;
-    }
+    _districtArray=[[NSArray alloc] initWithArray:[_districtDic allKeys]];
+    
+    _districtTableView.frame=CGRectMake(self.width/2, 0.f, self.width/2, _contentSize.height);
+    _blurView.frame = CGRectMake(0.f, 0.f, self.width, self.height);
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -76,60 +76,64 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    
-    if (_selectorViewType == LSSelectorViewTypeLocation)
-    {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"cinemas_sections_bg.png"] top:8 left:8 bottom:8 right:8]  drawInRect:CGRectMake(_contentFrame.origin.x-5, _contentFrame.origin.y-5, _contentFrame.size.width+10, _contentFrame.size.height+10)];
-    }
-    else if (_selectorViewType == LSSelectorViewTypeSection)
-    {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"sections_bg.png"] top:8 left:8 bottom:8 right:8] drawInRect:CGRectMake(_contentFrame.origin.x-5, _contentFrame.origin.y-5, _contentFrame.size.width+10, _contentFrame.size.height+10)];
-    }
 }
 
 
 #pragma mark- UITableView的委托方法
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _positionArray.count;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(_selectorViewType==LSSelectorViewTypeLocation)
+    if(tableView==_districtTableView)
     {
-        return 30.f;
+        return _districtArray.count+1;
     }
     else
     {
-        return 44.f;
+        return 1;
     }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.f;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    LSSelectorCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSelectorCell"];
-    if(cell==nil)
+    if(tableView==_districtTableView)
     {
-        cell=[[[LSSelectorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSelectorCell"] autorelease];
+        LSDistrictSelectorCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSDistrictSelectorCell"];
+        if(cell==nil)
+        {
+            cell=[[[LSDistrictSelectorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSDistrictSelectorCell"] autorelease];
+        }
+        
+        if(indexPath.row==0)
+        {
+            cell.textLabel.text=@"附近影院";
+        }
+        else
+        {
+            NSString* name=[_districtArray objectAtIndex:indexPath.row-1];
+            cell.textLabel.text=[NSString stringWithFormat:@"%@(%@)",name,[_districtDic objectForKey:name]];
+        }
+        return cell;
     }
-    cell.type=_selectorViewType;
-    cell.isInitial=(indexPath.row==_selectIndex);
-    cell.infoLabel.text=[_positionArray objectAtIndex:indexPath.row];
-    [cell setNeedsLayout];
-    [cell setNeedsDisplay];
-    return cell;
+    else
+    {
+        LSDistrictSelectorCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSDistrictSelectorCell"];
+        if(cell==nil)
+        {
+            cell=[[[LSDistrictSelectorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSDistrictSelectorCell"] autorelease];
+        }
+        cell.textLabel.text=[_categoryArray objectAtIndex:indexPath.row];
+        return cell;
+    }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([_delegate respondsToSelector:@selector(LSSelectorView: didSelectRowAtIndexPath:)])
+    if(tableView==_districtTableView)
     {
-        [_delegate LSSelectorView:self didSelectRowAtIndexPath:indexPath.row];
+        [_delegate LSDistrictSelectorView:self didSelectDistrict:indexPath.row>0?[_districtArray objectAtIndex:indexPath.row-1]:nil];
+        [self removeFromSuperview];
     }
-    
-    [self removeFromSuperview];
 }
 
 

@@ -11,21 +11,26 @@
 @protocol LSDistrictSelectorViewDelegate;
 @interface LSDistrictSelectorView : UIView<UITableViewDelegate,UITableViewDataSource>
 {
+    UITableView* _categoryTableView;
     UITableView* _districtTableView;
-    NSArray* _positionArray;
+    FXBlurView* _blurView;
+    NSDictionary* _districtDic;
+    NSArray* _categoryArray;
+    NSArray* _districtArray;
     NSInteger _selectIndex;
-    CGRect _contentFrame;
+    CGSize _contentSize;
     id<LSDistrictSelectorViewDelegate> _delegate;
 }
-@property(nonatomic,retain) NSArray* positionArray;
+@property(nonatomic,retain) NSDictionary* districtDic;
 @property(nonatomic,assign) NSInteger selectIndex;
-@property(nonatomic,assign) CGRect contentFrame;
+@property(nonatomic,assign) CGSize contentSize;
 @property(nonatomic,assign) id<LSDistrictSelectorViewDelegate> delegate;
 
 @end
 
 @protocol LSDistrictSelectorViewDelegate <NSObject>
 
-- (void)LSDistrictSelectorView:(LSDistrictSelectorView*)districtSelectorView didSelectRowAtIndexPath:(NSInteger)indexPath;
+@required
+- (void)LSDistrictSelectorView:(LSDistrictSelectorView*)districtSelectorView didSelectDistrict:(NSString*)district;
 
 @end

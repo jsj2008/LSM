@@ -296,7 +296,7 @@
         }
     }
     
-    cell.city=city;
+    cell.textLabel.text=city.cityName;
     
     return cell;
 }

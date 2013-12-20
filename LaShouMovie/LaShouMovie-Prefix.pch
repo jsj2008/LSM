@@ -39,7 +39,7 @@
     #import "UIImageView+WebCache.h"
     #import "LSMessageCenter.h"
 
-    #import "LSTableViewCell.h"
+    #import "FXBlurView.h"
 #endif
 
 

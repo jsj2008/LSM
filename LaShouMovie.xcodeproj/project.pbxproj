@@ -150,6 +150,7 @@
 		186A64651863D734002F8B4C /* LSFilmInfoFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */; };
 		186A647618642B8D002F8B4C /* LSDistrictSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647518642B8D002F8B4C /* LSDistrictSelectorView.m */; };
 		186A647A18642DD7002F8B4C /* LSDistrictSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */; };
+		186A647F18643CD6002F8B4C /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647E18643CD6002F8B4C /* FXBlurView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		186CF1851822312800A567D4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 186CF1841822312800A567D4 /* libxml2.dylib */; };
 		186CF2D6182360D100A567D4 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CF2D5182360D100A567D4 /* iCarousel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		186D76751846E6EE00F36035 /* LSCouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76741846E6EE00F36035 /* LSCouponViewController.m */; };
@@ -849,6 +850,8 @@
 		186A647518642B8D002F8B4C /* LSDistrictSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSDistrictSelectorView.m; sourceTree = "<group>"; };
 		186A647818642DD7002F8B4C /* LSDistrictSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSDistrictSelectorCell.h; sourceTree = "<group>"; };
 		186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSDistrictSelectorCell.m; sourceTree = "<group>"; };
+		186A647D18643CD6002F8B4C /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		186A647E18643CD6002F8B4C /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		186CF1841822312800A567D4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		186CF2D4182360D100A567D4 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		186CF2D5182360D100A567D4 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
@@ -2669,6 +2672,7 @@
 		186789D517C5CA14007405DE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				186A647C18643CD6002F8B4C /* FXBlurView */,
 				1808648C1861B4E90077B97B /* Attribute */,
 				187AB15717E171CD008D3E47 /* Enum */,
 				1835E1BA180BF39800E80602 /* Color */,
@@ -2728,6 +2732,15 @@
 				186A647918642DD7002F8B4C /* LSDistrictSelectorCell.m */,
 			);
 			name = DistrictSelectorCell;
+			sourceTree = "<group>";
+		};
+		186A647C18643CD6002F8B4C /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				186A647D18643CD6002F8B4C /* FXBlurView.h */,
+				186A647E18643CD6002F8B4C /* FXBlurView.m */,
+			);
+			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 		186CF21818223CD000A567D4 /* Login */ = {
@@ -4218,6 +4231,7 @@
 				18DCE37317F4442800016442 /* LSCountDownView.m in Sources */,
 				18DCE39717F4455100016442 /* AlixPayOrder.m in Sources */,
 				18DCE39817F4455100016442 /* AlixPayResult.m in Sources */,
+				186A647F18643CD6002F8B4C /* FXBlurView.m in Sources */,
 				18DCE3A317F445D400016442 /* NSURL+scheme.m in Sources */,
 				18F1D3F517F7CB98002AD7B7 /* LSAlipay.m in Sources */,
 				18F1D3F817F7F470002AD7B7 /* LSPaidOrdersViewController.m in Sources */,

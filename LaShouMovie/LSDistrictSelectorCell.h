@@ -9,5 +9,7 @@
 #import "LSTableViewCell.h"
 
 @interface LSDistrictSelectorCell : LSTableViewCell
-
+{
+    
+}
 @end

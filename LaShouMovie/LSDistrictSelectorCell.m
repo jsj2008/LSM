@@ -15,6 +15,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.textLabel.font = LSFontSection;
+        self.textLabel.textColor = LSColorTextBlack;
     }
     return self;
 }

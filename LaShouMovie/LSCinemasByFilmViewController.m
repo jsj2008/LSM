@@ -39,6 +39,8 @@ typedef enum
     LSRELEASE(_areaMArray)
     
     LSRELEASE(_selectMArray)
+    LSRELEASE(_district)
+    
     [super dealloc];
 }
 
@@ -72,6 +74,14 @@ typedef enum
     _cinemaStatusView.delegate=self;
     [self.view addSubview:_cinemaStatusView];
     [_cinemaStatusView release];
+    
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 44.f+44.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-44.f)) style:UITableViewStylePlain];
+    _tableView.showsVerticalScrollIndicator=NO;
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.delegate=self;
+    _tableView.dataSource=self;
+    [self.view addSubview:_tableView];
+    [_tableView release];
     
     [hud show:YES];
     [messageCenter LSMCFilmCinemasWithFilmID:_film.filmID];
@@ -203,7 +213,7 @@ typedef enum
                 //可以首先刷新视图
                 dispatch_async(dispatch_get_main_queue(),^{
                     
-                    [self.tableView reloadData];
+                    [_tableView reloadData];
                 });
                 
                 
@@ -253,7 +263,6 @@ typedef enum
 - (void)LSCinemaStatusView:(LSCinemaStatusView *)cinemaStatusView didSelectCinemaStatus:(LSCinemaStatus)status
 {
     [_selectMArray removeAllObjects];
-    _selectPositionIndex=0;
     _cinemaStatus=status;
     
     if(_cinemaStatus==LSCinemaStatusSeat)
@@ -284,7 +293,7 @@ typedef enum
         [_selectMArray sortUsingSelector:@selector(distanceSort:)];
     }
     
-    [self.tableView reloadData];
+    [_tableView reloadData];
 }
 
 
@@ -292,144 +301,134 @@ typedef enum
 #pragma mark- LSPositionSectionHeader的委托方法
 - (void)LSPositionSectionHeader:(LSPositionSectionHeader *)positionSectionHeader didClickPositionButton:(UIButton *)positionButton
 {
-    LSSelectorView* selectorView=[[LSSelectorView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, HeightOfiPhoneX(480.0f))];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
-    CGFloat height = 0.f;
-    NSArray* positionArray=nil;
-    if(_cinemaStatus==LSCinemaStatusSeat)
-    {
-        height=(30*_seatPositionMArray.count > 160 ? 160 : 30*_seatPositionMArray.count);
-        positionArray=_districtMArray;
-    }
-    else if(_cinemaStatus==LSCinemaStatusGroup)
-    {
-        height=(30*_groupPositionMArray.count > 160 ? 160 : 30*_groupPositionMArray.count);
-        positionArray=_groupPositionMArray;
-    }
-    else if(_cinemaStatus==LSCinemaStatusAll)
-    {
-        height=(30*_allPositionMArray.count > 160 ? 160 : 30*_allPositionMArray.count);
-        positionArray=_allPositionMArray;
-    }
-    
-    selectorView.contentFrame=CGRectMake((self.view.width-164)/2, 95, 160, height);
+    LSDistrictSelectorView* selectorView=[[LSDistrictSelectorView alloc] initWithFrame:CGRectMake(0.f, 44.f+44.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-44.f))];
+    selectorView.contentSize=CGSizeMake(selectorView.width, 44.f*5);
     selectorView.delegate=self;
-    selectorView.selectIndex=_selectPositionIndex;
-    selectorView.positionArray=positionArray;
-    [self.navigationController.tabBarController.view addSubview:selectorView];
-    [self.navigationController.tabBarController.view  bringSubviewToFront:selectorView];
+    selectorView.districtDic=[_districtMArray objectAtIndex:_cinemaStatus];
+    [self.view addSubview:selectorView];
     [selectorView release];
 }
 
-#pragma mark- LSSelectorView的委托方法
-- (void)LSSelectorView:(LSSelectorView *)selectorView didSelectRowAtIndexPath:(NSInteger)indexPath
+#pragma mark- LSDistrictSelectorView的委托方法
+- (void)LSDistrictSelectorView:(LSDistrictSelectorView *)districtSelectorView didSelectDistrict:(NSString *)district
 {
-    _selectPositionIndex=indexPath;
-    [_selectMArray removeAllObjects];
-    
-    NSString* position=[selectorView.positionArray objectAtIndex:_selectPositionIndex];
-    if(_cinemaStatus==LSCinemaStatusSeat)
-    {
-        if(_selectPositionIndex==0)
+    dispatch_queue_t queue_0=dispatch_queue_create("queue_0", NULL);
+    dispatch_async(queue_0, ^{
+        
+        LSRELEASE(_district)
+        _district=[[NSString alloc] initWithString:district];
+        
+        [_selectMArray removeAllObjects];
+        if(_cinemaStatus==LSCinemaStatusSeat)
         {
-            [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeat]];
-            [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
-        }
-        else
-        {
-            for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeat])
+            if(district==nil)
             {
-                if([cinema.districtName isEqualToString:position])
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeat]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+            }
+            else
+            {
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeat])
                 {
-                    [_selectMArray addObject:cinema];
+                    if([cinema.districtName isEqualToString:district])
+                    {
+                        [_selectMArray addObject:cinema];
+                    }
                 }
-            }
-            for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
-            {
-                if([cinema.districtName isEqualToString:position])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
                 {
-                    [_selectMArray addObject:cinema];
-                }
-            }
-        }
-    }
-    else if(_cinemaStatus==LSCinemaStatusGroup)
-    {
-        if(_selectPositionIndex==0)
-        {
-            [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexGroup]];
-            [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
-        }
-        else
-        {
-            for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexGroup])
-            {
-                if([cinema.districtName isEqualToString:position])
-                {
-                    [_selectMArray addObject:cinema];
-                }
-            }
-            for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
-            {
-                if([cinema.districtName isEqualToString:position])
-                {
-                    [_selectMArray addObject:cinema];
-                }
-            }
-        }
-    }
-    else if(_cinemaStatus==LSCinemaStatusAll)
-    {
-        if(_selectPositionIndex==0)
-        {
-            for (int i=1;i<_cinemaMArray.count;i++)
-            {
-                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:i]];
-            }
-        }
-        else
-        {
-            for (int i=1;i<_cinemaMArray.count;i++)
-            {
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:i])
-                {
-                    if([cinema.districtName isEqualToString:position])
+                    if([cinema.districtName isEqualToString:district])
                     {
                         [_selectMArray addObject:cinema];
                     }
                 }
             }
         }
-    }
-    
-    //如果没有影院，添加字符串占位
-    if(_selectMArray.count==0)
-    {
-        [_selectMArray addObject:@"没有影院"];
-    }
-    else
-    {
-        [_selectMArray sortUsingSelector:@selector(distanceSort:)];
-    }
-    
-    [_tableView reloadData];
+        else if(_cinemaStatus==LSCinemaStatusGroup)
+        {
+            if(district==nil)
+            {
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexGroup]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+            }
+            else
+            {
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexGroup])
+                {
+                    if([cinema.districtName isEqualToString:district])
+                    {
+                        [_selectMArray addObject:cinema];
+                    }
+                }
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
+                {
+                    if([cinema.districtName isEqualToString:district])
+                    {
+                        [_selectMArray addObject:cinema];
+                    }
+                }
+            }
+        }
+        else if(_cinemaStatus==LSCinemaStatusAll)
+        {
+            if(district==nil)
+            {
+                for (int i=1;i<_cinemaMArray.count;i++)
+                {
+                    [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:i]];
+                }
+            }
+            else
+            {
+                for (int i=1;i<_cinemaMArray.count;i++)
+                {
+                    for (LSCinema* cinema in [_cinemaMArray objectAtIndex:i])
+                    {
+                        if([cinema.districtName isEqualToString:district])
+                        {
+                            [_selectMArray addObject:cinema];
+                        }
+                    }
+                }
+            }
+        }
+        
+        //如果没有影院，添加字符串占位
+        if(_selectMArray.count==0)
+        {
+            [_selectMArray addObject:@"没有影院"];
+        }
+        else
+        {
+            [_selectMArray sortUsingSelector:@selector(distanceSort:)];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [_tableView reloadData];
+        });
+    });
+    dispatch_release(queue_0);
 }
 
 
 #pragma mark- UITableView委托方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if(_cinemaMArray.count==0)
-        return 0;
-    
-    int sections=0;
-    //如果有常去影院
-    if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+    if(_cinemaMArray.count>0)
     {
+        int sections=0;
+        //如果有常去影院
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        {
+            sections++;
+        }
         sections++;
+        return sections;
     }
-    sections++;
-    return sections;
+    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -437,8 +436,7 @@ typedef enum
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    LSPositionSectionHeader* positionSectionHeader = [[LSPositionSectionHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)];
-    positionSectionHeader.delegate=self;
+    LSPositionSectionHeader* positionSectionHeader = [[[LSPositionSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
     if (section == 0)
     {
         if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
@@ -448,43 +446,19 @@ typedef enum
         }
         else
         {
-            if(_cinemaStatus==LSCinemaStatusSeat)
-            {
-                positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-                positionSectionHeader.title=[_seatPositionMArray objectAtIndex:_selectPositionIndex];
-            }
-            else if(_cinemaStatus==LSCinemaStatusGroup)
-            {
-                positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-                positionSectionHeader.title=[_groupPositionMArray objectAtIndex:_selectPositionIndex];
-            }
-            else if(_cinemaStatus==LSCinemaStatusAll)
-            {
-                positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-                positionSectionHeader.title=[_allPositionMArray objectAtIndex:_selectPositionIndex];
-            }
+            positionSectionHeader.delegate=self;
+            positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
+            positionSectionHeader.title=_district;
         }
     }
-    else if (section == 1)
+    else
     {
-        if(_cinemaStatus==LSCinemaStatusSeat)
-        {
-            positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-            positionSectionHeader.title=[_seatPositionMArray objectAtIndex:_selectPositionIndex];
-        }
-        else if(_cinemaStatus==LSCinemaStatusGroup)
-        {
-            positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-            positionSectionHeader.title=[_groupPositionMArray objectAtIndex:_selectPositionIndex];
-        }
-        else if(_cinemaStatus==LSCinemaStatusAll)
-        {
-            positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
-            positionSectionHeader.title=[_allPositionMArray objectAtIndex:_selectPositionIndex];
-        }
+        positionSectionHeader.delegate=self;
+        positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeNear;
+        positionSectionHeader.title=_district;
     }
     
-    return [positionSectionHeader autorelease];
+    return positionSectionHeader;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -500,7 +474,7 @@ typedef enum
             count=_selectMArray.count;
         }
     }
-    else if(section==1)
+    else
     {
         count=_selectMArray.count;
     }
@@ -629,6 +603,5 @@ typedef enum
     [self.navigationController pushViewController:schedulesByFilmCinemaViewController animated:YES];
     [schedulesByFilmCinemaViewController release];
 }
-
 
 @end

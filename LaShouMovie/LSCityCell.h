@@ -7,12 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LSCity.h"
 
 @interface LSCityCell : LSTableViewCell
-{
-    LSCity* _city;
-}
-@property(nonatomic,retain) LSCity* city;
 
 @end

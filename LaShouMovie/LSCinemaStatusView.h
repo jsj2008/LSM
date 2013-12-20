@@ -12,6 +12,7 @@
 @protocol LSCinemaStatusViewDelegate;
 @interface LSCinemaStatusView : UIView<LSSegmentedControlDelegate>
 {
+    LSSegmentedControl* _segmentedControl;
     id<LSCinemaStatusViewDelegate> _delegate;
 }
 @property(nonatomic,assign) id<LSCinemaStatusViewDelegate> delegate;

@@ -10,29 +10,15 @@
 
 @implementation LSCityCell
 
-@synthesize city=_city;
-
-- (void)dealloc
-{
-    self.city=nil;
-    [super dealloc];
-}
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.textLabel.font = LSFontBold16;
-        self.textLabel.textColor = [UIColor grayColor];
+        self.textLabel.font = LSFontCity;
+        self.textLabel.textColor = LSColorTextBlack;
     }
     return self;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.textLabel.text=_city.cityName;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
