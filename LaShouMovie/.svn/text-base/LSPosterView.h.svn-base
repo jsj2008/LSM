@@ -1,0 +1,42 @@
+//
+//  LSPosterView.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-2.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "LSPosterPage.h"
+#import "PunchScrollView.h"
+
+@protocol LSPosterViewDelegate;
+@interface LSPosterView : UIView<PunchScrollViewDataSource,PunchScrollViewDelegate>
+{
+    id<LSPosterViewDelegate> _delegate;
+    PunchScrollView* _punchScroll;
+    NSInteger _clickedIndex;
+    
+    UIButton* _button;
+    UIView* _indicator;
+    
+    NSInteger _filmsCount;//记录一下所有
+}
+
+@property(nonatomic,assign) id<LSPosterViewDelegate> delegate;
+
+- (LSPosterPage*)dequeueReusablePage;
+- (void)reloadData;
+
+@end
+
+@protocol LSPosterViewDelegate <NSObject>
+
+//选择的第几项
+- (void)LSPosterView:(LSPosterView *)posterView didClickButtonAtIndex:(NSInteger)pageIndex;
+
+//包裹PunchScrollView的委托方法
+- (NSInteger)LSPosterView:(LSPosterView *)posterView numberOfRowsInSection:(NSInteger)section;
+- (LSPosterPage *)LSPosterView:(LSPosterView *)posterView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)LSPosterView:(LSPosterView *)posterView didSelectRowAtIndexPath:(NSInteger)posterIndex;
+@end

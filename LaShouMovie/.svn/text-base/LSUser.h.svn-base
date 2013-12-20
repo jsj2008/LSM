@@ -1,0 +1,47 @@
+//
+//  LSUser.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+//以下为全局的参数
+typedef enum
+{
+    LSLoginNormal=0,//
+    LSLoginSinaWB=1,//
+    LSLoginQQWB=2,//
+    LSLoginQQ=3,//
+    LSLoginAlipay=4//支付宝跳转
+} LSLoginType;
+
+@interface LSUser : NSObject<NSCoding>
+{
+    NSString* _userID;//拉手网的用户ID
+    NSString* _userName;//姓名
+    NSString* _password;//密码
+    NSString* _email;//邮箱
+    NSString* _mobile;//手机号
+    NSString* _balance;//余额
+    NSString* _cityID;//城市
+    NSString* _cityName;
+    LSLoginType _loginType;//登陆类型
+}
+
+@property(nonatomic,retain) NSString* userID;
+@property(nonatomic,retain) NSString* userName;
+@property(nonatomic,retain) NSString* password;
+@property(nonatomic,retain) NSString* email;
+@property(nonatomic,retain) NSString* mobile;
+@property(nonatomic,retain) NSString* balance;
+@property(nonatomic,retain) NSString* cityID;
+@property(nonatomic,retain) NSString* cityName;
+@property(nonatomic,assign) LSLoginType loginType;
+
++(LSUser *)currentUser;
+- (void)copyPreUser:(LSUser*)preUser;
+
+@end

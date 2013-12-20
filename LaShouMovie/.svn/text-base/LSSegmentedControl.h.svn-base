@@ -1,0 +1,43 @@
+//
+//  LSSegmentedControl.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+typedef enum
+{
+    LSSegmentedControlTypeFilmShowStatus=0,
+    LSSegmentedControlTypeCinemaStatus=1
+}LSSegmentedControlType;
+
+@protocol LSSegmentedControlDelegate;
+@interface LSSegmentedControl : UIView
+{
+    UIView* _indicator;
+    UIButton* _leftButton;
+    UIButton* _rightButton;
+    
+    LSFilmShowStatus _filmShowStatus;//影片上映状态
+    LSCinemaStatus _cinemaStatus;//影院状态
+    BOOL _animated;//是否使用动画
+    
+    id<LSSegmentedControlDelegate> _delegate;
+    
+    LSSegmentedControlType _segmentedControlType;
+}
+
+@property(nonatomic,assign) BOOL animated;
+@property(nonatomic,assign) LSSegmentedControlType segmentedControlType;
+@property(nonatomic,assign) id<LSSegmentedControlDelegate> delegate;
+
+@end
+
+@protocol LSSegmentedControlDelegate <NSObject>
+
+- (void)LSSegmentedControl:(LSSegmentedControl*)control didChangeValue:(int)status;
+
+@end

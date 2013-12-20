@@ -1,0 +1,27 @@
+//
+//  LSAdvertisment.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSAdvertisment.h"
+
+@implementation LSAdvertisment
+
+@synthesize adType = _adType;
+@synthesize data = _data;
+@synthesize imageURL = _imageURL;
+
+- (id)initWithDictionary:(NSDictionary*)safeDic
+{
+    self=[super init];
+    if(self!=nil)
+    {
+        
+    }
+    return self;
+}
+
+@end

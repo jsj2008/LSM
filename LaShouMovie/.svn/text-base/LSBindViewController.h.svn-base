@@ -1,0 +1,13 @@
+//
+//  LSBindViewController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-30.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSViewController.h"
+
+@interface LSBindViewController : LSViewController
+
+@end

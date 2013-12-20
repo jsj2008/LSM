@@ -1,0 +1,14 @@
+//
+//  LSTabBarController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "LSTabBar.h"
+
+@interface LSTabBarController : UITabBarController<LSTabBarDelegate>
+
+@end

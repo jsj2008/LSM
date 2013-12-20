@@ -1,0 +1,36 @@
+//
+//  LSViewController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+typedef enum
+{
+    LSOtherButtonTypeChangeDisplay=1,//切换视图
+    LSOtherButtonTypeChangeCity=2,//切换位置
+    LSOtherButtonTypeMap=3//显示地图
+    
+}LSOtherButtonType;
+
+@interface LSViewController : UIViewController
+{
+    UIImageView* _nonInternetImageView;
+    
+    LSUser* user;
+    LSMessageCenter* messageCenter;
+    BOOL _isShowBackBarButton;
+}
+@property(nonatomic,assign) BOOL isShowBackBarButton;
+
+- (void)setBarButtonItemWithImageName:(NSString *)imageName clickedImageName:(NSString *)clickedImageName isRight:(BOOL)isRight buttonType:(LSOtherButtonType)buttonType;
+
+//此方法可重写
+- (void)nonInternetImageViewTap:(UITapGestureRecognizer*)recognizer;
+- (BOOL)checkIsNotEmpty:(id)object;//检查数据是否不为空
+- (void)otherButtonClick:(UIButton*)sender;
+
+@end

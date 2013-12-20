@@ -1,0 +1,18 @@
+//
+//  LSFilmsSchedulesByCinemaViewController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSViewController.h"
+#import "LSCinema.h"
+
+@interface LSFilmsSchedulesByCinemaViewController : LSViewController
+{
+    LSCinema* _cinema;
+}
+@property(nonatomic,retain) LSCinema* cinema;
+
+@end

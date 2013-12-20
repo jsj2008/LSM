@@ -1,0 +1,41 @@
+//
+//  LSStillCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-6.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSStillCell.h"
+
+@implementation LSStillCell
+
+@synthesize stillImageView=_stillImageView;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        self.backgroundColor=[UIColor clearColor];
+        self.contentView.backgroundColor=[UIColor clearColor];
+        
+        CGRect rect=UIEdgeInsetsInsetRect(self.contentView.frame, UIEdgeInsetsMake(3, 3, 3, 3));
+        
+        _stillImageView=[[UIImageView alloc] init];
+        _stillImageView.frame=rect;
+        _stillImageView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        [self.contentView addSubview:_stillImageView];
+        [_stillImageView release];
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

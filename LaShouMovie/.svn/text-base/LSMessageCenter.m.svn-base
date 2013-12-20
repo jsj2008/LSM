@@ -1,0 +1,380 @@
+//
+//  LSMessageCenter.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-22.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSMessageCenter.h"
+
+#import "LSRequestURLs.h"
+#import "ASIFormDataRequest.h"
+#import "ASINetworkQueue.h"
+
+#import "SBJsonParser.h"
+
+@implementation LSMessageCenter
+
+static LSMessageCenter *defaultCenter=nil;
+static ASINetworkQueue* networkQueue=nil;
+static NSNotificationCenter* notificationCenter=nil;
+static LSUser* user=nil;
+
+#pragma mark - 消息中心,单例模式
++ (LSMessageCenter *)defaultCenter
+{
+    @synchronized(self)
+    {
+        if (defaultCenter==nil)
+        {
+            defaultCenter=[[super allocWithZone:NULL] init];
+
+            user=[LSUser currentUser];
+            notificationCenter=[NSNotificationCenter defaultCenter];
+            networkQueue=[[ASINetworkQueue alloc] init];
+            
+            networkQueue.delegate=defaultCenter;
+            networkQueue.shouldCancelAllRequestsOnFailure=NO;
+            networkQueue.showAccurateProgress=YES;
+            networkQueue.maxConcurrentOperationCount=6;
+            
+            networkQueue.requestDidStartSelector=@selector(requestDidStart:);
+            networkQueue.requestDidReceiveResponseHeadersSelector=@selector(requestDidReceiveResponseHeaders:);
+            networkQueue.requestWillRedirectSelector=@selector(requestWillRedirect:);
+            networkQueue.requestDidFinishSelector=@selector(requestDidFinish:);
+            networkQueue.requestDidFailSelector=@selector(requestDidFail:);
+            
+            networkQueue.queueDidFinishSelector=@selector(queueDidFinish:);
+            
+            [networkQueue go];
+        }
+    }
+    return defaultCenter;
+}
+
++ (id)alloc
+{
+    return [[self defaultCenter] retain];
+}
++ (id)allocWithZone:(NSZone *)zone
+{
+    return [[self defaultCenter] retain];
+}
+- (id)copyWithZone:(NSZone *)zone;
+{
+    return self; //确保copy对象也是唯一
+}
+- (id)retain
+{
+    return self; //确保计数唯一
+}
+- (NSUInteger)retainCount
+{
+    return NSUIntegerMax;  //这样打印出来的计数永远为-1
+}
+- (oneway void)release
+{
+    //do nothing
+}
++ (void)release
+{
+    //do nothing
+}
+- (id)autorelease
+{
+    return self;//确保计数唯一
+}
+
+
+
+#pragma mark - 自定义通知相关函数
+- (void)postNotificationName:(NSString *)aName object:(id)anObject
+{
+    [notificationCenter postNotificationName:aName object:anObject];
+}
+- (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSString *)aName object:(id)anObject
+{
+    [notificationCenter addObserver:observer selector:aSelector name:aName object:anObject];
+}
+- (void)removeObserver:(id)observer
+{
+    [notificationCenter removeObserver:observer];
+}
+- (void)removeObserver:(id)observer name:(NSString *)aName object:(id)anObject
+{
+    [notificationCenter removeObserver:observer name:aName object:anObject];
+}
+
+
+#pragma mark- 私有方法
+- (void)requestWithURL:(NSURL *)URL requestType:(NSString *)requestType params:(NSDictionary *)params
+{
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc]initWithURL:URL];
+    request.requestType=requestType;//设置请求类型
+    NSArray *keys = [params allKeys];
+    for (NSString* key in keys)
+    {
+        [request setPostValue:[params objectForKey:key] forKey:key];
+    }
+    
+    [request setUseCookiePersistence:NO];
+    [request setValidatesSecureCertificate:NO];
+    [request setTimeOutSeconds:10];
+    [request setShouldAttemptPersistentConnection:NO];//关闭连接重用
+    [request setNumberOfTimesToRetryOnTimeout:2];//设置请求超时重试次数
+    [networkQueue addOperation:request];
+    [request release];
+    
+    LSLOG(@"[%@] 发起第 %d 次请求",requestType,request.requestTimes);
+}
+
+
+
+#pragma mark/ 暴露方法
+#pragma mark- 影片相关
+#pragma mark 获取某城市影片列表
+- (void)LSMCFilmsWithStatus:(LSFilmShowStatus)status cityID:(NSString*)cityID
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       [NSString stringWithFormat:@"%u", status],@"type",
+                       cityID,@"cityId",
+                       lsURLSource,@"source",
+                       [[NSString stringWithFormat:@"%@|%@|%@",lsURLSource,cityID,lsURLSign] SHA256],@"signValue",
+                       nil];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLFilmsByStatus_CityID, lsURLSTID]];
+    if(status==LSFilmShowStatusShowing)
+    {
+        [self requestWithURL:url requestType:lsRequestTypeFilmsByStatus_CityID_Showing params:dic];
+    }
+    else if(status==LSFilmShowStatusWillShow)
+    {
+        [self requestWithURL:url requestType:lsRequestTypeFilmsByStatus_CityID_WillShow params:dic];
+    }
+}
+#pragma mark 获取某影片信息
+- (void)LSMCFilmInfoWithFilmID:(NSString*)filmID
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       filmID, @"filmId",
+                       @"0", @"comment",
+                       lsURLSource, @"source",
+                       [[NSString stringWithFormat:@"%@|%@|%@",lsURLSource,filmID,lsURLSign] SHA256],@"signValue",
+                       nil];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLFilmInfoByFilmID, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeFilmInfoByFilmID params:dic];
+}
+
+#pragma mark- 影院相关
+#pragma mark 获取某城市影院列表
+- (void)LSMCCinemasWithStatus:(LSCinemaStatus)status cityID:(NSString*)cityID
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       [NSString stringWithFormat:@"%u", status],@"type",
+                       cityID,@"cityId",
+                       lsURLSource,@"source",
+                       [[NSString stringWithFormat:@"%@|%@|%@",lsURLSource,cityID,lsURLSign] SHA256],@"signValue",
+                       nil];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLCinemasByStatus_CityID, lsURLSTID]];
+    if(status==LSCinemaStatusOnline)
+    {
+        [self requestWithURL:url requestType:lsRequestTypeCinemasByStatus_CityID_Online params:dic];
+    }
+    else if(status==LSCinemaStatusAll)
+    {
+        [self requestWithURL:url requestType:lsRequestTypeCinemasByStatus_CityID_All params:dic];
+    }
+}
+
+#pragma mark- 其他
+#pragma mark 获取城市列表
+- (void)LSMCCities
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       lsURLSource, @"source",
+                       [[NSString stringWithFormat:@"%@|%@",lsURLSource,lsURLSign] SHA256],@"signValue",
+                       nil];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLCities, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeCities params:dic];
+}
+#pragma mark 获取广告列表
+- (void)LSMCAdvertisementsWithCityID:(NSString*)cityID
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       lsURLSource, @"source",
+                       cityID, @"cityId",
+                       [[NSString stringWithFormat:@"%@|%@|%@",lsURLSource,cityID,lsURLSign] SHA256],@"signValue",
+                       nil];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLAdvertisements, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeAdvertisements params:dic];
+}
+
+
+
+#pragma mark- 私有方法,打印相关信息
+- (void)requestInfo:(ASIHTTPRequest*)request
+{
+    LSLOG(@"请求信息:%@",request);
+    [self queueInfo];
+}
+- (void)queueInfo
+{
+    LSLOG(@"请求队列信息:%@",networkQueue);
+}
+#pragma mark- 某一请求开始
+- (void)requestDidStart:(ASIHTTPRequest *)request
+{
+    LSLOG(@"请求类型:[%@]\n 状态:请求开始",request.requestType);
+    [self requestInfo:request];
+}
+#pragma mark- 某一请求接收到数据头
+- (void)requestDidReceiveResponseHeaders:(ASIHTTPRequest *)request
+{
+    LSLOG(@"请求类型:[%@]\n 状态:接收请求头",request.requestType);
+    [self requestInfo:request];
+}
+#pragma mark- 某一请求***
+- (void)requestWillRedirect:(ASIHTTPRequest *)request
+{
+    LSLOG(@"请求类型:[%@]\n 状态:请求***",request.requestType);
+    [self requestInfo:request];
+}
+#pragma mark- 某一请求完成
+- (void)requestDidFinish:(ASIHTTPRequest *)request
+{
+    LSLOG(@"请求类型:[%@]\n 状态:请求成功",request.requestType);
+    [self requestInfo:request];
+    
+    //将服务器数据返回信息进行适当处理
+    id responseData=nil;
+    SBJsonParser* parser=[[SBJsonParser alloc] init];
+    responseData=[parser objectWithString:request.responseString];
+    [parser release];
+    
+    id safeResponseData=nil;
+    if(responseData!=nil)
+    {
+        //解析成功
+        LSLOG(@"\n\n非安全数据\n%@\n\n",responseData);
+        
+        Class responseClass=[responseData class];
+        if([responseClass isSubclassOfClass:[NSDictionary class]])
+        {
+            LSLOG(@"返回数据类型为字典\n");
+            
+            //说明服务器返回了错误信息
+            //服务器返回的状态信息一定是一个字典
+            if([responseData objectForKey:@"status"]!=nil)
+            {
+                LSLOG(@"返回数据类型为异常\n");
+                
+                id statusDic=[responseData objectForKey:@"status"];
+                
+                LSStatus* status=[[[LSStatus alloc] init] autorelease];
+                if([statusDic isKindOfClass:[NSDictionary class]])//标准状态字典
+                {
+                    status.code=[[statusDic objectForKey:@"code"] integerValue];
+                    status.message=[NSString stringWithFormat:@"%@",[statusDic objectForKey:@"message"]]; 
+                }
+                else if([statusDic isKindOfClass:[NSString class]])//意外字符串
+                {
+                    status.code=-1;
+                    status.message=[NSString stringWithFormat:@"%@",statusDic];
+                }
+                safeResponseData=status;
+            }
+            else
+            {
+                safeResponseData=[NSMutableDictionary dictionaryWithDictionary:responseData];
+                [safeResponseData makeSafe];
+            }
+        }
+        else if([responseClass isSubclassOfClass:[NSArray class]])
+        {
+            LSLOG(@"返回数据类型为数组\n");
+            
+            safeResponseData=[NSMutableArray arrayWithArray:responseData];
+            [safeResponseData makeSafe];
+        }
+        else if([responseClass isSubclassOfClass:[NSString class]])
+        {
+            LSLOG(@"返回数据类型为字符串\n");
+            
+            LSError* error=[[[LSError alloc] init] autorelease];
+            error.code=LSErrorCodeParseWrong;
+            safeResponseData=error;
+        }
+    }
+    else
+    {
+        LSLOG(@"返回数据类型为空\n");
+        
+        LSError* error=[[[LSError alloc] init] autorelease];
+        error.code=LSErrorCodeResponseEmpty;
+        safeResponseData=error;
+    }
+    LSLOG(@"\n\n安全数据%@\n\n",safeResponseData);
+    
+    
+    #pragma mark 根据请求的类型发出通知
+    [self postNotificationName:request.requestType object:safeResponseData];
+    
+}
+#pragma mark- 某一请求失败
+- (void)requestDidFail:(ASIFormDataRequest *)request
+{
+    LSLOG(@"请求类型:[%@]\n 状态:请求失败",request.requestType);
+    [self requestInfo:request];
+    
+    //根据请求次数判断当前是否为真的失败
+    //自动再次发起请求，请求次数加一，最大自动请求次数为2
+    
+    if (request.requestTimes < lsMostRequestTimes)
+    {
+        request.requestTimes += 1;
+        LSLOG(@"自动发起 %d 次请求",request.requestTimes);
+        
+        NSString* method = request.requestMethod;
+        NSMutableDictionary* dic = nil;
+        if ([method isEqualToString:@"POST"])
+        {
+            //设置params
+            dic = [NSMutableDictionary dictionaryWithCapacity:0];
+            NSMutableArray *paramsArray = request-> postData;
+            for (NSDictionary *dic in paramsArray)
+            {
+                [dic setValue:[dic objectForKey:@"value"] forKey:[dic objectForKey:@"key"]];
+            }
+            [self requestWithURL:request.url requestType:request.requestType params:dic];
+        }
+        else if ([method isEqualToString:@"PUT"])
+        {
+            //特殊情况单独处理
+            ASIHTTPRequest* newRequest=[[ASIHTTPRequest alloc] initWithURL:request.url];
+            [newRequest appendPostData:request.postBody];
+            newRequest.requestTimes = request.requestTimes;
+            [newRequest setRequestMethod:@"PUT"];
+            [newRequest setTimeOutSeconds:10];
+            [newRequest setResponseEncoding:NSUTF8StringEncoding];
+            newRequest.requestType=request.requestType;
+            [newRequest setValidatesSecureCertificate:NO];
+            [networkQueue addOperation:newRequest];
+            [newRequest release];
+        }
+    }
+    else
+    {
+        //根据请求的类型发出失败通知
+        #pragma mark 通过状态和城市获取影片列表
+        [self postNotificationName:request.requestType object:lsRequestFailed];
+    }
+
+}
+
+#pragma mark- 队列请求完成
+- (void)queueDidFinish:(ASINetworkQueue *)queue
+{
+    LSLOG(@"请求队列完成");
+}
+
+@end

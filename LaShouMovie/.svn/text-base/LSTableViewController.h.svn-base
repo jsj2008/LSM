@@ -1,0 +1,22 @@
+//
+//  LSTableViewController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface LSTableViewController : UITableViewController
+{
+    BOOL _isShowBackBarButton;
+}
+@property(nonatomic,assign) BOOL isShowBackBarButton;
+
+- (void)initRefreshControl;
+
+//可重载方法
+- (void)refreshControlEventValueChanged;
+
+@end

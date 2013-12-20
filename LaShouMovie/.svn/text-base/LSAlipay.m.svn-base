@@ -1,0 +1,13 @@
+//
+//  LSAlipay.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSAlipay.h"
+
+@implementation LSAlipay
+
+@end

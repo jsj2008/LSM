@@ -1,0 +1,74 @@
+//
+//  LSPosterLabel.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-4.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSPosterLabel.h"
+
+@implementation LSPosterLabel
+
+@synthesize isShowing=_isShowing;
+
+- (void)dealloc
+{
+    LSRELEASE(_name)
+    LSRELEASE(_plan)
+    [super dealloc];
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        
+        self.clipsToBounds = YES;
+        self.backgroundColor = LSRGBA(0, 0, 0, .6f);
+        self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    }
+    return self;
+}
+
+
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+    
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    if (_isShowing)
+    {
+        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
+    }
+    else
+    {
+        CGContextSetFillColorWithColor(contextRef, [[UIColor whiteColor] CGColor]);
+    }
+    
+    [_name drawInRect:CGRectMake(5, 2, self.width - 10, 20) withFont:[UIFont systemFontOfSize:16.f] lineBreakMode:UILineBreakModeTailTruncation];
+    
+    if (_isShowing)
+    {
+        CGContextSetFillColorWithColor(contextRef, [[UIColor orangeColor] CGColor]);
+    }
+    [_plan drawInRect:CGRectMake(5, 24, self.width - 10, 14) withFont:[UIFont systemFontOfSize:11.f] lineBreakMode:UILineBreakModeTailTruncation];
+}
+
+
+#pragma mark- 显示影片名称和场次
+- (void)setNeedsDisplayWithFilmName:(NSString*)name showPlan:(NSString*)plan
+{
+    LSRELEASE(_name);
+    LSRELEASE(_plan);
+    
+    _name=[name retain];
+    _plan=[plan retain];
+    
+    [self setNeedsDisplay];
+}
+
+@end

@@ -1,0 +1,32 @@
+//
+//  LSRequestURLs.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-22.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+#define lsURLSource             @"100"
+#define lsURLSign               @"SJFJS12JK3HJ23GF213GGH2H23@#LLOO"
+#define lsURLSTID               [LSTools stid]
+
+#pragma mark- 影片相关
+#define lsURLFilmsByStatus_CityID          @"/Film/filmListA"
+#define lsURLFilmInfoByFilmID            @"/Film/filmDetail"
+
+#pragma mark- 影院相关
+#define lsURLCinemasByStatus_CityID        @"/Cinema/getClientCinemaList"
+
+#pragma mark- 其他
+#define lsURLCities                      @"/City/cityList"
+#define lsURLAdvertisements              @"/Banner/getOneBanner"
+
+@interface LSRequestURLs : NSObject
+
+//路径拼装规则
+//1; lsRequestFilms  @"/Film/filmListA" 前有‘/’后无‘/’
+//2; [LSTools stid]直接使用
+
+@end

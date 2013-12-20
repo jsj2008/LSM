@@ -1,0 +1,148 @@
+//
+//  LSMessageCenter.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-22.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+#import "LSStatus.h"
+#import "LSError.h"
+
+
+#pragma mark- 请求参数定义
+//上映状态
+typedef enum
+{
+    LSFilmShowStatusShowing  = 0,
+    LSFilmShowStatusWillShow = 1,
+    LSFilmShowStatusEnd = 2
+} LSFilmShowStatus;
+
+//影院状态
+typedef enum
+{
+    LSCinemaStatusOnline  = 0,
+    LSCinemaStatusAll = 1
+    
+} LSCinemaStatus;
+
+
+
+
+
+
+//影片视觉类型
+typedef enum
+{
+    LSFilmDimensional2D = 0,
+    LSFilmDimensional3D = 1
+} LSFilmDimensional;
+
+//排期日期
+typedef enum
+{
+    LSSchedulesDateToday               = 0,
+    LSSchedulesDateTomorrow            = 1,
+    LSSchedulesDateTheDayAfterTomorrow = 2
+} LSSchedulesDate;
+
+//排期类型
+typedef enum
+{
+    LSSchedulesTypeAll    = 0,
+    LSSchedulesType2D     = 1,
+    LSSchedulesType3D     = 2,
+    LSSchedulesTypeIMAX2D = 3,
+    LSSchedulesTypeIMAX3D = 4
+} LSSchedulesType;
+
+//支付类型
+typedef enum
+{
+    LSPayTypeBalancePay     = 0,
+    LSPayTypeAlipay         = 1,
+    LSPayTypeUnionPay       = 2,
+    LSPayTypeQuickPay       = 3
+} LSPayType;
+
+//
+typedef enum
+{
+    LSOrderDisplayNotConsume = 0,
+    LSOrderDisplayNeedPay    = 1,
+    LSOrderDisplayCanRefund  = 2,
+    LSOrderDisplayConsumed   = 3,
+    LSMyOrder  = 4,
+    LSMyTicket = 5
+    
+} LSOrderDisplayType;
+
+//团购票付款状态
+typedef enum
+{
+    LSMyGroupOrderTypeWaitingPay    = 1,
+    LSMyGroupOrderTypePayed  = 2,
+} LSMyGroupOrderType;
+
+//
+typedef enum
+{
+    LSMyGroupTicketNotUsed    = 1,
+    LSMyGroupTicketUsed  = 2,
+    LSMyGroupTicketExpire  = 3
+} LSMyGroupTicketType;
+
+
+#pragma mark- 请求的状态参数
+#define lsMostRequestTimes      2
+#define lsRequestSuccess        @"Success"
+#define lsRequestFailed         @"Failed"
+#define lsRequestTimeout        @"Timeout"
+#define lsRequestStatus         @"Status"
+#define lsRequestError          @"Error"
+
+#pragma mark- 请求类型
+#pragma mark 影片相关
+#define lsRequestTypeFilmsByStatus_CityID_Showing               @"lsRequestTypeFilmsByStatus_CityID_Showing"
+#define lsRequestTypeFilmsByStatus_CityID_WillShow              @"lsRequestTypeFilmsByStatus_CityID_WillShow"
+#define lsRequestTypeFilmInfoByFilmID                           @"lsRequestTypeFilmInfoByFilmID"
+
+#pragma mark 影院相关
+#define lsRequestTypeCinemasByStatus_CityID_Online              @"lsRequestTypeCinemasByStatus_CityID_Online"
+#define lsRequestTypeCinemasByStatus_CityID_All                 @"lsRequestTypeCinemasByStatus_CityID_All"
+
+#pragma mark 其他
+#define lsRequestTypeCities                     @"lsRequestTypeCities"
+#define lsRequestTypeAdvertisements             @"lsRequestTypeAdvertisements"
+
+@interface LSMessageCenter : NSObject
+{
+    
+}
+
+#pragma mark- 类方法
++ (LSMessageCenter *)defaultCenter;
+
+#pragma mark- 覆载方法
+//自定义通知相关函数
+- (void)postNotificationName:(NSString *)aName object:(id)anObject;
+- (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSString *)aName object:(id)anObject;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer name:(NSString *)aName object:(id)anObject;
+
+#pragma mark/ 请求方法
+#pragma mark- 影片相关
+- (void)LSMCFilmsWithStatus:(LSFilmShowStatus)status cityID:(NSString*)cityID;
+- (void)LSMCFilmInfoWithFilmID:(NSString*)filmID;
+
+#pragma mark- 影院相关
+- (void)LSMCCinemasWithStatus:(LSCinemaStatus)status cityID:(NSString*)cityID;
+
+#pragma mark- 其他
+- (void)LSMCCities;
+- (void)LSMCAdvertisementsWithCityID:(NSString*)cityID;
+
+@end

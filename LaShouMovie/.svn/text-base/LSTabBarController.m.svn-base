@@ -1,0 +1,136 @@
+//
+//  LSTabBarController.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSTabBarController.h"
+
+#import "LSFilmsViewController.h"
+#import "LSCinemasViewController.h"
+#import "LSMyViewController.h"
+#import "LSSettingViewController.h"
+#import "LSNavigationController.h"
+
+#import "LSTabBar.h"
+#import "LSTabBarItem.h"
+
+@interface LSTabBarController ()
+
+@end
+
+@implementation LSTabBarController
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    [super dealloc];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    self.view.backgroundColor=lsDefaultBackgroundColor;
+
+    NSMutableArray* viewControllers=[NSMutableArray arrayWithCapacity:0];
+    
+    //
+    LSFilmsViewController* filmsViewController = [[LSFilmsViewController alloc] init];
+    filmsViewController.isShowBackBarButton=NO;
+    
+    LSNavigationController* filmsNavigationController = [[LSNavigationController alloc] initWithRootViewController:filmsViewController];
+    filmsNavigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    [viewControllers addObject:filmsNavigationController];
+    [filmsNavigationController release];
+    [filmsViewController release];
+    
+    
+    //
+    LSCinemasViewController* cinemasViewController = [[LSCinemasViewController alloc] init];
+    cinemasViewController.isShowBackBarButton=NO;
+    
+    LSNavigationController* cinemasNavigationController = [[LSNavigationController alloc] initWithRootViewController:cinemasViewController];
+    cinemasNavigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    [viewControllers addObject:cinemasNavigationController];
+    [cinemasNavigationController release];
+    [cinemasViewController release];
+    
+    
+    //
+    LSMyViewController* myViewController = [[LSMyViewController alloc] init];
+    myViewController.isShowBackBarButton=NO;
+    
+    LSNavigationController* myNavigationController = [[LSNavigationController alloc] initWithRootViewController:myViewController];
+    myNavigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    [viewControllers addObject:myNavigationController];
+    [myNavigationController release];
+    [myViewController release];
+    
+    
+    //
+    LSSettingViewController* settingViewController = [[LSSettingViewController alloc] init];
+    settingViewController.isShowBackBarButton=NO;
+    
+    LSNavigationController* settingNavigationController = [[LSNavigationController alloc] initWithRootViewController:settingViewController];
+    settingNavigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    [viewControllers addObject:settingNavigationController];
+    [settingNavigationController release];
+    [settingViewController release];
+    
+    //设置子控制器
+    [self setViewControllers:viewControllers];
+    
+    
+    //生成假的TabBar
+    LSTabBar* tabBar=[[LSTabBar alloc] initWithFrame:CGRectMake(0, 0, self.tabBar.width, self.tabBar.height)];
+    tabBar.backgroundImage = [UIImage lsImageNamed:@"tab_bg.png"];
+    tabBar.delegate=self;
+    [self.tabBar addSubview:tabBar];
+    [tabBar release];
+    
+    
+    //设置假的TabBar的项
+    NSMutableArray* itemMArray=[NSMutableArray arrayWithCapacity:0];
+    for (NSUInteger i=0; i<self.viewControllers.count; i++)
+    {
+        LSTabBarItem* tabBarItem=[[LSTabBarItem alloc] init];
+        tabBarItem.backgroundImage=[UIImage lsImageNamed:[NSString stringWithFormat:@"tab_%d.png",i]];
+        tabBarItem.itemIndex = i;//设置按钮的排序
+        [itemMArray addObject:tabBarItem];
+        [tabBarItem release];
+    }
+    tabBar.itemArray=itemMArray;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark- LSTabBar的委托方法
+- (void)LSTabBar:(LSTabBar *)tabBar selectedIndex:(NSInteger)index
+{
+    self.selectedIndex=index;
+}
+
+
+
+@end

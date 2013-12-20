@@ -1,0 +1,147 @@
+//
+//  LSFilmInfoStillCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-5.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSFilmInfoStillCell.h"
+#import "LSStillCell.h"
+
+#define bgWidth 300
+#define bgHeight 110
+
+@implementation LSFilmInfoStillCell
+
+@synthesize film=_film;
+@synthesize delegate=_delegate;
+
+#pragma mark- 属性方法
+- (void)setFilm:(LSFilm *)film
+{
+    if(![_film isEqual:film])
+    {
+        if(_film!=nil)
+        {
+            LSRELEASE(_film)
+        }
+        _film=[film retain];
+    }
+}
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    self.film=nil;
+    [super dealloc];
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        self.backgroundColor=[UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.clipsToBounds = YES;
+        
+        _stillTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _stillTableView.backgroundColor=[UIColor clearColor];
+        _stillTableView.backgroundView=nil;
+        _stillTableView.center=CGPointMake(WidthOfiPhoneX(320)/2, bgHeight/2+20);
+        _stillTableView.bounds=CGRectMake(0, 0, bgHeight-40, bgWidth-20);
+        _stillTableView.delegate=self;
+        _stillTableView.dataSource=self;
+        _stillTableView.pagingEnabled=YES;
+        _stillTableView.showsVerticalScrollIndicator=NO;
+//        _stillTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+        _stillTableView.transform=CGAffineTransformMakeRotation(-M_PI/2);//将视图旋转90
+        [self.contentView addSubview:_stillTableView];
+        [_stillTableView release];
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"film_info_bg.png"] top:4 left:4 bottom:4 right:4] drawInRect:CGRectMake(10, 10, 300, (rect.size.height - 20))];
+ 
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(contextRef, [LSRGBA(165, 5, 3, 1.f) CGColor]);
+    [@"影片剧照" drawInRect:CGRectMake(20, 15, 280, 20) withFont:[UIFont systemFontOfSize:16.f] lineBreakMode:UILineBreakModeClip];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [_stillTableView reloadData];
+}
+
+
+#pragma mark- UITableView的委托方法
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _film.stillArray.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70;
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSStillCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSStillCell"];
+    if(cell==nil)
+    {
+        cell=[[[LSStillCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSStillCell"] autorelease];
+        cell.contentView.transform=CGAffineTransformMakeRotation(M_PI/2);//将视图旋转90
+    }
+    cell.stillImageView.image=LSPlaceholderImage;
+    
+    if(!tableView.isDragging && !tableView.isDecelerating)
+    {
+        [cell.stillImageView setImageWithURL:[NSURL URLWithString:[_film.stillArray objectAtIndex:indexPath.row]] placeholderImage:LSPlaceholderImage];
+    }
+    
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(_delegate!=nil)
+    {
+        
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
+    {
+        [self soapSmooth];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self soapSmooth];
+}
+
+#pragma mark 肥皂滑代码实现
+- (void)soapSmooth
+{
+    NSArray* cellArray=[_stillTableView visibleCells];
+    for(LSStillCell* cell in cellArray)
+    {
+        NSIndexPath* indexPath=[_stillTableView indexPathForCell:cell];
+        [cell.stillImageView setImageWithURL:[NSURL URLWithString:[_film.stillArray objectAtIndex:indexPath.row]] placeholderImage:LSPlaceholderImage];
+    }
+}
+
+@end

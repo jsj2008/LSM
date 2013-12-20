@@ -1,0 +1,28 @@
+//
+//  LSVersion.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface LSVersion : NSObject
+{
+    NSString* _version;//版本
+    BOOL _isForceUpgrade;//强制升级
+    NSString* _isPromptUpgrade;
+    NSString* _downloadURL;
+    NSString* _updateInfo;
+}
+
+@property(nonatomic,retain) NSString* version;
+@property(nonatomic,assign) BOOL isForceUpgrade;
+@property(nonatomic,retain) NSString* isPromptUpgrade;
+@property(nonatomic,retain) NSString* downloadUrl;
+@property(nonatomic,retain) NSString* updateInfo;
+
++(LSVersion *)currentVersion;
+
+@end

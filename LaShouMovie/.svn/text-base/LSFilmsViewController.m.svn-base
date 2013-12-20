@@ -1,0 +1,417 @@
+//
+//  LSFilmsViewController.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-8-29.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSFilmsViewController.h"
+
+#import "LSFilm.h"
+#import "LSFilmCell.h"
+#import "LSFilmInfoViewController.h"
+#import "LSAdvertisment.h"
+
+@interface LSFilmsViewController ()
+
+@end
+
+@implementation LSFilmsViewController
+
+- (void)dealloc
+{
+    [messageCenter removeObserver:self];
+    
+    LSRELEASE(_showingFilmMArray)
+    LSRELEASE(_willShowFilmMArray)
+    [super dealloc];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    
+    //初始化数据数组
+    _showingFilmMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    _willShowFilmMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    _adMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    
+    //添加通知
+    [messageCenter addObserver:self selector:@selector(lsGetFilms:) name:lsRequestTypeFilmsByStatus_CityID_Showing object:nil];
+    [messageCenter addObserver:self selector:@selector(lsGetFilms:) name:lsRequestTypeFilmsByStatus_CityID_WillShow object:nil];
+    [messageCenter addObserver:self selector:@selector(lsGetFilms:) name:lsRequestTypeAdvertisements object:nil];
+    
+    [self setBarButtonItemWithImageName:_displayType?@"nav_list.png":@"nav_poster.png" clickedImageName:_displayType?@"nav_list_d.png":@"nav_poster_d.png" isRight:YES buttonType:LSOtherButtonTypeChangeDisplay];
+    
+    [self setBarButtonItemWithImageName:@"nav_city.png" clickedImageName:@"nav_city_d.png" isRight:NO buttonType:LSOtherButtonTypeChangeCity];
+    UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:15.f];
+    button.titleLabel.minimumFontSize = 13.f;
+    button.titleLabel.adjustsFontSizeToFitWidth = YES;
+    
+    _segmentedControl=[[LSSegmentedControl alloc] initWithFrame:CGRectMake(0, 0, 190, 36)];
+    _segmentedControl.segmentedControlType=LSSegmentedControlTypeFilmShowStatus;
+    _segmentedControl.delegate=self;
+    self.navigationItem.titleView=_segmentedControl;
+    [_segmentedControl release];
+
+    [self showList];
+    [messageCenter LSMCFilmsWithStatus:_filmShowStatus cityID:user.cityID];
+    [messageCenter LSMCAdvertisementsWithCityID:user.cityID];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+    [button setTitle:user.cityName forState:UIControlStateNormal];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark- 私有方法
+//按钮的目标方法
+- (void)otherButtonClick:(UIButton *)sender
+{
+    if(sender.tag==LSOtherButtonTypeChangeCity)
+    {
+        LSCitiesViewController* citiesViewController=[[[LSCitiesViewController alloc] init] autorelease];
+        citiesViewController.delegate=self;
+        
+        UINavigationController* navigationController=[[UINavigationController alloc] initWithRootViewController:citiesViewController];
+        [self presentModalViewController:navigationController animated:YES];
+        [navigationController release];
+    }
+    else if(sender.tag==LSOtherButtonTypeChangeDisplay)
+    {
+        _displayType=!_displayType;
+        if(_displayType==LSDisplayTypePoster)
+        {
+            [self showPoster];
+        }
+        else if(_displayType==LSDisplayTypeList)
+        {
+            [self showList];
+        }
+        [sender setBackgroundImage:_displayType?[UIImage lsImageNamed:@"nav_list.png"]:[UIImage lsImageNamed:@"nav_poster.png"] forState:UIControlStateNormal];
+        [sender setBackgroundImage:_displayType?[UIImage lsImageNamed:@"nav_list_d.png"]:[UIImage lsImageNamed:@"nav_poster_d.png"] forState:UIControlStateHighlighted];
+    }
+}
+//以海报方式展示影片信息
+- (void)showPoster
+{
+    //去掉
+    [_tableView removeFromSuperview];
+    
+    _posterView=[[LSPosterView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, HeightOfiPhoneX(480-20.0-44.0-50.0))];
+    //_posterView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _posterView.delegate=self;
+    [self.view addSubview:_posterView];
+    [_posterView release];
+    
+    //需要强制重新加载数据
+    [_posterView reloadData];
+}
+//以列表方式展示影片信息
+- (void)showList
+{
+    //去掉
+    [_posterView removeFromSuperview];
+    
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, HeightOfiPhoneX(480-20.0-44.0-50.0)) style:UITableViewStylePlain];
+    //_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _tableView.backgroundColor=[UIColor clearColor];
+    _tableView.backgroundView=nil;
+    _tableView.showsVerticalScrollIndicator=NO;
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.delegate=self;
+    _tableView.dataSource=self;
+    [self.view addSubview:_tableView];
+    [_tableView release];
+}
+//刷新电影信息相关的视图
+- (void)refreshFilmsView
+{
+    if(_posterView!=nil)
+        [_posterView reloadData];
+    
+    if(_tableView!=nil)
+        [_tableView reloadData];
+}
+//跳转电影信息详情
+- (void)showFilmInfo:(NSInteger)index
+{
+    LSFilmInfoViewController* filmInfoViewController=[[LSFilmInfoViewController alloc] init];
+    if(_filmShowStatus==LSFilmShowStatusShowing)
+    {
+        filmInfoViewController.film=[_showingFilmMArray objectAtIndex:index];
+    }
+    else if(_filmShowStatus==LSFilmShowStatusWillShow)
+    {
+        filmInfoViewController.film=[_willShowFilmMArray objectAtIndex:index];
+    }
+    filmInfoViewController.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:filmInfoViewController animated:YES];
+    [filmInfoViewController release];
+}
+//显示广告条
+- (void)showAdvertisment
+{
+    if(_adMArray.count>0)
+    {
+        LSAdView* adView=[[LSAdView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 50)];
+        adView.delegate=self;
+        [self.view addSubview:adView];
+        [adView release];
+        
+        adView.adArray=_adMArray;
+        
+        if(_posterView!=nil)
+            _posterView.frame=CGRectMake(0, 50, self.view.width, _posterView.height-50);
+        
+        if(_tableView!=nil)
+            _tableView.frame=CGRectMake(0, 50, self.view.width, _tableView.height-50);
+    }
+}
+
+
+#pragma mark- 通知中心消息
+- (void)lsGetFilms:(NSNotification*)notification
+{
+    if([self checkIsNotEmpty:notification])
+    {
+        if([notification.object isEqual:lsRequestFailed])
+        {
+            //超时
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSStatus class]])
+        {
+            //状态
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSError class]])
+        {
+            //错误
+            return;
+        }
+        
+        NSArray* tmpArray=notification.object;
+        
+        if([notification.name isEqualToString:lsRequestTypeFilmsByStatus_CityID_Showing])
+        {
+            [_showingFilmMArray removeAllObjects];
+            
+            for(NSDictionary* dic in tmpArray)
+            {
+                LSFilm* film=[[LSFilm alloc] initWithDictionary:dic];
+                [_showingFilmMArray addObject:film];
+                [film release];
+            }
+            
+            [self refreshFilmsView];
+        }
+        else if([notification.name isEqualToString:lsRequestTypeFilmsByStatus_CityID_WillShow])
+        {
+            [_willShowFilmMArray removeAllObjects];
+            
+            for(NSDictionary* dic in tmpArray)
+            {
+                LSFilm* film=[[LSFilm alloc] initWithDictionary:dic];
+                [_willShowFilmMArray addObject:film];
+                [film release];
+            }
+            
+            [self refreshFilmsView];
+        }
+        else if([notification.name isEqualToString:lsRequestTypeAdvertisements])
+        {
+            [_adMArray removeAllObjects];
+            
+            for(NSDictionary* dic in tmpArray)
+            {
+                LSAdvertisment* advertisment=[[LSAdvertisment alloc] initWithDictionary:dic];
+                [_adMArray addObject:advertisment];
+                [advertisment release];
+            }
+        }
+    }
+}
+
+
+#pragma mark- LSAdView的委托方法
+- (void)LSAdView:(LSAdView *)adView didClose:(UIButton *)button
+{
+    if(_posterView!=nil)
+        _posterView.frame=CGRectMake(0, 0, self.view.width, _posterView.height+50);
+    
+    if(_tableView!=nil)
+        _tableView.frame=CGRectMake(0, 0, self.view.width, _tableView.height+50);
+    
+    [adView removeFromSuperview];
+}
+
+
+#pragma mark- LSSegmentedControl委托方法
+- (void)LSSegmentedControl:(LSSegmentedControl *)control didChangeValue:(int)status
+{
+    _filmShowStatus=status;
+    [messageCenter LSMCFilmsWithStatus:_filmShowStatus cityID:user.cityID];
+}
+
+
+#pragma mark- LSPosterView的委托方法
+- (void)LSPosterView:(LSPosterView *)posterView didClickButtonAtIndex:(NSInteger)pageIndex
+{
+    [self showFilmInfo:pageIndex];
+}
+
+- (NSInteger)LSPosterView:(LSPosterView *)posterView numberOfRowsInSection:(NSInteger)section
+{
+    if(_filmShowStatus==LSFilmShowStatusShowing)
+    {
+        return _showingFilmMArray.count;
+    }
+    else if(_filmShowStatus==LSFilmShowStatusWillShow)
+    {
+        return _willShowFilmMArray.count;
+    }
+    else
+    {
+        return 0;
+    }
+}
+- (LSPosterPage *)LSPosterView:(LSPosterView *)posterView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSPosterPage* page=[posterView dequeueReusablePage];
+    if(page==nil)
+    {
+        page=[[[LSPosterPage alloc] initWithFrame:CGRectZero] autorelease];
+    }
+    page.film=[_showingFilmMArray objectAtIndex:indexPath.row];
+    [page setNeedsLayout];
+    
+    return page;
+}
+- (void)LSPosterView:(LSPosterView *)posterView didSelectRowAtIndexPath:(NSInteger)posterIndex;
+{
+    [self showFilmInfo:posterIndex];
+}
+
+
+#pragma mark- LSCitiesViewController的委托方法
+- (void)LSCitiesViewControllerDidSelectCityID:(NSString *)cityID cityName:(NSString *)cityName
+{
+    user.cityID=cityID;
+    user.cityName=cityName;
+    
+    UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+    [button setTitle:cityName forState:UIControlStateNormal];
+    [messageCenter LSMCFilmsWithStatus:LSFilmShowStatusShowing cityID:cityID];
+}
+
+
+#pragma mark- UITableView委托方法
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(_filmShowStatus==LSFilmShowStatusShowing)
+    {
+        return _showingFilmMArray.count;
+    }
+    else if(_filmShowStatus==LSFilmShowStatusWillShow)
+    {
+        return _willShowFilmMArray.count;
+    }
+    else
+    {
+        return 0;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 90.f;
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSFilmCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSFilmCell"];
+    if(cell==nil)
+    {
+        cell=[[[LSFilmCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSFilmCell"] autorelease];
+    }
+    
+    LSFilm* film=nil;
+    if(_filmShowStatus==LSFilmShowStatusShowing)
+    {
+        film=[_showingFilmMArray objectAtIndex:indexPath.row];
+    }
+    else if(_filmShowStatus==LSFilmShowStatusWillShow)
+    {
+        film=[_willShowFilmMArray objectAtIndex:indexPath.row];
+    }
+    cell.film=film;
+    [cell setNeedsDisplay];
+    
+    cell.filmImageView.image=LSPlaceholderImage;
+    if(!tableView.isDecelerating && !tableView.isDecelerating)
+    {
+        [cell.filmImageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
+    }
+    
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self showFilmInfo:indexPath.row];
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
+    {
+        [self soapSmooth];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self soapSmooth];
+}
+
+
+#pragma mark 肥皂滑代码实现
+- (void)soapSmooth
+{
+    NSArray* cellArray=[_tableView visibleCells];
+    for(LSFilmCell* cell in cellArray)
+    {
+        NSIndexPath* indexPath=[_tableView indexPathForCell:cell];
+        LSFilm* film=nil;
+        if(_filmShowStatus==LSFilmShowStatusShowing)
+        {
+            film=[_showingFilmMArray objectAtIndex:indexPath.row];
+        }
+        else if(_filmShowStatus==LSFilmShowStatusWillShow)
+        {
+            film=[_willShowFilmMArray objectAtIndex:indexPath.row];
+        }
+        
+        [cell.filmImageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
+    }
+}
+
+@end

@@ -1,0 +1,135 @@
+//
+//  LSFilm.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-2.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+//排期缓存有效期，需要计算一下具体值
+typedef enum
+{
+    SchedulesValidityToday=0,//今天排期缓存有效期
+    SchedulesValidityTomorrow=1,//明天排期缓存有效期
+    SchedulesValidityTheDayAfterTomorrow=2//后天排期缓存有效期
+}SchedulesValidity;
+
+@interface LSFilm : NSObject<NSCoding>
+{
+//第一部分请求返回的数据
+//    {
+//        brief = "<null>";
+//        dimensional = 1;
+//        duration = 107;
+//        filmId = 4529;
+//        filmName = "\U5468\U6069\U6765\U7684\U56db\U4e2a\U663c\U591c";
+//        grade = "4.0";
+//        imageUrl = "http://d1.lashouimg.com/";
+//        imax = 0;
+//        posterUrl = "http://d1.lashouimg.com/";
+//        releaseDate = "2099-12-12";
+//        showCinemasCount = 0;
+//        showSchedulesCount = 0;
+//        starCode = "4.5";
+//        status = 0;
+//    }
+    NSString* _filmID;//电影ID
+    NSString* _filmName;//电影名称
+    NSString* _releaseDate;//上映时间
+    NSString* _duration;//时长
+    NSString* _brief;//简介
+    NSString* _grade;//评分
+    CGFloat _starCode;//星级
+    LSFilmDimensional _dimensional;//2D、3D
+    BOOL _imax;//iMax
+    NSInteger _showCinemasCount;//上映影院数
+    NSInteger _showSchedulesCount;//上映排期数
+    NSString* _imageURL;//主图(小)
+    NSString* _posterURL;//海报(大)
+    LSFilmShowStatus _showStatus;//上映状态
+
+//第二部分请求返回的数据
+//    {
+//        actor = "<null>";
+//        bigStillPath = "cinema/film/580";
+//        country = "<null>";
+//        description = "<null>";
+//        director = "<null>";
+//        filmId = 4431;
+//        filmType = "<null>";
+//        stillList = "<null>";
+//        stillPath = "cinema/film/100";
+//    }
+    BOOL _isFetchDetail;//是否已经请求详情
+    NSString* _actor;//主演
+    NSString* _country;//国家
+    NSString* _description;//描述
+    NSString* _director;//导演
+    NSString* _filmType;//类型
+    NSString* _bigStillPath;//剧照路径(大)
+    NSString* _stillPath;//剧照路径(小)
+    NSArray* _stillArray;//剧照
+    
+//组合的排期数据
+    BOOL _isFetchSchedulesToday;//是否已经获取今天的排期
+    NSString* _fetchTimeToday;//查询今天排期的时间;此处使用一个过期时间，例如20分钟
+    NSArray* _schedulesArrayToday;//今天的排期
+    
+    BOOL _isFetchSchedulesTomorrow;//是否已经获取明天的排期
+    NSString* _fetchTimeTomorrow;//查询明天排期的时间;此处使用一个过期时间，例如2小时
+    NSArray* _schedulesArrayTomorrow;//明天的排期
+    
+    BOOL _isFetchSchedulesTheDayAfterTomorrow;//是否已经获取后天的排期
+    NSString* _fetchTimeTheDayAfterTomorrow;//查询后天排期的时间;此处使用一个过期时间，例如12小时
+    NSArray* _schedulesArrayTheDayAfterTomorrow;//后天的排期
+}
+
+//第一部分请求返回的数据
+@property(nonatomic, retain) NSString* filmID;//电影ID
+@property(nonatomic, retain) NSString* filmName;//电影名称
+@property(nonatomic, retain) NSString* releaseDate;//上映时间
+@property(nonatomic, retain) NSString* duration;//时长
+@property(nonatomic, retain) NSString* brief;//简介
+@property(nonatomic, retain) NSString* grade;//评分
+@property(nonatomic, assign) CGFloat starCode;//星级
+@property(nonatomic, assign) LSFilmDimensional dimensional;//2D、3D
+@property(nonatomic, assign) BOOL imax;//iMax
+@property(nonatomic, assign) NSInteger showCinemasCount;//上映影院数
+@property(nonatomic, assign) NSInteger showSchedulesCount;//上映排期数
+@property(nonatomic, retain) NSString* imageURL;//主图(小)
+@property(nonatomic, retain) NSString* posterURL;//海报(大)
+@property(nonatomic, assign) LSFilmShowStatus showStatus;//状态
+
+
+//第二部分请求返回的数据
+@property(nonatomic, assign) BOOL isFetchDetail; //是否已经请求详情
+@property(nonatomic, retain) NSString* actor;//主演
+@property(nonatomic, retain) NSString* country;//国家
+@property(nonatomic, retain) NSString* description;//描述
+@property(nonatomic, retain) NSString* director;//导演
+@property(nonatomic, retain) NSString* filmType;//类型
+@property(nonatomic, retain) NSString* bigStillPath;//剧照路径(大)
+@property(nonatomic, retain) NSString* stillPath;//剧照路径(小)
+@property(nonatomic, retain) NSArray* stillArray;//剧照
+
+
+//组合的排期数据
+@property(nonatomic, assign) BOOL isFetchSchedulesToday;//是否已经获取今天的排期
+@property(nonatomic, retain) NSString* fetchTimeToday;//查询今天排期的时间;此处使用一个过期时间，例如20分钟
+@property(nonatomic, retain) NSArray* schedulesArrayToday;//今天的排期
+
+@property(nonatomic, assign) BOOL isFetchSchedulesTomorrow;//是否已经获取明天的排期
+@property(nonatomic, retain) NSString* fetchTimeTomorrow;//查询明天排期的时间;此处使用一个过期时间，例如2小时
+@property(nonatomic, retain) NSArray* schedulesArrayTomorrow;//明天的排期
+
+@property(nonatomic, assign) BOOL isFetchSchedulesTheDayAfterTomorrow;//是否已经获取后天的排期
+@property(nonatomic, retain) NSString* fetchTimeTheDayAfterTomorrow;//查询后天排期的时间;此处使用一个过期时间，例如12小时
+@property(nonatomic, retain) NSArray* schedulesArrayTheDayAfterTomorrow;//后天的排期
+
+
+- (id)initWithDictionary:(NSDictionary*)dic;
+- (void)completePropertyWithDictionary:(NSDictionary*)safeDic;
+
+@end

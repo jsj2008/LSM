@@ -1,0 +1,22 @@
+//
+//  LSFilmInfoStillCell.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-5.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "LSFilm.h"
+
+@interface LSFilmInfoStillCell : UITableViewCell<UITableViewDelegate,UITableViewDataSource>
+{
+    UITableView* _stillTableView;
+    LSFilm* _film;
+    
+    UIViewController* _delegate;
+}
+@property(nonatomic,retain) LSFilm* film;
+@property(nonatomic,assign) UIViewController* delegate;
+
+@end

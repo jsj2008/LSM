@@ -1,0 +1,220 @@
+//
+//  LSAdView.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSAdView.h"
+
+#import "LSAdvertisment.h"
+#import "LSAdCell.h"
+
+#define timerInterval 3.0
+
+@implementation LSAdView
+
+@synthesize delegate=_delegate;
+@synthesize adArray=_adArray;
+
+- (void)setAdArray:(NSArray *)adArray
+{
+    if(![_adArray isEqual:adArray])
+    {
+        if(_adArray!=nil)
+        {
+            LSRELEASE(_adArray)
+        }
+        _adArray=[adArray retain];
+        [_tableView reloadData];
+    }
+}
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    if(_timer!=nil)
+    {
+        [_timer invalidate];
+    }
+    self.adArray=nil;
+    [super dealloc];
+}
+
+//高度50
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        
+        _tableView=[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+        _tableView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        _tableView.backgroundColor=[UIColor clearColor];
+        _tableView.backgroundView=nil;
+        _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+        _tableView.pagingEnabled=YES;
+        _tableView.showsVerticalScrollIndicator=NO;
+        _tableView.delegate=self;
+        _tableView.dataSource=self;
+        [self addSubview:_tableView];
+        [_tableView release];
+        
+        _timer=[NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(timerToScroll) userInfo:nil repeats:YES];
+        
+        
+//        _bannerImageView = [[UIImageView alloc] initWithFrame:frame];
+//        [self addSubview:_bannerImageView];
+//        [_bannerImageView release];
+        
+        UIImageView* buttonImageView = [[UIImageView alloc] initWithFrame:CGRectMake(320-40, (50-17)/2, 17, 17)];
+        buttonImageView.image = [UIImage lsImageNamed:@"close.png"];
+        [self addSubview:buttonImageView];
+        [buttonImageView release];
+        
+        _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _nextButton.frame = CGRectMake(0, 0, 320-50, 50);
+        _nextButton.enabled = NO;
+        [_nextButton addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_nextButton];
+        
+        UIButton* closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeButton.frame = CGRectMake(_nextButton.right, 0, 50, 50);
+        [closeButton setImage:[UIImage lsImageNamed:@"close.png"] forState:UIControlStateNormal];
+        [closeButton addTarget:self action:@selector(closeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:closeButton];
+    }
+    return self;
+}
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
+
+#pragma mark- 定时滚动广告
+- (void)timerToScroll
+{
+    if(_adArray!=nil)
+    {
+        [UIView animateWithDuration:0.5f animations:^{
+            
+            if(_tableView.contentOffset.y+self.height>=_tableView.contentSize.height)
+            {
+                _tableView.contentOffset=CGPointMake(_tableView.contentOffset.x, 0);
+            }
+            else
+            {
+                _tableView.contentOffset=CGPointMake(_tableView.contentOffset.x, _tableView.contentOffset.y+self.height);
+            }
+        }];
+    }
+}
+
+
+#pragma mark- 按钮单击方法
+- (void)nextButtonClick:(UIButton*)sender
+{
+    
+}
+
+- (void)closeButtonClick:(UIButton*)sender
+{
+    if([_delegate respondsToSelector:@selector(LSAdView: didClose:)])
+    {
+        [_delegate LSAdView:self didClose:sender];
+    }
+}
+
+
+#pragma mark- UITableView的委托方法
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _adArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.height;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSAdCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSAdCell"];
+    if(cell==nil)
+    {
+        cell=[[[LSAdCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSAdCell"] autorelease];
+    }
+    cell.adImageView.image=LSPlaceholderImage;
+    LSAdvertisment* advertisment=[_adArray objectAtIndex:indexPath.row];
+    
+    if(!tableView.isDragging && !tableView.isDecelerating)
+    {
+        [cell.adImageView setImageWithURL:[NSURL URLWithString:advertisment.imageURL] placeholderImage:LSPlaceholderImage];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSAdvertisment* advertisment=[_adArray objectAtIndex:indexPath.row];
+    
+    //第一项应该不会出现，因为在初期应该已经将此项pass掉了
+    if(advertisment.adType==LSAdvertismentTypeNotNeedShow)
+    {
+        
+    }
+    else if(advertisment.adType==LSAdvertismentTypeShowImage)
+    {
+        
+    }
+    else if(advertisment.adType==LSAdvertismentTypeToFilmView)
+    {
+        
+    }
+    else if(advertisment.adType==LSAdvertismentTypeToCinemaView)
+    {
+        
+    }
+    else if(advertisment.adType==LSAdvertismentTypeToWapView)
+    {
+        
+    }
+    else
+    {
+        
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
+    {
+        [self soapSmooth];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self soapSmooth];
+}
+
+#pragma mark 肥皂滑代码实现
+- (void)soapSmooth
+{
+    NSArray* cellArray=[_tableView visibleCells];
+    for(LSAdCell* cell in cellArray)
+    {
+        NSIndexPath* indexPath=[_tableView indexPathForCell:cell];
+        LSAdvertisment* advertisment=[_adArray objectAtIndex:indexPath.row];
+        [cell.adImageView setImageWithURL:[NSURL URLWithString:advertisment.imageURL] placeholderImage:LSPlaceholderImage];
+    }
+}
+
+@end

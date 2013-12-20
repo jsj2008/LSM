@@ -1,0 +1,241 @@
+//
+//  LSFilmCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-4.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSFilmCell.h"
+
+//距离左边界的距离
+#define gapL 75
+
+@implementation LSFilmCell
+
+@synthesize filmImageView=_filmImageView;
+@synthesize film=_film;
+
+#pragma mark- 属性方法
+- (void)setFilm:(LSFilm *)film
+{
+    if(![_film isEqual:film])
+    {
+        if(_film!=nil)
+        {
+            LSRELEASE(_film)
+        }
+        _film=[film retain];
+        
+        //设置点亮的星星
+        _starImageView.frame=CGRectMake(gapL, 50, 70*[_film.grade floatValue]/10, 13);
+        //在Controller中设置图片，用以实现肥皂滑
+        //[_filmImageView setImageWithURL:[NSURL URLWithString:_film.imageURL] placeholderImage:PlaceholderImage];
+    }
+}
+
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    self.film=nil;
+    [super dealloc];
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.clipsToBounds = YES;
+        
+        _filmImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 8, 54, 72)];
+        _filmImageView.clipsToBounds = YES;
+        _filmImageView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_filmImageView];
+        [_filmImageView release];
+        
+        _starImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _starImageView.clipsToBounds = YES;
+        _starImageView.contentMode = UIViewContentModeLeft;
+        _starImageView.backgroundColor = [UIColor clearColor];
+        _starImageView.image = [UIImage imageNamed:@"star_orange.png"];
+        [self.contentView addSubview:_starImageView];
+        [_starImageView release];
+        
+//        _selectButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+//        _selectButton.backgroundColor = [UIColor clearColor];
+//        _selectButton.frame = CGRectMake(250, 33, 60, 30);
+//        [_selectButton setBackgroundImage:STRETCHABLEIMAGE(IMAGE_AT_APPDIR(@"btn_g_s_30.png", NO), 12, 6, 12, 6) forState:UIControlStateNormal];
+//        _selectButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.f];
+//        [_selectButton setTitleColor:kGreenButtonTitleColor forState:UIControlStateNormal];
+//        [_selectButton setTitle:@"选座" forState:UIControlStateNormal];
+//        [_selectButton addTarget:self action:@selector(filmSelected:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.contentView addSubview:_selectButton];
+    }
+    return self;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+//    [UIView drawRoundRectangleInRect:CGRectMake(0, (rect.size.height - 2), rect.size.width, 1) withRadius:0.f color:LSRGBA(234, 234, 228, 1.f)];
+//    [UIView drawRoundRectangleInRect:CGRectMake(0, (rect.size.height - 1), rect.size.width, 1) withRadius:0.f color:[UIColor whiteColor]];
+    
+    [super drawRect:rect];
+    
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    
+    CGContextSetStrokeColorWithColor(contextRef, [UIColor whiteColor].CGColor);//设置画笔颜色
+    CGContextStrokeRect(contextRef, rect);//上色
+    
+    CGContextBeginPath(contextRef);//准备画线
+    CGContextMoveToPoint(contextRef, 0, rect.size.height);//设置起始点
+    CGContextAddLineToPoint(contextRef, rect.size.width, rect.size.height);//设置结束点
+    CGContextSetStrokeColorWithColor(contextRef, LSRGBA(234, 234, 228, 1.f).CGColor);//设置画笔颜色
+    CGContextStrokePath(contextRef);//上色
+    
+    
+    if(!_film)
+        return;
+    
+    CGContextSetFillColorWithColor(contextRef, [[UIColor blackColor] CGColor]);
+    
+    if(_film.showStatus==LSFilmShowStatusShowing)
+    {
+        _starImageView.hidden=NO;
+        
+        CGFloat gap = gapL;
+
+        //绘制电影名称
+        if (_film.filmName)
+        {
+            CGSize size = [_film.filmName sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+            if (size.width > 185)
+            {
+                gap += 185;
+            }
+            else
+            {
+                gap += (size.width + 5);
+            }
+            
+            [_film.filmName drawInRect:CGRectMake(75, 7, (gap-75-5), 20) withFont:[UIFont systemFontOfSize:17.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        }
+        
+        //绘制imax
+        if(_film.imax)
+        {
+            [[UIImage imageNamed:@"film_imax.png" ] drawInRect:CGRectMake(gap, 12, 28, 11)];
+            gap+=30;
+        }
+        
+        //绘制3D
+        if(_film.dimensional==LSFilmDimensional3D)
+        {
+            [[UIImage imageNamed:@"film_3d.png" ] drawInRect:CGRectMake(gap, 12, 16, 11)];
+            gap+=30;
+        }
+        
+        //绘制简介
+        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
+        if (_film.brief)
+        {
+            [_film.brief drawInRect:CGRectMake(gapL, 30, 235, 18) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        }
+        
+        //绘制上映信息
+        NSString* schedules=[NSString stringWithFormat:@"%d家影院上映%d场", _film.showCinemasCount, _film.showSchedulesCount];
+        [schedules drawInRect:CGRectMake(75, 65, 225, 18) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        
+        
+        //绘制星级信息
+        [[UIImage imageNamed:@"star_gray.png"] drawInRect:CGRectMake(gapL, 50, 70, 13)];
+        CGContextSetFillColorWithColor(contextRef, [UIColor orangeColor].CGColor);
+        
+        
+        //绘制评分
+        NSString* grade = [NSString stringWithFormat:@"%@分", _film.grade];
+        [grade drawInRect:CGRectMake(150, 50, 100, 13) withFont:[UIFont boldSystemFontOfSize:11.f] lineBreakMode:UILineBreakModeCharacterWrap];
+    }
+    else if (_film.showStatus==LSFilmShowStatusWillShow)
+    {
+        _starImageView.hidden=YES;
+        
+        //计算从左向右的距离
+        CGFloat gap = gapL;
+        
+        //绘制电影名称
+        if (_film.filmName)
+        {
+            CGSize size = [_film.filmName sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+            if (size.width > 185)
+            {
+                gap += 185;
+            }
+            else
+            {
+                gap += (size.width + 5);
+            }
+            
+            [_film.filmName drawInRect:CGRectMake(75, 13, (gap-75-5), 20) withFont:[UIFont systemFontOfSize:17.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        }
+        
+        //绘制imax
+        if(_film.imax)
+        {
+            [[UIImage imageNamed:@"film_imax.png" ] drawInRect:CGRectMake(gap, 19, 28, 11)];
+            gap+=30;
+        }
+        
+        //绘制dimensional
+        if(_film.dimensional==LSFilmDimensional3D)
+        {
+            [[UIImage imageNamed:@"film_3d.png" ] drawInRect:CGRectMake(gap, 19, 16, 11)];
+            gap+=30;
+        }
+        
+        
+        CGContextSetFillColorWithColor(contextRef, [UIColor orangeColor].CGColor);
+        if (_film.releaseDate)
+        {
+            NSString* releaseDate=[NSString stringWithFormat:@"上映日期：%@", _film.releaseDate];
+            [releaseDate drawInRect:CGRectMake(gapL, 38, 235, 18) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        }
+        
+        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
+        if (_film.brief)
+        {
+            [_film.brief drawInRect:CGRectMake(gapL, 60, 235, 18) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+        }
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+
+#pragma mark- 重载触摸方法
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.backgroundColor=LSRGBA(255, 238, 216, .6f);
+    [super touchesBegan:touches withEvent:event];
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.backgroundColor=[UIColor clearColor];
+    [super touchesEnded:touches withEvent:event];
+}
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.backgroundColor=[UIColor clearColor];
+    [super touchesCancelled:touches withEvent:event];
+}
+
+@end

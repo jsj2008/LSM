@@ -1,0 +1,21 @@
+//
+//  LSFilmInfoViewController.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-5.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSViewController.h"
+#import "LSFilm.h"
+
+@interface LSFilmInfoViewController : LSViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    LSFilm* _film;
+    UITableView* _tableView;
+    
+    BOOL _isDescriptionSpread;
+}
+@property(nonatomic,retain) LSFilm* film;
+
+@end

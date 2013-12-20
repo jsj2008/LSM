@@ -1,0 +1,317 @@
+//
+//  LSCinemasViewController.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-10.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSCinemasViewController.h"
+
+#import "LSCinema.h"
+#import "LSCinemaCell.h"
+#import "LSFilmsSchedulesByCinemaViewController.h"
+#import "LSAdvertisment.h"
+
+@interface LSCinemasViewController ()
+
+@end
+
+@implementation LSCinemasViewController
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    LSRELEASE(_onlineCinemaMArray)
+    LSRELEASE(_allCinemaMArray)
+    [super dealloc];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        
+        _onlineCinemaMArray=[[NSMutableArray alloc] initWithCapacity:0];
+        _allCinemaMArray=[[NSMutableArray alloc] initWithCapacity:0];
+        
+        //添加通知
+        [messageCenter addObserver:self selector:@selector(lsGetCinemas:) name:lsRequestTypeCinemasByStatus_CityID_Online object:nil];
+        [messageCenter addObserver:self selector:@selector(lsGetCinemas:) name:lsRequestTypeCinemasByStatus_CityID_All object:nil];
+        
+        [self setBarButtonItemWithImageName:@"nav_map.png" clickedImageName:@"nav_map_d.png" isRight:YES buttonType:LSOtherButtonTypeMap];
+        
+        [self setBarButtonItemWithImageName:@"nav_city.png" clickedImageName:@"nav_city_d.png" isRight:NO buttonType:LSOtherButtonTypeChangeCity];
+        UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+        button.titleLabel.font = [UIFont boldSystemFontOfSize:15.f];
+        button.titleLabel.minimumFontSize = 13.f;
+        button.titleLabel.adjustsFontSizeToFitWidth = YES;
+        
+        _segmentedControl=[[LSSegmentedControl alloc] initWithFrame:CGRectMake(0, 0, 190, 36)];
+        _segmentedControl.segmentedControlType=LSSegmentedControlTypeCinemaStatus;
+        _segmentedControl.delegate=self;
+        self.navigationItem.titleView=_segmentedControl;
+        [_segmentedControl release];
+        
+        _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, HeightOfiPhoneX(480-20.0-44.0-50.0)) style:UITableViewStylePlain];
+        //_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _tableView.backgroundColor=[UIColor clearColor];
+        _tableView.backgroundView=nil;
+        _tableView.showsVerticalScrollIndicator=NO;
+        _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+        _tableView.delegate=self;
+        _tableView.dataSource=self;
+        [self.view addSubview:_tableView];
+        [_tableView release];
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+    [button setTitle:user.cityName forState:UIControlStateNormal];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark- 私有方法
+//按钮的目标方法
+- (void)otherButtonClick:(UIButton *)sender
+{
+    if(sender.tag==LSOtherButtonTypeChangeCity)
+    {
+        LSCitiesViewController* citiesViewController=[[[LSCitiesViewController alloc] init] autorelease];
+        citiesViewController.delegate=self;
+        
+        UINavigationController* navigationController=[[UINavigationController alloc] initWithRootViewController:citiesViewController];
+        [self presentModalViewController:navigationController animated:YES];
+        [navigationController release];
+    }
+    else if(sender.tag==LSOtherButtonTypeChangeDisplay)
+    {
+        
+    }
+}
+
+
+#pragma mark- 通知中心消息
+- (void)lsGetCinemas:(NSNotification*)notification
+{
+    if([self checkIsNotEmpty:notification])
+    {
+        if([notification.object isEqual:lsRequestFailed])
+        {
+            //超时
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSStatus class]])
+        {
+            //状态
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSError class]])
+        {
+            //错误
+            return;
+        }
+        
+        NSArray* tmpArray=notification.object;
+        
+        if([notification.name isEqualToString:lsRequestTypeCinemasByStatus_CityID_Online])
+        {
+            
+        }
+        else if([notification.name isEqualToString:lsRequestTypeCinemasByStatus_CityID_All])
+        {
+            
+        }
+        else if([notification.name isEqualToString:lsRequestTypeAdvertisements])
+        {
+            
+        }
+    }
+}
+
+
+#pragma mark- LSSegmentedControl委托方法
+- (void)LSSegmentedControl:(LSSegmentedControl *)control didChangeValue:(int)status
+{
+    _cinemaStatus=status;
+    [messageCenter LSMCCinemasWithStatus:_cinemaStatus cityID:user.cityID];
+}
+
+
+#pragma mark- LSCitiesViewController的委托方法
+- (void)LSCitiesViewControllerDidSelectCityID:(NSString *)cityID cityName:(NSString *)cityName
+{
+    user.cityID=cityID;
+    user.cityName=cityName;
+    
+    UIButton* button=(UIButton*)(self.navigationItem.leftBarButtonItem.customView);
+    [button setTitle:cityName forState:UIControlStateNormal];
+    [messageCenter LSMCFilmsWithStatus:LSFilmShowStatusShowing cityID:cityID];
+}
+
+
+#pragma mark- UITableView委托方法
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 44.f;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    LSCinemasSectionHeader *header = [[[LSCinemasSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
+    
+    NSInteger flag = -1;
+    
+    if (section == 0) {
+        if ([[_cinemas objectAtIndex:0] count] > 0) {
+            flag = 0;
+        } else {
+            flag = 1;
+        }
+    } else if (section == 1) {
+        flag = 1;
+    }
+    
+    if (flag == 0) {
+        header.text = @"常去的影院";
+    } else if (flag == 1) {
+        [header showButtonWithTarget:self selector:@selector(switchSection:)];
+        if (_sectionIndex - 1 < 0) {
+            header.text = @"附近的影院";
+        } else if ((_sectionIndex - 1) < _allDistrict) {
+            if (_allDistrict == 0) {
+                header.text = [(LSTitleArray *)[[_cinemas objectAtIndex:1] objectAtIndex:(_sectionIndex - 1)] title];
+            }
+            else {
+                NSMutableArray *d = [[[NSMutableArray alloc] initWithCapacity:([[_cinemas objectAtIndex:1] count] + 1)] autorelease];
+                [d addObject:@"附近的影院"];
+                for (LSTitleArray *ticketCinema in [_cinemas objectAtIndex:1]) {
+                    [d addObject:ticketCinema.title];
+                }
+                if (_showTyppe == AllCinema) {
+                    for (LSTitleArray *groupCinema in [_cinemas objectAtIndex:2]) {
+                        BOOL hasTitle = NO;
+                        for (NSString *title in d) {
+                            if ([title isEqualToString:groupCinema.title]) {
+                                hasTitle = YES;
+                                break;
+                            }
+                            else continue;
+                        }
+                        if (!hasTitle) {
+                            [d addObject:groupCinema.title];
+                        }
+                    }
+                }
+                header.text = [d objectAtIndex:_sectionIndex];
+            }
+        }
+    }
+    
+    return header;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(_cinemaStatus==LSCinemaStatusOnline)
+    {
+        return _onlineCinemaMArray.count;
+    }
+    else if(_cinemaStatus==LSCinemaStatusAll)
+    {
+        return _allCinemaMArray.count;
+    }
+    else
+    {
+        return 0;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70.f;
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSCinemaCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaCell"];
+    if(cell==nil)
+    {
+        cell=[[[LSCinemaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaCell"] autorelease];
+    }
+    
+    LSCinema* cinema=nil;
+    if(_cinemaStatus==LSCinemaStatusOnline)
+    {
+        cinema=[_onlineCinemaMArray objectAtIndex:indexPath.row];
+    }
+    else if(_cinemaStatus==LSCinemaStatusAll)
+    {
+        cinema=[_allCinemaMArray objectAtIndex:indexPath.row];
+    }
+    cell.cinema=cinema;
+    [cell setNeedsDisplay];
+    
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSFilmsSchedulesByCinemaViewController* filmsSchedulesByCinemaViewController=[[LSFilmsSchedulesByCinemaViewController alloc] init];
+    if(_cinemaStatus==LSCinemaStatusOnline)
+    {
+        filmsSchedulesByCinemaViewController.cinema=[_onlineCinemaMArray objectAtIndex:indexPath.row];
+    }
+    else if(_cinemaStatus==LSCinemaStatusAll)
+    {
+        filmsSchedulesByCinemaViewController.cinema=[_allCinemaMArray objectAtIndex:indexPath.row];
+    }
+    filmsSchedulesByCinemaViewController.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:filmsSchedulesByCinemaViewController animated:YES];
+    [filmsSchedulesByCinemaViewController release];
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
+//    {
+//        [self soapSmooth];
+//    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+//    [self soapSmooth];
+}
+
+
+#pragma mark 肥皂滑代码实现
+- (void)soapSmooth
+{
+    NSArray* cellArray=[_tableView visibleCells];
+    for(LSCinemaCell* cell in cellArray)
+    {
+        NSIndexPath* indexPath=[_tableView indexPathForCell:cell];
+        LSCinema* cinema=nil;
+        if(_cinemaStatus==LSCinemaStatusOnline)
+        {
+            cinema=[_onlineCinemaMArray objectAtIndex:indexPath.row];
+        }
+        else if(_cinemaStatus==LSCinemaStatusAll)
+        {
+            cinema=[_allCinemaMArray objectAtIndex:indexPath.row];
+        }
+    }
+}
+
+@end

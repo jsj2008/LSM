@@ -1,0 +1,51 @@
+//
+//  LSCityCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-6.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSCityCell.h"
+
+@implementation LSCityCell
+
+@synthesize city=_city;
+
+- (void)setCity:(LSCity *)city
+{
+    if(![_city isEqual:city])
+    {
+        if(_city!=nil)
+        {
+            LSRELEASE(_city)
+        }
+        _city =[city retain];
+        self.textLabel.text=_city.cityName;
+    }
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        self.backgroundColor=[UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.contentView.clipsToBounds = YES;
+        
+        self.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+        self.textLabel.textColor = [UIColor grayColor];
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

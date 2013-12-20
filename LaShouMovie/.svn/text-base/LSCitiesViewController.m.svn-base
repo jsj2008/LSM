@@ -1,0 +1,330 @@
+//
+//  LSCitiesViewController.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-6.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSCitiesViewController.h"
+
+#import "LSCity.h"
+#import "LSCityCell.h"
+
+@interface LSCitiesViewController ()
+
+@end
+
+@implementation LSCitiesViewController
+
+@synthesize delegate=_delegate;
+
+#pragma mark- 生命周期
+- (void)dealloc
+{
+    [messageCenter removeObserver:self];
+    
+    LSRELEASE(_indexPath)
+    
+    LSRELEASE(_cityMArray)
+    LSRELEASE(_titleMArray)
+    LSRELEASE(_numberMArray)
+    [super dealloc];
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = @"切换城市";
+    _cityMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    _titleMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    _numberMArray=[[NSMutableArray alloc] initWithCapacity:0];
+    
+    messageCenter=[LSMessageCenter defaultCenter];
+    [messageCenter addObserver:self selector:@selector(lsGetCities:) name:lsRequestTypeCities object:nil];
+    
+    //返回按钮
+    UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(0, 0, 51, 31);
+    backButton.backgroundColor = [UIColor clearColor];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"nav_item_back.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"nav_item_back_d.png"] forState:UIControlStateHighlighted];
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont systemFontOfSize:15.f];
+    [backButton setTitleEdgeInsets:UIEdgeInsetsMake(-1, 8, 0, 0)];
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem* backBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem=backBarButtonItem;
+    [backBarButtonItem release];
+    
+    
+    NSArray* tmpCityArray=[LSDataCache readOfFolderType:LSFolderTypeDocuments subFolder:LSSubFolderTypeNon name:lsDataCacheCities];
+    NSArray* tmpTitleArray=[LSDataCache readOfFolderType:LSFolderTypeDocuments subFolder:LSSubFolderTypeNon name:lsDataCacheCityTitle];
+    NSArray* tmpNumberArray=[LSDataCache readOfFolderType:LSFolderTypeDocuments subFolder:LSSubFolderTypeNon name:lsDataCacheCityNumber];
+    if(tmpCityArray!=nil && tmpNumberArray!=nil && tmpTitleArray!=nil)//查找缓存
+    {
+        //通过最后一项 时间项 判断是否需要重新加载数据
+        if(tmpCityArray.lastObject)
+        {
+            [_cityMArray addObjectsFromArray:tmpCityArray];
+            [_cityMArray removeLastObject];
+            
+            [_titleMArray addObjectsFromArray:tmpTitleArray];
+            [_numberMArray addObjectsFromArray:tmpNumberArray];
+        }
+        else
+        {
+            [messageCenter LSMCCities];
+        }
+    }
+    else
+    {
+        [messageCenter LSMCCities];
+    }
+
+    [self initRefreshControl];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)backButtonClick:(UIButton*)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
+#pragma mark- 下拉刷新
+- (void)refreshControlEventValueChanged
+{
+    if(!self.refreshControl.isRefreshing)
+    {
+        [messageCenter LSMCCities];
+    }
+}
+
+
+#pragma mark- 消息中心通知
+- (void)lsGetCities:(NSNotification*)notification
+{
+    if([self checkIsNotEmpty:notification])
+    {
+        if([notification.object isEqual:lsRequestFailed])
+        {
+            //超时
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSStatus class]])
+        {
+            //状态
+            return;
+        }
+        
+        if([notification.object isKindOfClass:[LSError class]])
+        {
+            //错误
+            return;
+        }
+        
+        [_cityMArray removeAllObjects];
+        [_titleMArray removeAllObjects];
+        [_numberMArray removeAllObjects];
+        
+        
+        NSArray* hotArray=[notification.object objectForKey:@"hots"];
+        NSMutableArray* hotMArray=[[NSMutableArray alloc] initWithCapacity:0];
+        for(NSDictionary* dic in hotArray)
+        {
+            LSCity* city=[[LSCity alloc] initWithDictionary:dic];
+            [hotMArray addObject:city];
+            [city release];
+        }
+        [_cityMArray addObject:hotMArray];
+        [hotMArray release];
+
+        //记录热门城市信息
+        [_titleMArray addObject:@"#"];
+        [_numberMArray addObject:[NSNumber numberWithInt:hotMArray.count]];
+        
+
+        NSArray* cityArray=[notification.object objectForKey:@"cities"];
+        NSMutableArray* tmpCityMArray=[[[NSMutableArray alloc] initWithCapacity:0] autorelease];
+        for(int i=0;i<cityArray.count;i++)
+        {
+            LSCity* city=[[LSCity alloc] initWithDictionary:[cityArray objectAtIndex:i]];
+            [tmpCityMArray addObject:city];
+            [city release];
+        }
+        [tmpCityMArray sortUsingSelector:@selector(cityNameSort:)];
+        
+        NSMutableArray* cityMArray=[[NSMutableArray alloc] initWithCapacity:0];
+        NSString* curTitle=nil;
+        int curNumber=0;
+        for(LSCity* city in tmpCityMArray)
+        {
+            if(curTitle!=nil)
+            {
+                //如果是同一组
+                if([[city.pinyin substringToIndex:1] isEqualToString:curTitle])
+                {
+                    [cityMArray addObject:city];
+                    curNumber++;//同组计数+1
+                }
+                else//如果不同一组
+                {
+                    [_cityMArray addObject:cityMArray];
+                    [cityMArray release];
+                    [_numberMArray addObject:[NSNumber numberWithInt:curNumber]];
+
+                    
+                    cityMArray=[[NSMutableArray alloc] initWithCapacity:0];
+                    curTitle=[city.pinyin substringToIndex:1];
+                    
+                    
+                    [cityMArray addObject:city];
+                    [_titleMArray addObject:curTitle];
+                    curNumber=1;
+                }
+            }
+            else
+            {
+                cityMArray=[[NSMutableArray alloc] initWithCapacity:0];
+                curTitle=[city.pinyin substringToIndex:1];
+                
+                [cityMArray addObject:city];
+                [_titleMArray addObject:curTitle];
+                curNumber++;
+            }
+        }
+        [_cityMArray addObject:cityMArray];
+        [cityMArray release];
+        [_numberMArray addObject:[NSNumber numberWithInt:curNumber]];
+        
+        [self.tableView reloadData];
+    }
+}
+
+
+#pragma mark- 检查响应数据是否为空的方法
+- (BOOL)checkIsNotEmpty:(id)object
+{
+    if(object==NULL || object==[NSNull null] || object==nil)
+    {
+        return NO;
+    }
+    return YES;
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _titleMArray.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 26.0f;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    headerLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage lsImageNamed:@"city_sec_bg.png"]];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.font = [UIFont boldSystemFontOfSize:16.f];
+    
+    if ([[_titleMArray objectAtIndex:section] isEqualToString:@"#"])
+    {
+        headerLabel.text = @"   热门城市";
+    }
+    else if ([[_titleMArray objectAtIndex:section] isEqualToString:@"~"])
+    {
+        headerLabel.text = @"   其他";
+    }
+    else
+    {
+        headerLabel.text = [NSString stringWithFormat:@"   %@",[_titleMArray objectAtIndex:section]];
+    }
+    
+    return [headerLabel autorelease];
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[_numberMArray objectAtIndex:section] intValue];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.f;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSCityCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCityCell"];
+    if(cell==nil)
+    {
+        cell=[[[LSCityCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCityCell"] autorelease];
+    }
+    if(_indexPath!=nil && _indexPath.section==indexPath.section && _indexPath.row==indexPath.row)
+    {
+        cell.accessoryType=UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType=UITableViewCellAccessoryNone;
+    }
+    
+    LSCity* city=[[_cityMArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    cell.city=city;
+    
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //重复的点击需要首先取消之前的操作
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    //
+    _indexPath=[indexPath retain];
+
+    for(UITableViewCell* cell in tableView.visibleCells)
+    {
+        cell.accessoryType=UITableViewCellAccessoryNone;
+    }
+    
+    UITableViewCell* cell=[tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType=UITableViewCellAccessoryCheckmark;
+    
+    LSCity* city=[[_cityMArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    [self performSelector:@selector(trueSelectCity:) withObject:city afterDelay:1];
+}
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return _titleMArray;
+}
+
+#pragma mark- 选择城市以后的延迟操作
+- (void)trueSelectCity:(LSCity*)city
+{
+    if([_delegate respondsToSelector:@selector(LSCitiesViewControllerDidSelectCityID: cityName:)])
+    {
+        [_delegate LSCitiesViewControllerDidSelectCityID:city.cityID cityName:city.cityName];
+    }
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+@end

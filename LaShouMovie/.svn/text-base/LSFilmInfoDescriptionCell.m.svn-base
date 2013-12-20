@@ -1,0 +1,78 @@
+//
+//  LSFilmInfoDescriptionCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-5.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSFilmInfoDescriptionCell.h"
+
+@implementation LSFilmInfoDescriptionCell
+
+@synthesize isSpread=_isSpread;
+@synthesize film=_film;
+
+- (void)dealloc
+{
+    self.film=nil;
+    [super dealloc];
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        self.backgroundColor=[UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.clipsToBounds = YES;
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"film_info_bg.png"] top:4 left:4 bottom:4 right:4 ]drawInRect:CGRectMake(10, 10, 300, (rect.size.height - 20))];
+    
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    
+    //绘制标题
+    CGContextSetFillColorWithColor(contextRef, LSRGBA(165, 5, 3, 1.f).CGColor);
+    [@"剧情介绍" drawInRect:CGRectMake(20, 15, 280, 20) withFont:[UIFont systemFontOfSize:16.f] lineBreakMode:UILineBreakModeClip];
+    
+    if (_film.description==nil)
+        return;
+    
+    //绘制信息
+    CGContextSetFillColorWithColor(contextRef, [[UIColor blackColor] CGColor]);
+    [_film.description drawInRect:CGRectMake(20, 40, 280, (rect.size.height - 60)) withFont:[UIFont systemFontOfSize:13.f] lineBreakMode:UILineBreakModeTailTruncation];
+    
+    //绘制区域颜色
+    CGContextSetStrokeColorWithColor(contextRef, LSRGBA(221, 219, 214, 1.f).CGColor);//设置画笔颜色
+    CGContextSetFillColorWithColor(contextRef, LSRGBA(221, 219, 214, 1.f).CGColor);//设置填充颜色
+    if (_isSpread)
+    {
+        CGContextMoveToPoint(contextRef, ((rect.size.width - 10)/2 + 5), (rect.size.height - 22));
+        CGContextAddLineToPoint(contextRef, ((rect.size.width - 10)/2 + 10), (rect.size.height - 17));
+        CGContextAddLineToPoint(contextRef, (rect.size.width - 10)/2, (rect.size.height - 17));
+    }
+    else
+    {
+        CGContextMoveToPoint(contextRef, (rect.size.width - 10)/2, (rect.size.height - 22));
+        CGContextAddLineToPoint(contextRef, ((rect.size.width - 10)/2 + 10), (rect.size.height - 22));
+        CGContextAddLineToPoint(contextRef, ((rect.size.width - 10)/2 + 5), (rect.size.height - 17));
+    }
+    CGContextClosePath(contextRef);//闭合路径
+    CGContextDrawPath(contextRef, kCGPathFillStroke);//分别给线条和内部上色
+}
+
+@end

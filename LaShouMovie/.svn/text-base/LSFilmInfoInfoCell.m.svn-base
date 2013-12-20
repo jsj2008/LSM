@@ -1,0 +1,95 @@
+//
+//  LSFilmInfoInfoCell.m
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-5.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import "LSFilmInfoInfoCell.h"
+
+#define gap 100
+#define InfoWidth 210
+#define InfoHeight 18
+
+@implementation LSFilmInfoInfoCell
+
+@synthesize filmImageView=_filmImageView;
+@synthesize film=_film;
+
+#pragma mark- 属性方法
+- (void)setFilm:(LSFilm *)film
+{
+    if(![_film isEqual:film])
+    {
+        if(_film!=nil)
+        {
+            LSRELEASE(_film)
+        }
+        _film=[film retain];
+        [_filmImageView setImageWithURL:[NSURL URLWithString:_film.imageURL] placeholderImage:LSPlaceholderImage];
+    }
+}
+
+#pragma mark- 生命周期
+
+- (void)dealloc
+{
+    self.film=nil;
+    [super dealloc];
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+        
+        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.clipsToBounds = YES;
+        
+        _filmImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 75, 100)];
+        _filmImageView.clipsToBounds = YES;
+        _filmImageView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_filmImageView];
+        [_filmImageView release];
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
+    
+    NSString *text = nil;
+    
+    text = [NSString stringWithFormat:@"导演：%@", _film.director==nil?@"--":_film.director];
+    [text drawInRect:CGRectMake(gap, 6, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    text = [NSString stringWithFormat:@"主演：%@", _film.actor==nil?@"--":_film.actor];
+    [text drawInRect:CGRectMake(gap, 24, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    text = [NSString stringWithFormat:@"类型：%@", _film.filmType==nil?@"--":_film.filmType];
+    [text drawInRect:CGRectMake(gap, 42, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    text = [NSString stringWithFormat:@"国家：%@", _film.country==nil?@"--":_film.country];
+    [text drawInRect:CGRectMake(gap, 60, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    text = [NSString stringWithFormat:@"片长：%@分钟", _film.duration==nil?@"--":_film.duration];
+    [text drawInRect:CGRectMake(gap, 78, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    text = [NSString stringWithFormat:@"上映：%@", _film.releaseDate==nil?@"--":_film.releaseDate];
+    [text drawInRect:CGRectMake(gap, 96, InfoWidth, InfoHeight) withFont:[UIFont systemFontOfSize:14.f] lineBreakMode:NSLineBreakByTruncatingTail];
+}
+
+@end

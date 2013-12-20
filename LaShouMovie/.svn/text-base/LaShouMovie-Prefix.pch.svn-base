@@ -1,0 +1,132 @@
+//
+// Prefix header for all source files of the 'LaShouMovie' target in the 'LaShouMovie' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <QuartzCore/QuartzCore.h>
+
+    #import "LSUser.h"
+    #import "LSMessageCenter.h"
+    #import "Reachability.h"
+    #import "LSTools.h"
+    #import "LSSave.h"
+    #import "LSDataCache.h"
+
+    #import "NSObject+Extension.h"
+    #import "UIImage+Extension.h"
+    #import "UIView+Extension.h"
+
+    #import "UIImageView+WebCache.h"
+#endif
+
+#pragma mark- 系统相关参数
+#define ISRETINA ([UIScreen instancesRespondToSelector:@selector(currentMode)]?CGSizeEqualToSize(CGSizeMake(640, 960), [UIScreen mainScreen].currentMode.size):NO)
+
+
+
+#pragma mark- 第三方初始化参数
+//友盟统计SDK相关AppKey
+#define UMENGAPPKEY                 @"51d5368856240b4d55072228"
+
+// 分享联合登陆相关
+#define kSinaWBConsumerKey			@"54350967"//@"1573238093"//
+#define kSinaWBConsumerSecret	    @"6182161ee19104fd4c80573561fdd67a"//@"d14e2dbd930cc73f08c1b3a52091bdef"//
+
+#define kSinaWBUid                  @"kSinaWBUid"
+#define kSinaWBUserName             @"kSinaWBUserName"
+#define kSinaWBAccessToken          @"kSinaWBAccessToken"
+#define kSinaWBExpireTime           @"kSinaWBExpireTime"
+
+#define kQQWBConsumerKey            @"b5269a602928480f83d3dc98a1fe3e54"//@"801306401"//
+#define kQQWBConsumerSecret         @"bfc03eea29a5e81ea3735f3c47ef92ca"//@"f9264b0af5c892691b39a57988e3a399"//
+
+#define kQQWBUid                    @"kQQWBUid"
+#define kQQWBUserName               @"kQQWBUserName"
+#define kQQWBAccessToken            @"kQQWBAccessToken"
+#define kQQWBExpireTime             @"kQQWBExpireTime"
+
+#define LSQQAppID                   @"218908"//@"100367640"//
+#define LSQQAppKey                  @"21c8b7466c553c29074f923d6f048267"//@"e5cf54420053cc8d33a9d7a8ec755093"//
+
+#define kQQUid                      @"kQQUid"
+#define kQQUserName                 @"kQQUserName"
+#define kQQAccessToken              @"kQQAccessToken"
+#define kQQExpireTime               @"kQQExpireTime"
+
+
+#pragma mark- 
+#define MustUpdate 998
+#define AlertUpdate 999
+
+
+#pragma mark- 拉手电影票全局参数
+#define lsURLScheme                 @"LASHOUMOVIE"
+#define lsSoftwareName              @"拉手电影"
+#define lsServicePhoneDes           @"4000-517-317转2"
+#define lsServicePhoneCall          @"4000-517-317"
+#define lsServicePhoneReal          @"4000517317"
+#define lsChannelID                 @"10000" //APPSTORE渠道号
+#define lsDefaultLatitude			39.908485
+#define lsDefaultLongitude			116.397448
+
+#define lsBlueButtonTitleColor      LSRGBA(9, 48, 63, 1.f)
+#define lsGreenButtonTitleColor     LSRGBA(39, 67, 2, 1.f)
+#define lsOrganeButtonTitleColor    LSRGBA(15, 0, 0, 1.f)
+
+#define lsPriceColor                LSRGBA(201, 255, 115, 1.f)
+#define lsDefaultBackgroundColor    LSRGBA(255, 255, 255, 1.f)
+
+#define lsMyGroupOrderTitleColor    LSRGBA(76, 76, 76, 1.f)  //深灰
+#define lsMyGroupOrderNumColor      LSRGBA(138, 138,138, 1.f)  //浅灰
+#define lsMyGroupOrderPriceColor    LSRGBA(166, 4, 3, 1.f)   //红色
+
+//李翔宇
+#define LSPlaceholderImage          [UIImage imageNamed:@"default_450.png"]
+#define LSiOSVersion                [[UIDevice currentDevice].systemVersion floatValue]
+
+#pragma mark- 拉手电影票全局方法
+//用于释放一些全局的，非属性的变量
+#define LSRELEASE(o)               if(o!=nil){[o release];o=nil;}
+//快捷颜色
+#define LSRGBA(r,g,b,a)             [UIColor colorWithRed:(float)(r)/255.0f green:(float)(g)/255.0f blue:(float)(b)/255.0f alpha:a]
+
+
+#pragma mark- 屏幕适配相关
+//宏定义函数不可以使用特殊含义的字母作为变量，如下就是错误的，因为height歧义了
+//#define HeightOfiPhoneX(height)     ((height)+([UIScreen mainScreen].bounds.size.height==568?88:0))
+#define HeightOfiPhoneX(y)      ((y)+([UIScreen mainScreen].bounds.size.height==568?88:0))
+#define WidthOfiPhoneX(x)       ((x)+([UIScreen mainScreen].bounds.size.width==320?0:0))
+
+
+#pragma mark- 调试相关参数
+//#define LSDEBUG
+
+#ifdef LSDEBUG
+//调试版常用函数
+//打印函数
+#define LSLOG(INFO,...)             NSLog((@"\n[File:%s]\n[Line:%d]\n[Function:%s]\n" INFO), __FILE__, __LINE__,__PRETTY_FUNCTION__, ##__VA_ARGS__)
+
+//调试版API参数
+#define API_VERSION_HEADER          @"http://go2.client.lashou.com/movies1-2-1.php"
+#define API_NOT_VERSION_HEADER      @"http://go2.client.lashou.com"
+#define API_GROUPORDERPAY_HEADER    @"http://m216.lashou.com/api/moviePay.php"
+
+#else
+//发布版常用函数
+//打印函数
+#define LSLOG(INFO,...)
+
+//发布版API参数
+#define API_VERSION_HEADER          @"http://go.client.lashou.com/movies1-2-1.php"
+#define API_NOT_VERSION_HEADER      @"http://go.client.lashou.com"
+#define API_GROUPORDERPAY_HEADER    @"http://m.lashou.com/api/moviePay.php"
+
+#endif

@@ -1,0 +1,31 @@
+//
+//  LSAdView.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol LSAdViewDelegate;
+@interface LSAdView : UIView<UITableViewDelegate,UITableViewDataSource>
+{
+    UIImageView* _bannerImageView;
+    UITableView* _tableView;
+    UIButton* _nextButton;
+    NSTimer* _timer;
+    
+    id<LSAdViewDelegate> _delegate;
+    NSArray* _adArray;
+}
+@property(nonatomic,assign) id<LSAdViewDelegate> delegate;
+@property(nonatomic,retain) NSArray* adArray;
+
+@end
+
+@protocol LSAdViewDelegate <NSObject>
+
+- (void)LSAdView:(LSAdView*)adView didClose:(UIButton*)button;
+
+@end

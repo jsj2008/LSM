@@ -1,0 +1,22 @@
+//
+//  LSPosterLabel.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-4.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface LSPosterLabel : UIView
+{
+    BOOL _isShowing;//表示是否正在上映
+    
+    NSString* _name;//影片名称
+    NSString* _plan;//上映计划
+}
+
+@property(nonatomic,assign) BOOL isShowing;
+- (void)setNeedsDisplayWithFilmName:(NSString*)name showPlan:(NSString*)plan;
+
+@end

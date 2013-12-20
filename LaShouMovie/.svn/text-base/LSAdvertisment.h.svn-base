@@ -1,0 +1,31 @@
+//
+//  LSAdvertisment.h
+//  LaShouMovie
+//
+//  Created by LiXiangYu on 13-9-9.
+//  Copyright (c) 2013年 LiXiangYu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+typedef enum
+{
+    LSAdvertismentTypeNotNeedShow = -1,
+    LSAdvertismentTypeShowImage = 0,
+    LSAdvertismentTypeToFilmView,
+    LSAdvertismentTypeToCinemaView,
+    LSAdvertismentTypeToWapView
+}LSAdvertismentType;
+
+@interface LSAdvertisment : NSObject
+{
+    LSAdvertismentType _adType;
+    NSString* _data;
+    NSString* _imageURL;
+}
+@property(nonatomic,assign) LSAdvertismentType adType;
+@property(nonatomic,retain) NSString* data;
+@property(nonatomic,retain) NSString* imageURL;
+
+- (id)initWithDictionary:(NSDictionary*)safeDic;
+@end
