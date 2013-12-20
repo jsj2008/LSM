@@ -55,7 +55,7 @@
     //imax:28  3D:17  预售:35
     CGRect nameRect = [_film.filmName boundingRectWithSize:CGSizeMake(rect.size.width-contentX-(_film.isPresell?(35.f+5.f):0.f)-(_film.dimensional==LSFilmDimensional3D?(17.f+5.f):0.f)-(_film.isIMAX?(28.f+5.f):0.f)-10.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontFilmName] context:nil];
     
-    [_film.filmName drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-(_film.isPresell?(35.f+5.f):0.f)-(_film.dimensional==LSFilmDimensional3D?(17.f+5.f):0.f)-(_film.isIMAX?(28.f+5.f):0.f)-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmName lineBreakMode:NSLineBreakByTruncatingTail]];
+    [_film.filmName drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-(_film.isPresell?(35.f+5.f):0.f)-(_film.dimensional==LSFilmDimensional3D?(17.f+5.f):0.f)-(_film.isIMAX?(28.f+5.f):0.f)-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmName color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
     contentX+=(nameRect.size.width+5.f);
     
     
@@ -83,7 +83,7 @@
     contentX = gap;
     contentY += 25.f;
     
-    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
     
@@ -109,7 +109,7 @@
     {
         text=@"没有影院上映";
     }
-    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

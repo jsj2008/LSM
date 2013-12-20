@@ -44,31 +44,19 @@
 {
     [super viewDidLoad];
     self.title=_film.filmName;
-    [self setBarButtonItemWithImageName:@"nav_share.png" clickedImageName:@"nav_share_d.png" isRight:YES buttonType:LSOtherButtonTypeShare];
+    [self setRightBarButtonSystemItem:UIBarButtonSystemItemAction];
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmInfoByFilmID object:nil];
     
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, self.view.height-(_isHideFooter?0.f:54.f))];
-    _tableView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    _tableView.backgroundColor=[UIColor clearColor];
-    _tableView.backgroundView=nil;
-    _tableView.showsVerticalScrollIndicator=NO;
-    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    _tableView.delegate=self;
-    _tableView.dataSource=self;
-    [self.view addSubview:_tableView];
-    [_tableView release];
-    
-    LSSeatSectionFooter* seatSectionFooter=[[LSSeatSectionFooter alloc] initWithFrame:CGRectMake(0.f, self.view.height-44.f-(LSiOS7?20.f:0.f)-54.f, self.view.width, 54.f)];
-    seatSectionFooter.delegate=self;
-    [self.view addSubview:seatSectionFooter];
-    [seatSectionFooter release];
-    seatSectionFooter.hidden=_isHideFooter;
-    
+    LSFilmInfoFooterView* filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectMake(0.f, self.view.height-(44.f+20.f), self.view.width, 44.f+20.f)];
+    filmInfoFooterView.delegate=self;
+    [self.view addSubview:filmInfoFooterView];
+    [filmInfoFooterView release];
+
     if(!_film.isFetchDetail)
     {
-        [messageCenter LSMCFilmInfoWithFilmID:_film.filmID];
         [hud show:YES];
+        [messageCenter LSMCFilmInfoWithFilmID:_film.filmID];
     }
 }
 
@@ -79,15 +67,11 @@
 }
 
 #pragma mark- 重载方法
-- (void)otherButtonClick:(UIButton *)sender
+- (void)rightBarButtonItemClick:(UIBarButtonItem *)sender
 {
-    [super otherButtonClick:sender];
-    if(sender.tag==LSOtherButtonTypeShare)
-    {
-        UIActionSheet* actionSheet=[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享到新浪微博", @"分享到腾讯微博", nil];
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-        [actionSheet release];
-    }
+    UIActionSheet* actionSheet=[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享到新浪微博", @"分享到腾讯微博", nil];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet release];
 }
 
 #pragma mark- 私有方法
@@ -145,9 +129,7 @@
         {
             NSDictionary* filmPart=notification.object;
             [_film completePropertyWithDictionary:filmPart];
-            
-            _isShowFooter=YES;
-            [_tableView reloadData];
+            [self.tableView reloadData];
         }
     }
 }
@@ -156,53 +138,62 @@
 #pragma mark - UITableView委托方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 3;
 }
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    if(_isHideFooter)
-//    {
-//        return 0.f;
-//    }
-//    if(_isShowFooter)
-//    {
-//        return 54.f;
-//    }
-//    else
-//    {
-//        return 0.f;
-//    }
-//}
-//- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    if(_isHideFooter)
-//    {
-//        return nil;
-//    }
-//    if(_isShowFooter)
-//    {
-//        LSSeatSectionFooter* seatSectionFooter=[[[LSSeatSectionFooter alloc] initWithFrame:CGRectZero] autorelease];
-//        seatSectionFooter.delegate=self;
-//        return seatSectionFooter;
-//    }
-//    else
-//    {
-//        return nil;
-//    }
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section==0)
+    {
+        return 0.f;
+    }
+    else
+    {
+        return 20.f;
+    }
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if(section==0)
+    {
+        return nil;
+    }
+    else
+    {
+        UILabel* headerLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        headerLabel.backgroundColor=LSColorBackgroundGray;
+        headerLabel.textColor = LSColorTextGray;
+        headerLabel.font = LSFontSectionHeader;
+        if(section==1)
+        {
+            headerLabel.text=@"剧情介绍";
+        }
+        else
+        {
+            headerLabel.text=@"海报剧照";
+        }
+        return headerLabel;
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0)
+    if(indexPath.section==0)
     {
         return 120.f;
     }
-    else if(indexPath.row == 1)
+    else if(indexPath.section == 1)
     {
-        return [LSFilmInfoDescriptionCell heightForFilm:_film isSpread:_isDescriptionSpread];
+        if(_isDescriptionSpread)
+        {
+            return [LSFilmInfoDescriptionCell heightOfFilm:_film];
+        }
+        else
+        {
+            return HeightOfiPhoneX(self.view.height-120.f-130.f-20.f-20.f);
+        }
     }
     else
     {
@@ -212,7 +203,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0)
+    if(indexPath.section==0)
     {
         //影片信息单元
         LSFilmInfoInfoCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSFilmInfoInfoCell"];
@@ -224,7 +215,7 @@
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==1)
+    else if(indexPath.section==1)
     {
         //影片简介单元
         LSFilmInfoDescriptionCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSFilmInfoDescriptionCell"];
@@ -237,7 +228,7 @@
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==2)
+    else if(indexPath.section==2)
     {
         //影片剧照单元
         LSFilmInfoStillCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSFilmInfoStillCell"];
@@ -255,7 +246,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==1)
+    if(indexPath.section==1)
     {
         _isDescriptionSpread=!_isDescriptionSpread;
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -264,7 +255,7 @@
 
 
 #pragma mark-LSSeatSectionFooter委托方法
-- (void)LSSeatSectionFooter:(LSSeatSectionFooter *)seatSectionFooter didClickButton:(UIButton *)button
+- (void)LSFilmInfoFooterView:(LSFilmInfoFooterView *)filmInfoFooterView didClickSelectButton:(UIButton *)selectButton
 {
     LSCinemasByFilmViewController* cinemasByFilmViewController=[[LSCinemasByFilmViewController alloc] init];
     cinemasByFilmViewController.film=_film;

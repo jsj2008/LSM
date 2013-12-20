@@ -14,7 +14,7 @@
     NSString* _imageName;
     NSString* _placeholder;
     UITextField* _textField;
-    UILabel* _label;
+    UIButton* _sendButton;
     id<LSBindPhoneCellDelegate> _delegate;
 }
 @property(nonatomic,retain) NSString* imageName;
@@ -27,6 +27,6 @@
 @protocol LSBindPhoneCellDelegate <NSObject>
 
 @required
-- (void)LSBindPhoneCell:(LSBindPhoneCell*)cell didTapLabel:(UILabel*)label;
+- (void)LSBindPhoneCell:(LSBindPhoneCell*)cell didClickSendButton:(UIButton*)sendButton;
 
 @end

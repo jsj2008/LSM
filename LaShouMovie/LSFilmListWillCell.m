@@ -77,11 +77,11 @@
     
     //绘制上映日期
     NSString* text=[NSString stringWithFormat:@"上映日期：%@", _film.releaseDate];
-    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextRed lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY += 20.f;
     
-    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -191,7 +191,7 @@
 {
     if(section==1)
     {
-        return 44.f+20.f;
+        return 44.f+40.f;
     }
     else
     {
@@ -294,7 +294,7 @@
 }
 
 #pragma mark- LSBindPhoneCell的委托方法
-- (void)LSBindPhoneCell:(LSBindPhoneCell *)cell didTapLabel:(UILabel *)label
+- (void)LSBindPhoneCell:(LSBindPhoneCell *)cell didClickSendButton:(UIButton *)sendButton
 {
     [hud show:YES];
     [messageCenter LSMCMobileSecurityCodeWithOldPhone:_isHasBind?(_bindOriginPhoneCell.textField.text!=nil?_bindOriginPhoneCell.textField.text:_bindOriginPhoneCell.textField.placeholder):nil newPhone:_bindPhoneCell.textField.text];

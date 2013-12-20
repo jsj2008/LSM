@@ -81,7 +81,7 @@
     contentX = gap+70.f+gap;
     contentY += 25.f;
 
-    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
     
@@ -106,7 +106,7 @@
     {
         text=@"没有影院上映";
     }
-    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

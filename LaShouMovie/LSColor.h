@@ -11,6 +11,10 @@
 //快捷颜色
 #define LSRGBA(r,g,b,a)             [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:a]
 
+#define LSColorWhite                      [UIColor whiteColor]
+#define LSColorBlack                      [UIColor blackColor]
+#define LSColorClear                      [UIColor clearColor]
+
 #define LSColorButtonNormalRed            LSRGBA(190.f, 43.f, 43.f, 1.f)
 #define LSColorButtonHighlightedRed       LSRGBA(156.f, 21.f, 21.f, 1.f)
 
@@ -25,5 +29,7 @@
 #define LSColorTextRed                    LSRGBA(235.f, 64.f, 59.f, 1.f)
 
 @interface LSColor : NSObject
-
+{
+    
+}
 @end

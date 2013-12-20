@@ -39,12 +39,12 @@
 
 + (NSDictionary*)attributeFont:(UIFont*)font lineBreakMode:(NSLineBreakMode)lineBreakMode textAlignment:(NSTextAlignment)textAlignment
 {
-    return [self attributeFont:font color:[UIColor blackColor] lineBreakMode:lineBreakMode textAlignment:textAlignment];
+    return [self attributeFont:font color:LSColorTextBlack lineBreakMode:lineBreakMode textAlignment:textAlignment];
 }
 
 + (NSDictionary*)attributeFont:(UIFont*)font textAlignment:(NSTextAlignment)textAlignment
 {
-    return [self attributeFont:font color:[UIColor blackColor] lineBreakMode:NSLineBreakByCharWrapping textAlignment:textAlignment];
+    return [self attributeFont:font color:LSColorTextBlack lineBreakMode:NSLineBreakByCharWrapping textAlignment:textAlignment];
 }
 
 + (NSDictionary*)attributeFont:(UIFont*)font color:(UIColor*)color lineBreakMode:(NSLineBreakMode)lineBreakMode textAlignment:(NSTextAlignment)textAlignment

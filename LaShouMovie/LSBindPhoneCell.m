@@ -30,16 +30,13 @@
         [self addSubview:_textField];
         [_textField release];
         
-        _label=[[UILabel alloc] initWithFrame:CGRectZero];
-        _label.textColor=LSColorTextRed;
-        _label.textAlignment=NSTextAlignmentRight;
-        _label.text=@"发送验证码";
-        [self addSubview:_label];
-        [_label release];
-        
-        UITapGestureRecognizer* gestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTap:)];
-        [_label addGestureRecognizer:gestureRecognizer];
-        [gestureRecognizer release];
+        _sendButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        [_sendButton setTitleColor:LSColorButtonNormalRed forState:UIControlStateNormal];
+        [_sendButton setTitleColor:LSColorButtonHighlightedRed forState:UIControlStateNormal];
+        _sendButton.titleLabel.textAlignment=NSTextAlignmentRight;
+        [_sendButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_sendButton addTarget:self action:@selector(sendButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_sendButton];
     }
     return self;
 }
@@ -49,13 +46,10 @@
     [super layoutSubviews];
     self.imageView.image=[UIImage lsImageNamed:_imageName];
     
-    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:LSFont14, NSFontAttributeName, nil];
-    CGSize size=[_label.text sizeWithFont:<#(UIFont *)#> constrainedToSize:<#(CGSize)#> lineBreakMode:<#(NSLineBreakMode)#>];
-    
-    _textField.frame=CGRectMake(60.f, 0.f, self.width-60.f-size.width-10.f, self.height);
+    _textField.frame=CGRectMake(60.f, 0.f, self.width-60.f-54.f-10.f, self.height);
     _textField.placeholder=_placeholder;
     
-    _label.frame=CGRectMake(self.width-size.width-10.f, 0.f, size.width, self.height);
+    _sendButton.frame=CGRectMake(self.width-54.f-10.f, 0.f, 54.f, self.height);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -66,12 +60,12 @@
 }
 
 #pragma mark- 私有方法
-- (void)labelTap:(UITapGestureRecognizer*)recognizer
+- (void)sendButtonClick:(UIButton*)sender
 {
     if(_textField.text!=nil && _textField.text.length==11)
     {
-        _label.text=@"重新获取";
-        [_delegate LSBindPhoneCell:self didTapLabel:(UILabel*)(recognizer.view)];
+        [_sendButton setTitle:@"重新获取" forState:UIControlStateNormal];
+        [_delegate LSBindPhoneCell:self didClickSendButton:_sendButton];
     }
 }
 

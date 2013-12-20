@@ -6,20 +6,18 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSViewController.h"
+#import "LSTableViewController.h"
 #import "LSFilm.h"
 #import "LSFilmInfoStillCell.h"
-#import "LSSeatSectionFooter.h"
+#import "LSFilmInfoFooterView.h"
 #import "LSSinaWBAuthViewController.h"
 #import "LSQQWBAuthViewController.h"
 
-@interface LSFilmInfoViewController : LSViewController<LSFilmInfoStillCellDelegate,LSSeatSectionFooterDelegate,UIActionSheetDelegate,LSSinaWBAuthViewControllerDelegate,LSQQWBAuthViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface LSFilmInfoViewController : LSTableViewController<LSFilmInfoStillCellDelegate,LSFilmInfoFooterViewDelegate,UIActionSheetDelegate,LSSinaWBAuthViewControllerDelegate,LSQQWBAuthViewControllerDelegate>
 {
     LSFilm* _film;
-    UITableView* _tableView;
-    
+
     BOOL _isDescriptionSpread;
-    BOOL _isShowFooter;
     BOOL _isHideFooter;
 }
 @property(nonatomic,retain) LSFilm* film;

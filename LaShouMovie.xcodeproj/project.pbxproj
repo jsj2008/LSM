@@ -147,6 +147,7 @@
 		186A645B1862CE53002F8B4C /* LSSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A645A1862CE53002F8B4C /* LSSegmentedControl.m */; };
 		186A645E1862EF6C002F8B4C /* LSFilmPosterShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A645D1862EF6C002F8B4C /* LSFilmPosterShowCell.m */; };
 		186A64611862EF7D002F8B4C /* LSFilmPosterWillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A64601862EF7D002F8B4C /* LSFilmPosterWillCell.m */; };
+		186A64651863D734002F8B4C /* LSFilmInfoFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */; };
 		186CF1851822312800A567D4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 186CF1841822312800A567D4 /* libxml2.dylib */; };
 		186CF2D6182360D100A567D4 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CF2D5182360D100A567D4 /* iCarousel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		186D76751846E6EE00F36035 /* LSCouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76741846E6EE00F36035 /* LSCouponViewController.m */; };
@@ -504,7 +505,6 @@
 		18F4F06D1814BBA500F155CE /* LSShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4F06C1814BBA500F155CE /* LSShareViewController.m */; };
 		18F4F0751814C1A000F155CE /* LSShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4F0741814C1A000F155CE /* LSShare.m */; };
 		1D1B45E517E40AF9001DBB72 /* LSCinemaInfoNoScheduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45E417E40AF8001DBB72 /* LSCinemaInfoNoScheduleCell.m */; };
-		1D1B45E917E429AC001DBB72 /* LSSeatSectionFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45E817E429AC001DBB72 /* LSSeatSectionFooter.m */; };
 		1D1B45EC17E42E5D001DBB72 /* LSCinemasByFilmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45EB17E42E5C001DBB72 /* LSCinemasByFilmViewController.m */; };
 		1D1B45F417E5DCE2001DBB72 /* LSSwitchScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45F317E5DCE2001DBB72 /* LSSwitchScheduleView.m */; };
 		1D1B45FA17E5ED05001DBB72 /* LSSwitchScheduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45F917E5ED05001DBB72 /* LSSwitchScheduleCell.m */; };
@@ -842,6 +842,8 @@
 		186A645D1862EF6C002F8B4C /* LSFilmPosterShowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSFilmPosterShowCell.m; sourceTree = "<group>"; };
 		186A645F1862EF7D002F8B4C /* LSFilmPosterWillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSFilmPosterWillCell.h; sourceTree = "<group>"; };
 		186A64601862EF7D002F8B4C /* LSFilmPosterWillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSFilmPosterWillCell.m; sourceTree = "<group>"; };
+		186A64631863D734002F8B4C /* LSFilmInfoFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSFilmInfoFooterView.h; sourceTree = "<group>"; };
+		186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSFilmInfoFooterView.m; sourceTree = "<group>"; };
 		186CF1841822312800A567D4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		186CF2D4182360D100A567D4 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		186CF2D5182360D100A567D4 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
@@ -1316,8 +1318,6 @@
 		18F4F0741814C1A000F155CE /* LSShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSShare.m; sourceTree = "<group>"; };
 		1D1B45E317E40AF7001DBB72 /* LSCinemaInfoNoScheduleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaInfoNoScheduleCell.h; sourceTree = "<group>"; };
 		1D1B45E417E40AF8001DBB72 /* LSCinemaInfoNoScheduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaInfoNoScheduleCell.m; sourceTree = "<group>"; };
-		1D1B45E717E429AB001DBB72 /* LSSeatSectionFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSSeatSectionFooter.h; sourceTree = "<group>"; };
-		1D1B45E817E429AC001DBB72 /* LSSeatSectionFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSSeatSectionFooter.m; sourceTree = "<group>"; };
 		1D1B45EA17E42E5B001DBB72 /* LSCinemasByFilmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemasByFilmViewController.h; sourceTree = "<group>"; };
 		1D1B45EB17E42E5C001DBB72 /* LSCinemasByFilmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemasByFilmViewController.m; sourceTree = "<group>"; };
 		1D1B45F217E5DCE2001DBB72 /* LSSwitchScheduleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSSwitchScheduleView.h; sourceTree = "<group>"; };
@@ -1914,8 +1914,7 @@
 		1822392017CE0C9700F61D5F /* FilmInfo */ = {
 			isa = PBXGroup;
 			children = (
-				186A646218630326002F8B4C /* New Group */,
-				1D1B45E617E42899001DBB72 /* SeatSectionFooter */,
+				186A646218630326002F8B4C /* FilmInfoFooterView */,
 				1871DFBE17D8527E00B285F5 /* FilmInfoCell */,
 				1871DFD517D8819300B285F5 /* LSFilmInfoViewController.h */,
 				1871DFD617D8819400B285F5 /* LSFilmInfoViewController.m */,
@@ -2700,11 +2699,13 @@
 			name = RequestURLs;
 			sourceTree = "<group>";
 		};
-		186A646218630326002F8B4C /* New Group */ = {
+		186A646218630326002F8B4C /* FilmInfoFooterView */ = {
 			isa = PBXGroup;
 			children = (
+				186A64631863D734002F8B4C /* LSFilmInfoFooterView.h */,
+				186A64641863D734002F8B4C /* LSFilmInfoFooterView.m */,
 			);
-			name = "New Group";
+			name = FilmInfoFooterView;
 			sourceTree = "<group>";
 		};
 		186CF21818223CD000A567D4 /* Login */ = {
@@ -3583,15 +3584,6 @@
 			name = WelcomeView;
 			sourceTree = "<group>";
 		};
-		1D1B45E617E42899001DBB72 /* SeatSectionFooter */ = {
-			isa = PBXGroup;
-			children = (
-				1D1B45E717E429AB001DBB72 /* LSSeatSectionFooter.h */,
-				1D1B45E817E429AC001DBB72 /* LSSeatSectionFooter.m */,
-			);
-			name = SeatSectionFooter;
-			sourceTree = "<group>";
-		};
 		1D1B45F117E5DCAD001DBB72 /* SwitchScheduleView */ = {
 			isa = PBXGroup;
 			children = (
@@ -4181,7 +4173,6 @@
 				187AB17B17E2E3F5008D3E47 /* LSCinemaFilmCell.m in Sources */,
 				187AB18417E318BD008D3E47 /* LSCinemaInfoFilmCell.m in Sources */,
 				1D1B45E517E40AF9001DBB72 /* LSCinemaInfoNoScheduleCell.m in Sources */,
-				1D1B45E917E429AC001DBB72 /* LSSeatSectionFooter.m in Sources */,
 				1D1B45EC17E42E5D001DBB72 /* LSCinemasByFilmViewController.m in Sources */,
 				18D4AF36184F3D43000AAE01 /* ASIDataDecompressor.m in Sources */,
 				1D1B45F417E5DCE2001DBB72 /* LSSwitchScheduleView.m in Sources */,
@@ -4290,6 +4281,7 @@
 				18072AFF180929B40013CCA6 /* LSAnnotation.m in Sources */,
 				18072B0418092CDA0013CCA6 /* LSAnnotationView.m in Sources */,
 				1835E1B5180B935000E80602 /* LSCinemaAnnotation.m in Sources */,
+				186A64651863D734002F8B4C /* LSFilmInfoFooterView.m in Sources */,
 				1835E1B9180BE2DB00E80602 /* LSFont.m in Sources */,
 				1835E1BD180BF3BA00E80602 /* LSColor.m in Sources */,
 				1835E1C4180BF76D00E80602 /* LSFilmListWillCell.m in Sources */,

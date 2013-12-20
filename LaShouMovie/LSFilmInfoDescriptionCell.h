@@ -17,6 +17,7 @@
 
 @property(nonatomic,assign) BOOL isSpread;
 @property(nonatomic,retain) LSFilm* film;
-+ (CGFloat)heightForFilm:(LSFilm*)film isSpread:(BOOL)isSpread;
+
++ (CGFloat)heightOfFilm:(LSFilm*) film;
 
 @end

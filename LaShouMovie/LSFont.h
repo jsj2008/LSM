@@ -44,10 +44,13 @@
 #define LSFontNavigationTitle       LSFont20
 #define LSFontNavigationButton      LSFont16
 
+#define LSFontSectionHeader         LSFont14
+
 #define LSFontFilmName              LSFont14
 #define LSFontFilmNameBold          LSFontBold14
 #define LSFontFilmInfo              LSFont10
-#define LSFontFilmDetail            LSFont12
+#define LSFontFilmDetail            LSFont13
+#define LSFontFilmBrief             LSFont12
 
 #define LSFontCinemaName            LSFont16
 #define LSFontCinemaInfo            LSFont10

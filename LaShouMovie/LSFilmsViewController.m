@@ -84,7 +84,7 @@
     {
         [_showingFilmMArray removeAllObjects];
     }
-    else if(![_willShowFilmMArray isEqual:_filmArray])
+    if(![_willShowFilmMArray isEqual:_filmArray])
     {
         [_willShowFilmMArray removeAllObjects];
     }
@@ -93,15 +93,15 @@
     {
         [_showingFilmListCellMArray removeAllObjects];
     }
-    else if(![_willFilmListCellMArray isEqual:_filmCellArray])
+    if(![_willFilmListCellMArray isEqual:_filmCellArray])
     {
         [_willFilmListCellMArray removeAllObjects];
     }
-    else if(![_showingFilmPosterCellMArray isEqual:_filmCellArray])
+    if(![_showingFilmPosterCellMArray isEqual:_filmCellArray])
     {
         [_showingFilmPosterCellMArray removeAllObjects];
     }
-    else if(![_willFilmPosterCellMArray isEqual:_filmCellArray])
+    if(![_willFilmPosterCellMArray isEqual:_filmCellArray])
     {
         [_willFilmPosterCellMArray removeAllObjects];
     }

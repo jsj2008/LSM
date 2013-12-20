@@ -228,14 +228,14 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 26.0f;
+    return 20.f;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel* headerLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-    headerLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage lsImageNamed:@"city_sec_bg.png"]];
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.font = LSFontBold16;
+    headerLabel.backgroundColor=LSColorBackgroundGray;
+    headerLabel.textColor = LSColorTextGray;
+    headerLabel.font = LSFontSectionHeader;
     if([[_titleMArray objectAtIndex:section] isEqualToString:@"定位"])
     {
         headerLabel.text = @"   定位城市";
