@@ -6,10 +6,10 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 
 @protocol LSBindPhoneCellDelegate;
-@interface LSBindPhoneCell : LSTableViewCell<UITextFieldDelegate>
+@interface LSBindPhoneCell : LSTableViewCell
 {
     NSString* _imageName;
     NSString* _placeholder;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 #import "LSCinema.h"
 
 @interface LSCinemaCell : LSTableViewCell
@@ -14,6 +14,5 @@
     LSCinema* _cinema;
 }
 @property(nonatomic,retain) LSCinema* cinema;
-+ (CGFloat)heightForCinema:(LSCinema*)cinema;
 
 @end

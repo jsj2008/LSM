@@ -482,38 +482,14 @@ typedef enum
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    LSCinema* cinema=nil;
-    if(indexPath.section==0)
+    if([[_selectMArray objectAtIndex:0] isKindOfClass:[NSString class]])
     {
-        NSArray* myArray=[_cinemaMArray objectAtIndex:LSIndexMy];
-        if(myArray.count>0)
-        {
-            cinema=[myArray objectAtIndex:indexPath.row];
-        }
-        else
-        {
-            if([[_selectMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-            {
-                return 44.f;
-            }
-            else
-            {
-                cinema=[_selectMArray objectAtIndex:indexPath.row];
-            }
-        }
+        return 44.f;
     }
-    else if(indexPath.section==1)
+    else
     {
-        if([[_selectMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-        {
-            return 44.f;
-        }
-        else
-        {
-            cinema=[_selectMArray objectAtIndex:indexPath.row];
-        }
+        return 60.f;
     }
-    return [LSCinemaCell heightForCinema:cinema];
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

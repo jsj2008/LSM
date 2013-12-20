@@ -32,7 +32,6 @@
         _textField.clearButtonMode=UITextFieldViewModeWhileEditing;
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _textField.returnKeyType = UIReturnKeyDone;
-        _textField.delegate=self;
         [self addSubview:_textField];
         [_textField release];
     }

@@ -26,7 +26,6 @@
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _textField.keyboardType=UIKeyboardTypeNumberPad;
         _textField.returnKeyType = UIReturnKeyDone;
-        _textField.delegate=self;
         [self addSubview:_textField];
         [_textField release];
         

@@ -8,65 +8,11 @@
 
 #import "LSCinemaCell.h"
 
-#define gapL 10.f
-#define basicWidth 240.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSCinemaCell
 
 @synthesize cinema=_cinema;
-
-+ (CGFloat)heightForCinema:(LSCinema*)cinema
-{
-    CGFloat contentY = 7.f;
-    CGSize size;
-    if (cinema.cinemaName!=nil)
-    {
-        size = [cinema.cinemaName sizeWithFont:LSFont17 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-    }
-    
-    contentY+=(size.height+5.f);
-    
-    //绘制距离
-    if(cinema.distance!=nil)
-    {
-        NSString* text=nil;
-        if(![cinema.distance isEqualToString:LSNULL] && [cinema.distance rangeOfString:@"km"].location!=NSNotFound)
-        {
-            if([[cinema.distance substringToIndex:cinema.distance.length-2] floatValue]>100.f)
-            {
-                if(![cinema.districtName isEqualToString:LSNULL])
-                {
-                    text=[NSString stringWithFormat:@"%@",cinema.districtName];
-                }
-                else
-                {
-                    text=LSNULL;
-                }
-            }
-            else
-            {
-                if(![cinema.districtName isEqualToString:LSNULL])
-                {
-                    text=[NSString stringWithFormat:@"%@(%@)",cinema.distance,cinema.districtName];
-                }
-                else
-                {
-                    text=[NSString stringWithFormat:@"%@",cinema.distance];
-                }
-            }
-        }
-        else
-        {
-            text=[NSString stringWithFormat:@"%@(%@)",cinema.distance,cinema.districtName];
-        }
-        
-        size = [text sizeWithFont:LSFont14 constrainedToSize:basicSize];
-    }
-    
-    contentY+=(size.height+7.f);
-    return contentY;
-}
 
 -(void)dealloc
 {
@@ -79,11 +25,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
-        
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
+        self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
 }
@@ -97,132 +39,98 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawLineAtStartPointX:0 y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeperatorLightGrayColor lineWidth:1.f];
+    CGFloat contentX=gap;
+    CGFloat contentY=gap;
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-    CGFloat contentY = 7.f;
-    CGFloat contentX=gapL;
-
-    CGSize size;
-    if (_cinema.cinemaName!=nil)
+    CGRect nameRect;
+    //图标大小：30
+    if (_cinema.buyType == LSCinemaBuyTypeOnlySeat || _cinema.buyType == LSCinemaBuyTypeOnlyGroup)
     {
-        size = [_cinema.cinemaName sizeWithFont:LSFont17 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont17 lineBreakMode:NSLineBreakByCharWrapping];
-        contentX+=(size.width+5.f);
-    }
-    
-    if (_cinema.buyType == LSCinemaBuyTypeOnlySeat)
-    {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"zuo_icon.png"] top:0 left:0 bottom:25 right:25] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
-    }
-    else if (_cinema.buyType == LSCinemaBuyTypeOnlyGroup)
-    {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"tuan_icon.png"] top:0 left:0 bottom:25 right:25] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
+        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-35.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
     }
     else if (_cinema.buyType == LSCinemaBuyTypeSeatGroup)
     {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"zuo_icon.png"] top:0 left:0 bottom:25 right:25] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
-        contentX+=25.f;
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"tuan_icon.png"] top:0 left:0 bottom:25 right:25] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
+        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-65.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
+    }
+    else
+    {
+        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
+    }
+
+    [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, 25.f) withAttributes:[LSAttribute attributeFont:LSFontCinemaName lineBreakMode:NSLineBreakByTruncatingTail]];
+    contentX+=(nameRect.size.width+5.f);
+    
+
+    if (_cinema.buyType == LSCinemaBuyTypeOnlySeat)
+    {
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
+        contentX+=30.f+5.f;
+    }
+    else if (_cinema.buyType == LSCinemaBuyTypeOnlyGroup)
+    {
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
+        contentX+=30.f+5.f;
+    }
+    else if (_cinema.buyType == LSCinemaBuyTypeSeatGroup)
+    {
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
+        contentX+=30.f+5.f;
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
     }
     
-    contentY+=(size.height+8.f);
+    contentY+=25.f;
+    contentX=gap;
 
-    contentX=gapL;
     //绘制距离图标
-    [[UIImage lsImageNamed:@"cinemas_distance.png"] drawInRect:CGRectMake(contentX, contentY+3.f, 11.5f, 12.5f)];
-    contentX+=15.f;
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
+    contentX+=30.f;
     
     //绘制距离
-    if(_cinema.distance!=nil)
+    NSString* text=nil;
+    if(![_cinema.distance isEqualToString:LSNULL] && [_cinema.distance rangeOfString:@"km"].location!=NSNotFound)
     {
-        NSString* text=nil;
-        if(![_cinema.distance isEqualToString:LSNULL] && [_cinema.distance rangeOfString:@"km"].location!=NSNotFound)
+        if([[_cinema.distance substringToIndex:_cinema.distance.length-2] floatValue]>100.f)
         {
-            if([[_cinema.distance substringToIndex:_cinema.distance.length-2] floatValue]>100.f)
+            if(![_cinema.districtName isEqualToString:LSNULL])
             {
-                if(![_cinema.districtName isEqualToString:LSNULL])
-                {
-                    text=[NSString stringWithFormat:@"%@",_cinema.districtName];
-                }
-                else
-                {
-                    text=LSNULL;
-                }
+                text=[NSString stringWithFormat:@"%@",_cinema.districtName];
             }
             else
             {
-                if(![_cinema.districtName isEqualToString:LSNULL])
-                {
-                    text=[NSString stringWithFormat:@"%@(%@)",_cinema.distance,_cinema.districtName];
-                }
-                else
-                {
-                    text=[NSString stringWithFormat:@"%@",_cinema.distance];
-                }
+                text=LSNULL;
             }
         }
         else
         {
-            text=[NSString stringWithFormat:@"%@(%@)",_cinema.distance,_cinema.districtName];
+            if(![_cinema.districtName isEqualToString:LSNULL])
+            {
+                text=[NSString stringWithFormat:@"%@(%@)",_cinema.distance,_cinema.districtName];
+            }
+            else
+            {
+                text=[NSString stringWithFormat:@"%@",_cinema.distance];
+            }
         }
-        
-        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-        size = [text sizeWithFont:LSFont14 constrainedToSize:basicSize];
-        [text drawInRect:CGRectMake(contentX, contentY, 100.f, size.height) withFont:LSFont14 lineBreakMode:NSLineBreakByTruncatingTail];
-        contentX+=100.f;
     }
+    else
+    {
+        text=[NSString stringWithFormat:@"%@(%@)",_cinema.distance,_cinema.districtName];
+    }
+    [text drawInRect:CGRectMake(contentX, contentY, 70.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontCinemaInfo lineBreakMode:NSLineBreakByTruncatingTail]];
+    contentX+=70.f;
     
     if (_cinema.buyType == LSCinemaBuyTypeOnlySeat || _cinema.buyType == LSCinemaBuyTypeSeatGroup)
     {
-        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
         if([_cinema.todayScheduleCount intValue]>0 || [_cinema.totalScheduleCount intValue]>0)
         {
-            NSString *text = [NSString stringWithFormat:@"今日 %@ 场",_cinema.todayScheduleCount];
-            size = [text sizeWithFont:LSFont14];
-            [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont14];
-            contentX+=size.width;
-            
-            contentX+=23.f;
-            
-            text = [NSString stringWithFormat:@"在售 %@ 场",_cinema.totalScheduleCount];
-            size = [text sizeWithFont:LSFont14];
-            [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont14];
-            contentX+=size.width;
+            text = [NSString stringWithFormat:@"今日%@场  在售%@场",_cinema.todayScheduleCount,_cinema.totalScheduleCount];
         }
         else
         {
-            NSString *text = @"暂无场次";
-            size = [text sizeWithFont:LSFont14];
-            [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont14];
-            contentX+=size.width;
+            text = @"暂无场次";
         }
     }
-    
-    contentY+=(size.height+7.f);
-    
-    [[UIImage lsImageNamed:@"cinemas_arrow.png"] drawInRect:CGRectMake(rect.size.width - 20.f, (rect.size.height-15.f)/2, 10.f, 15.f)];
-}
-
-
-#pragma mark- 重载触摸方法
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor = LSRGBA(255, 238, 216, 0.6f);
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesEnded:touches withEvent:event];
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor = [UIColor clearColor];
-    [super touchesCancelled:touches withEvent:event];
+    [text drawInRect:CGRectMake(contentX, contentY, 200.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontCinemaInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
 }
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 
-@interface LSRegisterCell : LSTableViewCell<UITextFieldDelegate>
+@interface LSRegisterCell : LSTableViewCell
 {
     NSString* _imageName;
     NSString* _placeholder;
