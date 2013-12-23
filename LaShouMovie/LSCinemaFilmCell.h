@@ -6,12 +6,12 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 
 @interface LSCinemaFilmCell : LSTableViewCell
 {
-    UIImageView* _filmImageView;
+    BOOL _isSelect;
 }
-@property(nonatomic,retain) UIImageView* filmImageView;
+@property(nonatomic,assign)BOOL isSelect;
 
 @end

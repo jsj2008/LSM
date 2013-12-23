@@ -12,7 +12,6 @@
 @interface LSFilmListWillCell : LSTableViewCell
 {
     UIImageView* _filmImageView;//显示电影图片
-    
     LSFilm* _film;
 }
 

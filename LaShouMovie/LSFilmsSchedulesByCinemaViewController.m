@@ -11,7 +11,7 @@
 #import "LSGroupInfoViewController.h"
 #import "LSSchedule.h"
 #import "LSScheduleDictionary.h"
-#import "LSCinemaInfoNoScheduleCell.h"
+#import "LSNothingCell.h"
 #import "LSCinemaMapViewController.h"
 #import "LSFilmInfoViewController.h"
 
@@ -22,6 +22,7 @@
 @implementation LSFilmsSchedulesByCinemaViewController
 
 @synthesize cinema=_cinema;
+@synthesize film=_film;
 
 #pragma mark- 生命周期
 
@@ -30,6 +31,7 @@
     LSRELEASE(_today)
 
     self.cinema=nil;
+    self.film=nil;
     LSRELEASE(_filmMArray)
 
     [super dealloc];
@@ -77,14 +79,7 @@
         }
     }
     
-    if(LSiOS7)
-    {
-        [self.tableView reloadData];
-    }
-    else
-    {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
-    }
+    [self.tableView reloadData];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_cinema.groupArray.count>0?2:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
@@ -201,7 +196,7 @@
 #pragma mark - UITableView委托方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -209,73 +204,51 @@
     {
         return 0.f;
     }
+    else if (section == 1)
+    {
+        return 10.f;
+    }
     else
     {
-//        return (_today!=nil)?(_selectFilm.scheduleDicArray.count?85.f:41.f):0.f;
-        return (_today!=nil)?(_selectFilm.scheduleDicArray.count?44.f:0.f):0.f;
+        return _today==nil?0.f:(_selectFilm.scheduleDicArray.count?44.f:0.f);
     }
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if(section==0)
+    if(section == 0)
     {
         return nil;
     }
+    else if (section == 1)
+    {
+        return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    }
     else
     {
-        LSDateSectionHeader* dateSectionHeader=[[[LSDateSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
-        //dateSectionHeader.title=@"电影排期";
-        dateSectionHeader.scheduleDicArray=_selectFilm.scheduleDicArray;
-        dateSectionHeader.today=_today;
-        dateSectionHeader.date=_selectScheduleDate;
-        dateSectionHeader.delegate=self;
-        return dateSectionHeader;
+        if(_dateSectionHeader==nil)
+        {
+            _dateSectionHeader=[[[LSDateSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
+            _dateSectionHeader.scheduleDicArray=_selectFilm.scheduleDicArray;
+            _dateSectionHeader.today=_today;
+            _dateSectionHeader.date=_selectScheduleDate;
+            _dateSectionHeader.delegate=self;
+        }
+        return _dateSectionHeader;
     }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section==0)
+    if(section == 0)
     {
-        if(_cinema.groupArray.count==0)
-        {
-            if(_filmMArray.count==0)
-            {
-                return 1;
-            }
-            else
-            {
-                return 2;
-            }
-        }
-        else
-        {
-            if(_filmMArray.count==0)
-            {
-                return 2;
-            }
-            else
-            {
-                return 3;
-            }
-        }
+        return 1+_cinema.groupArray.count;
+    }
+    else if(section == 1)
+    {
+        return 1;
     }
     else
     {
-        if(_selectScheduleArray!=nil)
-        {
-            return _selectScheduleArray.count>0?_selectScheduleArray.count:1;
-        }
-        else
-        {
-            if(_selectFilm!=nil && _selectFilm.scheduleDicArray!=nil)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        return _selectScheduleArray.count>0?_selectScheduleArray.count:1;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -284,27 +257,20 @@
     {
         if(indexPath.row==0)
         {
-            return [LSCinemaInfoInfoCell heightForCinema:_cinema];
-        }
-        else if(indexPath.row == 1)
-        {
-            if (_cinema.groupArray.count > 0)
-            {
-                return 64.f;//团购
-            }
-            else
-            {
-                return 161.f;
-            }
+            return [LSCinemaInfoInfoCell heightForCinema:_cinema];//影院信息
         }
         else
         {
-            return 161.f;
+            return 35.f;//团购
         }
+    }
+    else if(indexPath.section == 1)
+    {
+        return 96.f+44.f;//影片
     }
     else
     {
-        return 44.f;
+        return 60.f;//排期
     }
 }
 
@@ -325,76 +291,41 @@
             [cell setNeedsDisplay];
             return cell;
         }
-        else if(indexPath.row==1)
-        {
-            if(_cinema.groupArray.count>0)
-            {
-                //影片团购单元
-                LSCinemaInfoGroupCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoGroupCell"];
-                if(cell==nil)
-                {
-                    cell=[[[LSCinemaInfoGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoGroupCell"] autorelease];
-                    cell.delegate=self;
-                }
-                cell.groupArray=_cinema.groupArray;
-                [cell setNeedsLayout];
-                return cell;
-            }
-            else
-            {
-                //影片列表单元
-                LSCinemaInfoFilmCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoFilmCell"];
-                if(cell==nil)
-                {
-                    cell=[[[LSCinemaInfoFilmCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoFilmCell"] autorelease];
-                    cell.delegate=self;
-                }
-                cell.filmArray=_filmMArray;
-                if(LSiOS7)
-                {
-                    cell.animated=_animated;
-                }
-                else
-                {
-                    cell.animated=YES;
-                }
-                
-                [cell setNeedsLayout];
-                return cell;
-            }
-        }
         else
         {
-            //影片列表单元
-            LSCinemaInfoFilmCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoFilmCell"];
+            //影片团购单元
+            LSCinemaInfoGroupCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoGroupCell"];
             if(cell==nil)
             {
-                cell=[[[LSCinemaInfoFilmCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoFilmCell"] autorelease];
-                cell.delegate=self;
+                cell=[[[LSCinemaInfoGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoGroupCell"] autorelease];
+                LSGroup* group=[_cinema.groupArray objectAtIndex:indexPath.row-1];
+                cell.title=group.groupTitle;
             }
-            cell.filmArray=_filmMArray;
-            if(LSiOS7)
-            {
-                cell.animated=_animated;
-            }
-            else
-            {
-                cell.animated=YES;
-            }
-            [cell setNeedsLayout];
             return cell;
         }
+    }
+    else if(indexPath.section == 1)
+    {
+        //影片列表单元
+        LSCinemaInfoFilmCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoFilmCell"];
+        if(cell==nil)
+        {
+            cell=[[[LSCinemaInfoFilmCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoFilmCell"] autorelease];
+            cell.delegate=self;
+            cell.filmArray=_filmMArray;
+        }
+        return cell;
     }
     else
     {
         if(_selectScheduleArray.count==0)
         {
-            LSCinemaInfoNoScheduleCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaInfoNoScheduleCell"];
+            LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
             if(cell==nil)
             {
-                cell=[[[LSCinemaInfoNoScheduleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaInfoNoScheduleCell"] autorelease];
+                cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
+                cell.title=@"暂无排期";
             }
-            [cell setNeedsDisplay];
             return cell;
         }
         
@@ -414,7 +345,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //如果选择的是排期
-    if(indexPath.section==1)
+    if(indexPath.section==2)
     {
         if(_selectScheduleArray.count==0)
         {
@@ -491,8 +422,7 @@
                 _selectScheduleDate=scheduleDictionary.scheduleDate;
             }
         }
-        
-        _animated=YES;
+
         [self refreshTableView];
     }
 }
@@ -510,7 +440,6 @@
 - (void)LSDateSectionHeader:(LSDateSectionHeader *)dateSectionHeader didSelectRowAtIndexPath:(int)date
 {
     _selectScheduleDate=date;
-    _animated=NO;
     [self refreshTableView];
 }
 

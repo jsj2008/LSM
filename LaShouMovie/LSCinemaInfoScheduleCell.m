@@ -8,7 +8,7 @@
 
 #import "LSCinemaInfoScheduleCell.h"
 
-#define gapL 30.f
+#define gap 10.f
 
 @implementation LSCinemaInfoScheduleCell
 
@@ -25,10 +25,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor= [UIColor clearColor];
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
     }
     return self;
 }
@@ -42,38 +38,34 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"schedule_bg.png"] top:22 left:7 bottom:22 right:7] drawInRect:CGRectMake(10.f, 0.f, rect.size.width-20.f, rect.size.height)];
+    [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorBlack lineWidth:1.f];
     
-    [self drawLineAtStartPointX:20.f y:rect.size.height endPointX:rect.size.width-20.f y:rect.size.height strokeColor:LSColorLineLightGrayColor lineWidth:1.f];
+    CGFloat contentX=gap;
+    CGFloat contentY=gap;
 
-    CGFloat contentX=gapL;
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-    if (_schedule.startTime)
+    [_schedule.startTime drawInRect:CGRectMake(contentX, contentY, 100.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleStartTime]];
+    [_schedule.expectEndTime drawInRect:CGRectMake(contentX, contentY+25.f, 100.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleStartTime]];
+    
+    NSString* text=nil;
+    if(_schedule.dimensional==LSFilmDimensional2D)
     {
-        CGSize size=[_schedule.startTime sizeWithFont:LSFont15];
-        [_schedule.startTime drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
+        text=[NSString stringWithFormat:@"%@ 2D",_schedule.language];
     }
-    contentX+=50.f;//此处必须增加
+    else if(_schedule.dimensional==LSFilmDimensional3D)
+    {
+        text=[NSString stringWithFormat:@"%@ 3D",_schedule.language];
+    }
+    else
+    {
+        text=[NSString stringWithFormat:@"%@",_schedule.language];
+    }
     
     if (_schedule.language)
     {
-        NSString* text=nil;
-        if(_schedule.dimensional==LSFilmDimensional2D)
-        {
-            text=[NSString stringWithFormat:@"%@/2D",_schedule.language];
-        }
-        else if(_schedule.dimensional==LSFilmDimensional3D)
-        {
-            text=[NSString stringWithFormat:@"%@/3D",_schedule.language];
-        }
-        else
-        {
-            text=[NSString stringWithFormat:@"%@",_schedule.language];
-        }
+        
         
         CGSize size=[text sizeWithFont:LSFont15];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
+        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFontScheduleEndTime];
     }
     contentX+=75.f;
     
@@ -96,24 +88,6 @@
     [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
     
     [[UIImage lsImageNamed:@"cinemas_arrow.png"] drawInRect:CGRectMake(rect.size.width-30.f, (rect.size.height-15.f)/2, 10.f, 15.f)];
-}
-
-
-#pragma mark- 重载触摸方法
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=LSColorBgRedYellowColor;
-    [super touchesBegan:touches withEvent:event];
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesEnded:touches withEvent:event];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesCancelled:touches withEvent:event];
 }
 
 @end

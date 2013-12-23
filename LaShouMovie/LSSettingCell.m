@@ -20,10 +20,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundView=nil;
-        self.backgroundColor=[UIColor clearColor];
-        self.clipsToBounds=YES;
-        self.selectionStyle=UITableViewCellSelectionStyleNone;
     }
     return self;
 }

@@ -164,8 +164,11 @@
 #pragma mark- 断网提示手势方法
 - (void)nonInternetImageViewTap:(UITapGestureRecognizer*)recognizer
 {
-    [self networkStatusChanged:nil];
-    [self refreshBecauseInternet];
+    if(user.networkStatus!=NotReachable)
+    {
+        [self networkStatusChanged:nil];
+        [self refreshBecauseInternet];
+    }
 }
 - (void)refreshBecauseInternet
 {
@@ -177,7 +180,6 @@
 - (void)alertNonInternet
 {
     //提示当前无网络连接
-    
 }
 - (void)networkStatusChanged:(NSNotification*)notification//网络类型变化判断
 {

@@ -26,8 +26,6 @@
 {
     LSRELEASE(_showingFilmMArray)
     LSRELEASE(_willShowFilmMArray)
-    LSRELEASE(_adView)
-    LSRELEASE(_advertisment)
     [super dealloc];
 }
 
@@ -44,7 +42,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    _displayType=LSDisplayTypeList;
+    _displayType=LSFilmDisplayTypeList;
     _filmShowStatus=LSFilmShowStatusShowing;
     
     //初始化数据数组
@@ -128,7 +126,7 @@
 }
 - (void)refreshTableView
 {
-    if(_displayType==LSDisplayTypeList)
+    if(_displayType==LSFilmDisplayTypeList)
     {
         if(_filmShowStatus==LSFilmShowStatusShowing)
         {
@@ -451,10 +449,6 @@
         }
     }
 }
-- (void)createCell:(Class)targetClass
-{
-    
-}
 - (void)refreshControlEventValueChanged
 {
     [hud show:YES];
@@ -467,31 +461,10 @@
 }
 
 
-#pragma mark- 私有方法
-//跳转电影信息详情
-- (void)showFilmInfo:(NSInteger)index
-{
-    LSFilmInfoViewController* filmInfoViewController=[[LSFilmInfoViewController alloc] init];
-    if(_filmShowStatus==LSFilmShowStatusShowing)
-    {
-        filmInfoViewController.film=[_showingFilmMArray objectAtIndex:index];
-    }
-    else if(_filmShowStatus==LSFilmShowStatusWillShow)
-    {
-        filmInfoViewController.film=[_willShowFilmMArray objectAtIndex:index];
-        filmInfoViewController.isHideFooter=YES;
-    }
-    filmInfoViewController.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:filmInfoViewController animated:YES];
-    [filmInfoViewController release];
-}
-
-
 #pragma mark- 通知中心消息
 - (void)lsHttpRequestNotification:(NSNotification*)notification
 {
     [hud hide:YES];//任何的通知都会导致隐藏
-    
     if([self checkIsNotEmpty:notification])
     {
         if([notification.object isEqual:lsRequestFailed])
@@ -557,6 +530,11 @@
                     _filmArray=_willShowFilmMArray;
                 }
                 
+                if(_filmArray.count==0)
+                {
+                    [_filmArray addObject:@"暂无影院"];
+                }
+                
                 if(mark==_filmShowStatus)
                 {
                     dispatch_async(dispatch_get_main_queue(),^{
@@ -575,12 +553,6 @@
         else if([notification.name isEqualToString:lsRequestTypeAdvertisements])
         {
             _advertisment=[[LSAdvertisment alloc] initWithDictionary:notification.object];
-            if(_adView==nil)
-            {
-                _adView=[[LSAdView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, 50.f)];
-                _adView.advertisment=_advertisment;
-                _adView.delegate=self;
-            }
             [self.tableView reloadData];
         }
     }
@@ -593,6 +565,13 @@
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if(_adView==nil)
+    {
+        _adView=[[[LSAdView alloc] initWithFrame:CGRectZero] autorelease];
+        _adView.delegate=self;
+    }
+    _adView.advertisment=_advertisment;
+    [_adView setNeedsLayout];
     return _adView;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -601,7 +580,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(_displayType==LSDisplayTypeList)
+    if(_displayType==LSFilmDisplayTypeList)
     {
         return 90.f;
     }
@@ -613,6 +592,13 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [_filmCellArray objectAtIndex:indexPath.row];
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSFilmInfoViewController* filmInfoViewController=[[LSFilmInfoViewController alloc] init];
+    filmInfoViewController.film=[_filmArray objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:filmInfoViewController animated:YES];
+    [filmInfoViewController release];
 }
 
 #pragma mark- LSAdView的委托方法

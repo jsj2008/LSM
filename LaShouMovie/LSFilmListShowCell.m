@@ -72,21 +72,21 @@
     //绘制imax
     if(_film.isIMAX)
     {
-        [[UIImage lsImageNamed:@"film_imax.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 28.f, 11.f)];
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY+2.f, 28.f, 11.f)];
         contentX+=28.f+5.f;
     }
     
     //绘制dimensional
     if(_film.dimensional==LSFilmDimensional3D)
     {
-        [[UIImage lsImageNamed:@"film_3d.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 17.f, 11.f)];
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY+2.f, 17.f, 11.f)];
         contentX+=17.f+5.f;
     }
     
     //绘制是否预售
     if(_film.isPresell)
     {
-        [[UIImage lsImageNamed:@"icon_presell.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 35.f, 11.f)];
+        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY+2.f, 35.f, 11.f)];
         contentX+=35.f;
     }
     
@@ -110,7 +110,7 @@
     }
     else
     {
-        text=@"没有影院上映";
+        text=@"没有上映影院";
     }
     [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
 }

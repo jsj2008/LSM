@@ -14,9 +14,9 @@
     MBProgressHUD* hud;
     LSUser* user;
     LSMessageCenter* messageCenter;
+    LSInternetStatusRemindType _internetStatusRemindType;
     UIBarButtonSystemItem _leftBarButtonSystemItem;
     UIBarButtonSystemItem _rightBarButtonSystemItem;
-    LSOtherButtonType _rightButtonType;
 }
 @property(nonatomic,assign) UIBarButtonSystemItem leftBarButtonSystemItem;
 @property(nonatomic,assign) UIBarButtonSystemItem rightBarButtonSystemItem;

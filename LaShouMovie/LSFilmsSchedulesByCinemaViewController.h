@@ -16,20 +16,28 @@
 #import "LSCinemaInfoFilmCell.h"
 #import "LSCinemaInfoScheduleCell.h"
 
-@interface LSFilmsSchedulesByCinemaViewController : LSTableViewController<LSCinemaInfoInfoCellDelegate,LSCinemaInfoGroupCellDelegate,LSCinemaInfoFilmCellDelegate,LSDateSectionHeaderDelegate,UIActionSheetDelegate>
+@interface LSFilmsSchedulesByCinemaViewController : LSTableViewController
+<
+LSCinemaInfoInfoCellDelegate,
+LSCinemaInfoFilmCellDelegate,
+LSDateSectionHeaderDelegate,
+UIActionSheetDelegate
+>
 {
     LSCinema* _cinema;
+    LSFilm* _film;
     NSMutableArray* _filmMArray;//影片数组
     NSString* _today;//今天的日期字符串 例如 2013-09-12
     
+    LSDateSectionHeader* _dateSectionHeader;
     LSScheduleDate _selectScheduleDate;//选择的排期日期
     
-    int _selectFilmIndex;//当前选择的影片
-    LSFilm* _selectFilm;//当前选择的影片
+    int _selectFilmIndex;//当前选择影片的位置
+    LSFilm* _selectFilm;
     
     NSArray* _selectScheduleArray;//选择的排期
-    BOOL _animated;
 }
 @property(nonatomic,retain) LSCinema* cinema;
+@property(nonatomic,retain) LSFilm* film;
 
 @end

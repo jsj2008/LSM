@@ -7,8 +7,6 @@
 //
 
 #import "LSViewController.h"
-#import "LSAlertView.h"
-
 #import "MobClick.h"
 #import "LSAppDelegate.h"
 
@@ -18,16 +16,35 @@
 
 @implementation LSViewController
 
-@synthesize isShowBackBarButton=_isShowBackBarButton;
+@synthesize leftBarButtonSystemItem=_leftBarButtonSystemItem;
+@synthesize rightBarButtonSystemItem=_rightBarButtonSystemItem;
 @synthesize internetStatusRemindType=_internetStatusRemindType;
 
 #pragma mark- 属性方法
-- (void)setIsShowBackBarButton:(BOOL)isShowBackBarButton
+- (void)setLeftBarButtonSystemItem:(UIBarButtonSystemItem)leftBarButtonSystemItem
 {
-    _isShowBackBarButton=isShowBackBarButton;
-    if(!_isShowBackBarButton)
+    if(leftBarButtonSystemItem<0)
     {
         self.navigationItem.leftBarButtonItem=nil;
+    }
+    else
+    {
+        UIBarButtonItem* leftBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(leftBarButtonItemClick:)];
+        self.navigationItem.leftBarButtonItem=leftBarButtonItem;
+        [leftBarButtonItem release];
+    }
+}
+- (void)setRightBarButtonSystemItem:(UIBarButtonSystemItem)rightBarButtonSystemItem
+{
+    if(rightBarButtonSystemItem<0)
+    {
+        self.navigationItem.leftBarButtonItem=nil;
+    }
+    else
+    {
+        UIBarButtonItem* rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(rightBarButtonItemClick:)];
+        self.navigationItem.leftBarButtonItem=rightBarButtonItem;
+        [rightBarButtonItem release];
     }
 }
 
@@ -55,16 +72,6 @@
     [messageCenter removeObserver:self];
     LSLOG(@"控制器销毁%@",[self class]);
     [super dealloc];
-}
-
-- (id)init
-{
-    self=[super init];
-    if(self!=nil)
-    {
-        _isShowBackBarButton=YES;
-    }
-    return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -99,25 +106,6 @@
     [window bringSubviewToFront:hud];
     [hud release];
 #endif
-    
-    if(_isShowBackBarButton)
-    {
-        //返回按钮
-        UIButton* backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        backButton.frame = CGRectMake(0, 0, 51, 31);
-        backButton.backgroundColor = [UIColor clearColor];
-        [backButton setBackgroundImage:[UIImage lsImageNamed:@"nav_item_back.png"] forState:UIControlStateNormal];
-        [backButton setBackgroundImage:[UIImage lsImageNamed:@"nav_item_back_d.png"] forState:UIControlStateHighlighted];
-        [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        backButton.titleLabel.font = LSFont15;
-        [backButton setTitleEdgeInsets:UIEdgeInsetsMake(-1, 8, 0, 0)];
-        [backButton setTitle:@"返回" forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem* backBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
-        self.navigationItem.leftBarButtonItem=backBarButtonItem;
-        [backBarButtonItem release];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,37 +114,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if(_internetStatusRemindType==LSInternetStatusRemindTypeImage)
-    {
-        if(_nonInternetImageView==nil)
-        {
-            //断网提示
-            _nonInternetImageView=[[UIImageView alloc] init];
-            _nonInternetImageView.frame=CGRectMake(0.f, 0.f, self.view.width, self.view.height);
-            _nonInternetImageView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-            _nonInternetImageView.backgroundColor=[UIColor whiteColor];
-            _nonInternetImageView.contentMode=UIViewContentModeCenter;
-            _nonInternetImageView.image=[UIImage lsImageNamed:@"no_wifi.png"];
-            _nonInternetImageView.userInteractionEnabled=YES;
-            [self.view addSubview:_nonInternetImageView];
-            [_nonInternetImageView release];
-            _nonInternetImageView.hidden=YES;
-            
-            //断网提示手势
-            UITapGestureRecognizer* tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nonInternetImageViewTap:)];
-            [_nonInternetImageView addGestureRecognizer:tapGestureRecognizer];
-            [tapGestureRecognizer release];
-        }
-    }
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
     if(user.networkStatus==NotReachable)
     {
         [self networkStatusChanged:nil];
@@ -171,11 +131,16 @@
 }
 
 
-#pragma mark- 返回按钮的方法
-- (void)backButtonClick:(UIButton*)sender
+#pragma mark- 导航按钮的单击方法
+- (void)leftBarButtonItemClick:(UIBarButtonItem*)sender
 {
-    LSLOG(@"执行了父类backButtonClick方法");
+    LSLOG(@"执行了父类leftBarButtonItemClick方法");
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)rightBarButtonItemClick:(UIBarButtonItem*)sender
+{
+    LSLOG(@"执行了父类rightBarButtonItemClick方法");
 }
 
 
@@ -196,14 +161,9 @@
 
 
 #pragma mark- 网络状态的监视方法
-- (void)showNonInternetImageView
+- (void)alertNonInternet
 {
-    if (_nonInternetImageView)
-    {
-        //显示提示
-        _nonInternetImageView.hidden=NO;
-        [self.view bringSubviewToFront:_nonInternetImageView];
-    }
+    //提示当前无网络连接
 }
 - (void)networkStatusChanged:(NSNotification*)notification//网络类型变化判断
 {
@@ -212,108 +172,31 @@
         case NotReachable:
             LSLOG(@"当前无网络连接");
             
-            if(_internetStatusRemindType==LSInternetStatusRemindTypeImage)
+            if(self.view.window!=nil)
             {
                 //七秒显示无网络连接
-                [self performSelector:@selector(showNonInternetImageView) withObject:nil afterDelay:7.f];
+                [self performSelector:@selector(alertNonInternet) withObject:nil afterDelay:7.f];
             }
-            else if(_internetStatusRemindType==LSInternetStatusRemindTypeAlert)
-            {
-                [LSAlertView showWithView:self.view message:@"当前网络不可用" time:1.5];
-            }
-            else
-            {
-                //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                if(self.view.window!=nil)
-                {
-                    [self refreshBecauseInternet];
-                }
-            }
-            
             break;
         case ReachableViaWiFi:
             LSLOG(@"当前连接WIFI");
             
-            if(_internetStatusRemindType==LSInternetStatusRemindTypeImage)
-            {
-                if(_nonInternetImageView.hidden)
-                {
-                    //取消显示
-                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showNonInternetImageView) object:nil];
-                }
-                else
-                {
-                    //隐藏提示
-                    _nonInternetImageView.hidden=YES;
-                    [self.view sendSubviewToBack:_nonInternetImageView];
-                    //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                    if(self.view.window!=nil)
-                    {
-                        [self refreshBecauseInternet];
-                    }
-                }
-            }
-            else if(_internetStatusRemindType==LSInternetStatusRemindTypeNon)
-            {
-                //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                if(self.view.window!=nil)
-                {
-                    [self refreshBecauseInternet];
-                }
-            }
-            
+            //取消显示
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(alertNonInternet) object:nil];
             break;
         case ReachableViaWWAN:
             LSLOG(@"当前连接3G");
             
-            if(_internetStatusRemindType==LSInternetStatusRemindTypeImage)
-            {
-                if(_nonInternetImageView.hidden)
-                {
-                    //取消显示
-                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showNonInternetImageView) object:nil];
-                }
-                else
-                {
-                    //隐藏提示
-                    _nonInternetImageView.hidden=YES;
-                    [self.view sendSubviewToBack:_nonInternetImageView];
-                    //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                    if(self.view.window!=nil)
-                    {
-                        [self refreshBecauseInternet];
-                    }
-                }
-            }
-            else if(_internetStatusRemindType==LSInternetStatusRemindTypeNon)
-            {
-                //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                if(self.view.window!=nil)
-                {
-                    [self refreshBecauseInternet];
-                }
-            }
-            
+            //取消显示
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(alertNonInternet) object:nil];
             break;
         default:
             LSLOG(@"当前有网络连接状态未知");
             
-            if(_internetStatusRemindType==LSInternetStatusRemindTypeImage)
+            if(self.view.window!=nil)
             {
                 //七秒显示无网络连接
-                [self performSelector:@selector(showNonInternetImageView) withObject:nil afterDelay:7.f];
-            }
-            else if(_internetStatusRemindType==LSInternetStatusRemindTypeAlert)
-            {
-                [LSAlertView showWithView:self.view message:@"当前网络不可用" time:1.5];
-            }
-            else
-            {
-                //if(self==self.navigationController.topViewController && self.navigationController==self.navigationController.tabBarController.selectedViewController)
-                if(self.view.window!=nil)
-                {
-                    [self refreshBecauseInternet];
-                }
+                [self performSelector:@selector(alertNonInternet) withObject:nil afterDelay:7.f];
             }
     }
 }
@@ -329,89 +212,68 @@
 }
 
 #pragma mark- 设置右侧按钮
-- (void)setBarButtonItemWithImageName:(NSString *)imageName clickedImageName:(NSString *)clickedImageName isRight:(BOOL)isRight buttonType:(LSOtherButtonType)buttonType
+- (void)setBarButtonItemWithImageName:(NSString *)imageName isRight:(BOOL)isRight
 {
     if (self.navigationController==nil)
         return;
     else
     {
-        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag=buttonType;
-        button.frame = CGRectMake(0, 0, 56, 44);
-        button.backgroundColor = [UIColor clearColor];
-        [button setBackgroundImage:[UIImage lsImageNamed:imageName] forState:UIControlStateNormal];
-        if (clickedImageName)
-        {
-            [button setBackgroundImage:[UIImage lsImageNamed:clickedImageName] forState:UIControlStateHighlighted];
-        }
-        [button addTarget:self action:@selector(otherButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage lsImageNamed:imageName] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
         if (isRight)
         {
-            _rightButtonType=buttonType;
-            self.navigationItem.rightBarButtonItem = barButtonItem;
+            self.navigationItem.rightBarButtonItem = otherBarButtonItem;
         }
         else
         {
-            self.navigationItem.leftBarButtonItem = barButtonItem;
+            self.navigationItem.leftBarButtonItem = otherBarButtonItem;
         }
-        [barButtonItem release];
+        [otherBarButtonItem release];
     }
 }
-- (void)setBarButtonItemWithImageName:(NSString *)imageName clickedImageName:(NSString *)clickedImageName title:(NSString*)title isRight:(BOOL)isRight buttonType:(LSOtherButtonType)buttonType
+
+- (void)setBarButtonItemWithTitle:(NSString *)title isRight:(BOOL)isRight
+{
+    if (self.navigationController==nil)
+        return;
+    else
+    {
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
+        if (isRight)
+        {
+            self.navigationItem.rightBarButtonItem = otherBarButtonItem;
+        }
+        else
+        {
+            self.navigationItem.leftBarButtonItem = otherBarButtonItem;
+        }
+        [otherBarButtonItem release];
+    }
+}
+
+- (void)setBarButtonItemWithTitle:(NSString *)title imageName:(NSString *)imageName isRight:(BOOL)isRight
 {
     if (self.navigationController==nil)
         return;
     else
     {
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag=buttonType;
-        button.frame = CGRectMake(0, 0, 51, 31);
-        button.backgroundColor = [UIColor clearColor];
+        button.frame = CGRectMake(0.f, 0.f, 44.f+10.f, 31.f);
         [button setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:imageName] top:31 left:10 bottom:31 right:10]  forState:UIControlStateNormal];
+        button.titleLabel.adjustsFontSizeToFitWidth=YES;
+        button.titleLabel.font = LSFontTool;
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        button.titleLabel.font = LSFont15;
         [button setTitle:title forState:UIControlStateNormal];
         
-        if (clickedImageName)
-        {
-            [button setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:clickedImageName] top:31 left:10 bottom:31 right:10] forState:UIControlStateHighlighted];
-        }
-        [button addTarget:self action:@selector(otherButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
         if (isRight)
         {
-            _rightButtonType=buttonType;
-            self.navigationItem.rightBarButtonItem = barButtonItem;
+            self.navigationItem.rightBarButtonItem = otherBarButtonItem;
         }
         else
         {
-            self.navigationItem.leftBarButtonItem = barButtonItem;
+            self.navigationItem.leftBarButtonItem = otherBarButtonItem;
         }
-        [barButtonItem release];
-    }
-}
-- (void)otherButtonClick:(UIButton*)sender
-{
-    LSLOG(@"执行了父类otherButtonClick方法");
-    if(sender.tag==LSOtherButtonTypeChangeCity)
-    {
-        return;
-    }
-    
-    if(user.networkStatus==NotReachable)
-    {
-        if(sender.tag!=LSOtherButtonTypeNon)
-        {
-            _rightButtonType=sender.tag;
-            sender.tag=LSOtherButtonTypeNon;
-        }
-    }
-    else
-    {
-        sender.tag=_rightButtonType;
+        [otherBarButtonItem release];
     }
 }
 

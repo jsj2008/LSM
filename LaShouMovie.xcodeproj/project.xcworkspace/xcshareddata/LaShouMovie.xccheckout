@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>AE5D8A1F-0A10-470E-9158-9D8B3A016CAB</string>
+	<string>59132307-BB65-4A35-8ECB-A69E9D5AD9BB</string>
 	<key>IDESourceControlProjectName</key>
 	<string>LaShouMovie</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>C31DFE6A-7289-462A-BEAC-A277CDFAFEB5</key>
-		<string>https://github.com/Mr-LiXiangYu/LaShouMovie.git</string>
+		<key>4070FE1D-B283-4922-8D79-DE2C0196B13F</key>
+		<string>https://github.com/Mr-LiXiangYu/LSM.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>LaShouMovie.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>C31DFE6A-7289-462A-BEAC-A277CDFAFEB5</key>
+		<key>4070FE1D-B283-4922-8D79-DE2C0196B13F</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/Mr-LiXiangYu/LaShouMovie.git</string>
+	<string>https://github.com/Mr-LiXiangYu/LSM.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C31DFE6A-7289-462A-BEAC-A277CDFAFEB5</string>
+	<string>4070FE1D-B283-4922-8D79-DE2C0196B13F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C31DFE6A-7289-462A-BEAC-A277CDFAFEB5</string>
+			<string>4070FE1D-B283-4922-8D79-DE2C0196B13F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>LaShouMovie</string>
 		</dict>

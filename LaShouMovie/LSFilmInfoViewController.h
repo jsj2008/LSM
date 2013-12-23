@@ -13,7 +13,14 @@
 #import "LSSinaWBAuthViewController.h"
 #import "LSQQWBAuthViewController.h"
 
-@interface LSFilmInfoViewController : LSTableViewController<LSFilmInfoStillCellDelegate,LSFilmInfoFooterViewDelegate,UIActionSheetDelegate,LSSinaWBAuthViewControllerDelegate,LSQQWBAuthViewControllerDelegate>
+@interface LSFilmInfoViewController : LSTableViewController
+<
+LSFilmInfoStillCellDelegate,
+LSFilmInfoFooterViewDelegate,
+UIActionSheetDelegate,
+LSSinaWBAuthViewControllerDelegate,
+LSQQWBAuthViewControllerDelegate
+>
 {
     LSFilm* _film;
 

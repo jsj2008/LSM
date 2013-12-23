@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 #import "LSCinema.h"
 
 @protocol LSCinemaInfoInfoCellDelegate;
@@ -27,6 +27,7 @@
 
 @protocol LSCinemaInfoInfoCellDelegate <NSObject>
 
+@required
 - (void)LSCinemaInfoInfoCell:(LSCinemaInfoInfoCell*)cinemaInfoInfoCell didClickMapButton:(UIButton*)mapButton;
 - (void)LSCinemaInfoInfoCell:(LSCinemaInfoInfoCell*)cinemaInfoInfoCell didClickPhoneButton:(UIButton*)phoneButton;
 

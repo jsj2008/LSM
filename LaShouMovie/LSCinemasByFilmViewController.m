@@ -10,17 +10,8 @@
 
 #import "LSCinema.h"
 #import "LSCinemaCell.h"
-#import "LSSchedulesByFilmCinemaViewController.h"
+#import "LSFilmsSchedulesByCinemaViewController.h"
 #import "LSNothingCell.h"
-
-typedef enum
-{
-    LSIndexMy=0,
-    LSIndexSeat=1,
-    LSIndexGroup=2,
-    LSIndexSeatGroup=3,
-    LSIndexNon=4
-}LSIndex;
 
 @interface LSCinemasByFilmViewController ()
 
@@ -70,12 +61,12 @@ typedef enum
     //添加通知
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmCinemasByFilmID object:nil];
     
-    _cinemaStatusView=[[LSCinemaStatusView alloc] initWithFrame:CGRectMake(0, 44.f, self.view.width, 44.f)];
+    _cinemaStatusView=[[LSCinemaStatusView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f, self.view.width, 44.f)];
     _cinemaStatusView.delegate=self;
     [self.view addSubview:_cinemaStatusView];
     [_cinemaStatusView release];
     
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 44.f+44.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-44.f)) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f+44.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-44.f)) style:UITableViewStylePlain];
     _tableView.showsVerticalScrollIndicator=NO;
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     _tableView.delegate=self;
@@ -210,7 +201,7 @@ typedef enum
                     [_selectMArray sortUsingSelector:@selector(distanceSort:)];
                 }
 
-                //可以首先刷新视图
+                //先刷新视图
                 dispatch_async(dispatch_get_main_queue(),^{
                     
                     [_tableView reloadData];
@@ -219,22 +210,22 @@ typedef enum
                 
                 NSMutableDictionary* seatDistrictMDic=[NSMutableDictionary dictionaryWithCapacity:0];
                 //可订座影院位置数组
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeat])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeat])
                 {
                     [seatDistrictMDic setObject:[NSNumber numberWithInt:[[seatDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup])
                 {
                     [seatDistrictMDic setObject:[NSNumber numberWithInt:[[seatDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
                 
                 NSMutableDictionary* groupDistrictMDic=[NSMutableDictionary dictionaryWithCapacity:0];
                 //可团购影院位置数组
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexGroup])
                 {
                     [groupDistrictMDic setObject:[NSNumber numberWithInt:[[groupDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup])
                 {
                     [groupDistrictMDic setObject:[NSNumber numberWithInt:[[groupDistrictMDic objectForKey:cinema.districtName] intValue]+1] forKey:cinema.districtName];
                 }
@@ -267,20 +258,20 @@ typedef enum
     
     if(_cinemaStatus==LSCinemaStatusSeat)
     {
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeat]];
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeat]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup]];
     }
     else if(_cinemaStatus==LSCinemaStatusGroup)
     {
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexGroup]];
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexGroup]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup]];
     }
     else
     {
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeat]];
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexGroup]];
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
-        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexNon]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeat]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexGroup]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup]];
+        [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexNon]];
     }
     
     //如果没有影院，添加字符串占位
@@ -325,19 +316,19 @@ typedef enum
         {
             if(district==nil)
             {
-                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeat]];
-                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeat]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup]];
             }
             else
             {
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeat])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeat])
                 {
                     if([cinema.districtName isEqualToString:district])
                     {
                         [_selectMArray addObject:cinema];
                     }
                 }
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup])
                 {
                     if([cinema.districtName isEqualToString:district])
                     {
@@ -350,19 +341,19 @@ typedef enum
         {
             if(district==nil)
             {
-                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexGroup]];
-                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSIndexSeatGroup]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexGroup]];
+                [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup]];
             }
             else
             {
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexGroup])
                 {
                     if([cinema.districtName isEqualToString:district])
                     {
                         [_selectMArray addObject:cinema];
                     }
                 }
-                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSIndexSeatGroup])
+                for (LSCinema* cinema in [_cinemaMArray objectAtIndex:LSCinemaArrayIndexSeatGroup])
                 {
                     if([cinema.districtName isEqualToString:district])
                     {
@@ -398,7 +389,7 @@ typedef enum
         //如果没有影院，添加字符串占位
         if(_selectMArray.count==0)
         {
-            [_selectMArray addObject:@"没有影院"];
+            [_selectMArray addObject:@"暂无影院"];
         }
         else
         {
@@ -421,7 +412,7 @@ typedef enum
     {
         int sections=0;
         //如果有常去影院
-        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count)
         {
             sections++;
         }
@@ -439,10 +430,10 @@ typedef enum
     LSPositionSectionHeader* positionSectionHeader = [[[LSPositionSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
     if (section == 0)
     {
-        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count)
         {
             positionSectionHeader.positionSectionHeaderType=LSPositionSectionHeaderTypeUsual;
-            positionSectionHeader.title=@"常去的影院";
+            positionSectionHeader.title=@"常去影院";
         }
         else
         {
@@ -465,9 +456,9 @@ typedef enum
     int count=0;
     if(section==0)
     {
-        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count)
         {
-            count=((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count;
+            count=((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count;
         }
         else
         {
@@ -502,9 +493,9 @@ typedef enum
     LSCinema* cinema=nil;
     if(indexPath.section==0)
     {
-        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count)
         {
-            cinema=[[_cinemaMArray objectAtIndex:LSIndexMy] objectAtIndex:indexPath.row];
+            cinema=[[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy] objectAtIndex:indexPath.row];
         }
         else
         {
@@ -554,15 +545,13 @@ typedef enum
         return;
     }
     
-    LSSchedulesByFilmCinemaViewController* schedulesByFilmCinemaViewController=[[LSSchedulesByFilmCinemaViewController alloc] init];
-    schedulesByFilmCinemaViewController.film=_film;
-    
+    LSFilmsSchedulesByCinemaViewController* filmsSchedulesByCinemaViewController=[[LSFilmsSchedulesByCinemaViewController alloc] init];
     LSCinema* cinema=nil;
     if(indexPath.section==0)
     {
-        if(((NSArray*)[_cinemaMArray objectAtIndex:LSIndexMy]).count)
+        if(((NSArray*)[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy]).count)
         {
-            cinema=[[_cinemaMArray objectAtIndex:LSIndexMy] objectAtIndex:indexPath.row];
+            cinema=[[_cinemaMArray objectAtIndex:LSCinemaArrayIndexMy] objectAtIndex:indexPath.row];
         }
         else
         {
@@ -573,11 +562,10 @@ typedef enum
     {
         cinema=[_selectMArray objectAtIndex:indexPath.row];
     }
-    
-    schedulesByFilmCinemaViewController.cinema=cinema;
-    schedulesByFilmCinemaViewController.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:schedulesByFilmCinemaViewController animated:YES];
-    [schedulesByFilmCinemaViewController release];
+    filmsSchedulesByCinemaViewController.cinema=cinema;
+    filmsSchedulesByCinemaViewController.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:filmsSchedulesByCinemaViewController animated:YES];
+    [filmsSchedulesByCinemaViewController release];
 }
 
 @end

@@ -6,24 +6,21 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
+#import "LSGroup.h"
 
-@protocol LSCinemaInfoGroupCellDelegate;
-@interface LSCinemaInfoGroupCell : LSTableViewCell<UITableViewDelegate,UITableViewDataSource>
+@interface LSCinemaInfoGroupCell : LSTableViewCell
 {
-    NSArray* _groupArray;
-    UITableView* _groupTableView;
-    NSTimer* _timer;
-    
-    id<LSCinemaInfoGroupCellDelegate> _delegate;
+    UIImageView* _iconImageView;
+    NSString* _title;
+    CGFloat _topRadius;
+    CGFloat _bottomRadius;
+    BOOL _isBottomLine;
 }
-@property(nonatomic,retain) NSArray* groupArray;
-@property(nonatomic,assign) id<LSCinemaInfoGroupCellDelegate> delegate;
-
-@end
-
-@protocol LSCinemaInfoGroupCellDelegate <NSObject>
-
-- (void)LSCinemaInfoGroupCell:(LSCinemaInfoGroupCell*)cinemaInfoGroupCell didSelectRowAtIndexPath:(NSInteger)indexPath;
+@property(nonatomic,retain) UIImageView* iconImageView;
+@property(nonatomic,retain) NSString* title;
+@property(nonatomic,assign) CGFloat topRadius;
+@property(nonatomic,assign) CGFloat bottomRadius;
+@property(nonatomic,assign) BOOL isBottomLine;//是否显示下方的线条
 
 @end

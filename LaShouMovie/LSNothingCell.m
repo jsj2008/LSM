@@ -17,11 +17,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor=[UIColor clearColor];
-        
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
     }
     return self;
 }
@@ -35,17 +30,10 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    [self drawRoundRectangleInRect:rect topRadius:0.f bottomRadius:0.f isBottomLine:YES fillColor:[UIColor whiteColor] strokeColor:[UIColor whiteColor] borderWidth:0.f];
-        
-    [self drawLineAtStartPointX:0 y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorLineLightGrayColor lineWidth:1];
+    [self drawRectangleInRect:rect borderWidth:0.f fillColor:LSColorWhite strokeColor:LSColorWhite];
 
-    if(_title!=nil)
-    {
-        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-        CGSize size=[_title sizeWithFont:LSFont17];
-        [_title drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont17];
-    }
+    CGSize size=[_title sizeWithAttributes:[LSAttribute attributeFont:LSFontRemark]];
+    [_title drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withAttributes:[LSAttribute attributeFont:LSFontRemark color:LSColorTextGray]];
 }
 
 @end

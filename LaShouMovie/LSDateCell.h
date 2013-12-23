@@ -10,10 +10,10 @@
 
 @interface LSDateCell : LSTableViewCell
 {
-    NSString* _time;
+    NSString* _title;
     BOOL _isSelect;
 }
-@property(nonatomic,retain) NSString* time;
+@property(nonatomic,retain) NSString* title;
 @property(nonatomic,assign) BOOL isSelect;
 
 @end

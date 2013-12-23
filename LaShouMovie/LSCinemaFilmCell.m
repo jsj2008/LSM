@@ -10,24 +10,13 @@
 
 @implementation LSCinemaFilmCell
 
-@synthesize filmImageView=_filmImageView;
+@synthesize isSelect=_isSelect;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor=[UIColor clearColor];
-        self.clipsToBounds=NO;
-        self.selectionStyle=UITableViewCellSelectionStyleNone;
-        
-        CGRect rect=UIEdgeInsetsInsetRect(self.contentView.frame, UIEdgeInsetsMake(3, 3, 3, 3));
-        _filmImageView=[[UIImageView alloc] init];
-        _filmImageView.frame=rect;
-        _filmImageView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        [self.contentView addSubview:_filmImageView];
-        [_filmImageView release];
     }
     return self;
 }
@@ -37,6 +26,22 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.frame=CGRectInset(self.contentView.frame, 10.f, 5.f);
+    
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    if(_isSelect)
+    {
+        [self drawRectangleInRect:CGRectInset(rect, 7.f, 2.f) borderWidth:0.f fillColor:LSColorButtonNormalRed strokeColor:LSColorButtonNormalRed];
+        [[UIImage lsImageNamed:@""] drawInRect:CGRectMake((rect.size.width-7.f)/2, rect.size.height-7.f, 7.f, 7.f)];
+    }
 }
 
 @end

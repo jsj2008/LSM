@@ -7,20 +7,20 @@
 //
 
 #import "LSCinemaInfoGroupCell.h"
-#import "LSGroup.h"
-#import "LSCinemaGroupCell.h"
-
-#define timerInterval 3.0
+#define gap 10.f
 
 @implementation LSCinemaInfoGroupCell
 
-@synthesize groupArray=_groupArray;
-@synthesize delegate=_delegate;
+@synthesize iconImageView=_iconImageView;
+@synthesize title=_title;
+@synthesize topRadius=_topRadius;
+@synthesize bottomRadius=_bottomRadius;
+@synthesize isBottomLine=_isBottomLine;
 
 #pragma mark- 生命周期
 - (void)dealloc
 {
-    self.groupArray=nil;
+    self.title=nil;
     [super dealloc];
 }
 
@@ -29,24 +29,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
-        
-        _groupTableView=[[UITableView alloc] init];
-        _groupTableView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        _groupTableView.backgroundColor=[UIColor clearColor];
-        _groupTableView.backgroundView=nil;
-        _groupTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-        _groupTableView.pagingEnabled=YES;
-        _groupTableView.showsVerticalScrollIndicator=NO;
-        _groupTableView.delegate=self;
-        _groupTableView.dataSource=self;
-        [self addSubview:_groupTableView];
-        [_groupTableView release];
-        
-        _timer=[NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(timerToScroll) userInfo:nil repeats:YES];
+        _iconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_iconImageView];
+        [_iconImageView release];
     }
     return self;
 }
@@ -58,62 +43,22 @@
     // Configure the view for the selected state
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    [self drawRectangleInRect:CGRectInset(rect, gap, 0.f) borderWidth:0.f fillColor:LSColorBackgroundGray strokeColor:LSColorBackgroundGray topRadius:_topRadius bottomRadius:_bottomRadius];
+    if(_isBottomLine)
+    {
+        [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorBlack lineWidth:1.f];
+    }
+    
+    CGRect titleRect=[_title boundingRectWithSize:CGSizeMake(rect.size.width-gap*2-30.f-gap-gap*2, INT32_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontCinemaGroup] context:nil];
+    [_title drawInRect:CGRectMake(gap*2+30.f+gap, (rect.size.height-titleRect.size.height)/2, titleRect.size.width, titleRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaGroup lineBreakMode:NSLineBreakByTruncatingTail]];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _groupTableView.frame=CGRectMake(0.f, 0.f, self.width, self.height);
-    [_groupTableView reloadData];
-}
-
-#pragma mark- 定时滚动广告
-- (void)timerToScroll
-{
-    if(_groupArray.count>1)
-    {
-        int currentRow=[_groupTableView indexPathForCell:_groupTableView.visibleCells.lastObject].row;
-        [_groupTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:currentRow+1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-}
-
-
-#pragma mark- UITableView的委托方法
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _groupArray.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return self.height;
-}
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    LSCinemaGroupCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaGroupCell"];
-    if(cell==nil)
-    {
-        cell=[[[LSCinemaGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaGroupCell"] autorelease];
-    }
-    LSGroup* group=[_groupArray objectAtIndex:indexPath.row];
-    cell.group=group;
-    [cell setNeedsDisplay];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if([_delegate respondsToSelector:@selector(LSCinemaInfoGroupCell: didSelectRowAtIndexPath:)])
-    {
-        [_delegate LSCinemaInfoGroupCell:self didSelectRowAtIndexPath:indexPath.row];
-    }
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(scrollView.contentOffset.y==scrollView.contentSize.height-self.height)
-    {
-        scrollView.contentOffset=CGPointMake(scrollView.contentOffset.x, 0);
-    }
+    _iconImageView.frame=CGRectMake(20.f, (self.height-30.f)/2, 30.f, 30.f);
 }
 
 @end

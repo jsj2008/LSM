@@ -125,13 +125,14 @@
 - (void)drawLineAtStartPointX:(CGFloat)x1 y:(CGFloat)y1 endPointX:(CGFloat)x2 y:(CGFloat)y2 strokeColor:(UIColor *)strokeColor lineWidth:(CGFloat)lineWidth
 {
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    
-    CGContextBeginPath(contextRef);//准备画线
-    CGContextMoveToPoint(contextRef, x1, y1-lineWidth);//设置起始点
-    CGContextAddLineToPoint(contextRef, x2, y2-lineWidth);//设置结束点
-    CGContextSetStrokeColorWithColor(contextRef, strokeColor.CGColor);//设置画笔颜色
-    if(lineWidth!=0)
+    if(lineWidth>0)
         CGContextSetLineWidth(contextRef, lineWidth);
+    else
+        CGContextSetLineWidth(contextRef, 1.f);
+    CGContextBeginPath(contextRef);//准备画线
+    CGContextMoveToPoint(contextRef, x1-lineWidth, y1-lineWidth);//设置起始点
+    CGContextAddLineToPoint(contextRef, x2-lineWidth, y2-lineWidth);//设置结束点
+    CGContextSetStrokeColorWithColor(contextRef, strokeColor.CGColor);//设置画笔颜色
     CGContextStrokePath(contextRef);//上色
 }
 

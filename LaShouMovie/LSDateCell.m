@@ -10,7 +10,7 @@
 
 @implementation LSDateCell
 
-@synthesize time=_time;
+@synthesize title=_title;
 @synthesize isSelect=_isSelect;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -18,10 +18,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle=UITableViewCellSelectionStyleNone;
-        self.clipsToBounds=YES;
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor=[UIColor clearColor];
     }
     return self;
 }
@@ -35,23 +31,20 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
     if (_isSelect)
     {
-        [self drawRoundRectangleInRect:CGRectMake(1.f, 1.f, rect.size.width-2.f, rect.size.height-2.f)  topRadius:0.f bottomRadius:0.f isBottomLine:YES fillColor:LSColorBlackRedColor strokeColor:LSColorBlackRedColor borderWidth:0.f];
-
-        CGContextSetFillColorWithColor(contextRef, [UIColor whiteColor].CGColor);
+        [self drawRectangleInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height) borderWidth:0.f fillColor:LSColorButtonNormalRed strokeColor:LSColorButtonNormalRed];
     }
     else
     {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"date_sel_bg.png"] top:21 left:5 bottom:21 right:5]  drawInRect:rect];
+        [self drawRectangleInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height) borderWidth:0.f fillColor:LSColorBackgroundGray strokeColor:LSColorBackgroundGray];
         
-        CGContextRef contextRef = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
+        [self drawLineAtStartPointX:0.f y:0.f endPointX:0.f y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:1.f];
+        [self drawLineAtStartPointX:rect.size.width y:0.f endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:1.f];
     }
-    
-    CGSize size=[_time sizeWithFont:LSFont14];
-    [_time drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont14];
+
+    CGSize size=[_title sizeWithAttributes:[LSAttribute attributeFont:LSFontScheduleDate]];
+    [_title drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleDate color:LSColorTextGray]];
 }
 
 @end

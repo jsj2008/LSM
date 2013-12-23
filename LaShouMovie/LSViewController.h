@@ -9,26 +9,28 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface LSViewController : UIViewController<UIAlertViewDelegate,UIGestureRecognizerDelegate>
+@interface LSViewController : UIViewController<UIGestureRecognizerDelegate>
 {
     UIImageView* _nonInternetImageView;
     MBProgressHUD* hud;
     LSUser* user;
     LSMessageCenter* messageCenter;
-    BOOL _isShowBackBarButton;
     LSInternetStatusRemindType _internetStatusRemindType;
-    LSOtherButtonType _rightButtonType;
+    UIBarButtonSystemItem _leftBarButtonSystemItem;
+    UIBarButtonSystemItem _rightBarButtonSystemItem;
 }
-@property(nonatomic,assign) BOOL isShowBackBarButton;
+@property(nonatomic,assign) UIBarButtonSystemItem leftBarButtonSystemItem;
+@property(nonatomic,assign) UIBarButtonSystemItem rightBarButtonSystemItem;
 @property(nonatomic,assign) LSInternetStatusRemindType internetStatusRemindType;
 
-- (void)setBarButtonItemWithImageName:(NSString *)imageName clickedImageName:(NSString *)clickedImageName isRight:(BOOL)isRight buttonType:(LSOtherButtonType)buttonType;
-- (void)setBarButtonItemWithImageName:(NSString *)imageName clickedImageName:(NSString *)clickedImageName title:(NSString*)title isRight:(BOOL)isRight buttonType:(LSOtherButtonType)buttonType;
+- (void)setBarButtonItemWithImageName:(NSString *)imageName isRight:(BOOL)isRight;
+- (void)setBarButtonItemWithTitle:(NSString *)title isRight:(BOOL)isRight;
+- (void)setBarButtonItemWithTitle:(NSString *)title imageName:(NSString *)imageName isRight:(BOOL)isRight;
 
-//此方法可重写
-- (void)backButtonClick:(UIButton*)sender;
+//可重载方法
+- (void)leftBarButtonItemClick:(UIBarButtonItem*)sender;
+- (void)rightBarButtonItemClick:(UIBarButtonItem*)sender;
 - (void)refreshBecauseInternet;
 - (BOOL)checkIsNotEmpty:(id)object;//检查数据是否不为空
-- (void)otherButtonClick:(UIButton*)sender;
 
 @end

@@ -20,11 +20,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundView=nil;
-        self.backgroundColor=[UIColor clearColor];
-        self.clipsToBounds=YES;
-        self.selectionStyle=UITableViewCellSelectionStyleNone;
-
         _switch=[[UISwitch alloc] initWithFrame:CGRectZero];
         [_switch addTarget:self action:@selector(switchValueChange:) forControlEvents:UIControlEventValueChanged];
         [self addSubview:_switch];

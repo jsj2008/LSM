@@ -8,11 +8,14 @@
 
 #import "LSCinemaInfoFilmCell.h"
 #import "LSCinemaFilmCell.h"
+#import "LSFilm.h"
+
+#define gap 10.f
 
 @implementation LSCinemaInfoFilmCell
 
 @synthesize filmArray=_filmArray;
-@synthesize animated=_animated;
+@synthesize assignIndex=_assignIndex;
 @synthesize delegate=_delegate;
 
 #pragma mark- 生命周期
@@ -34,22 +37,20 @@
         self.backgroundColor=[UIColor clearColor];
         
         _filmTableView=[[UITableView alloc] initWithFrame:CGRectZero];
-        _filmTableView.backgroundColor=[UIColor clearColor];
-        _filmTableView.backgroundView=nil;
         _filmTableView.delegate=self;
         _filmTableView.dataSource=self;
         _filmTableView.showsVerticalScrollIndicator=NO;
-        _filmTableView.pagingEnabled=NO;
+        _filmTableView.pagingEnabled=YES;
         _filmTableView.clipsToBounds=YES;
         _filmTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
         _filmTableView.transform=CGAffineTransformMakeRotation(-M_PI/2);//将视图旋转90
         [self.contentView addSubview:_filmTableView];
         [_filmTableView release];
         
-        _filmInfoView=[[LSFilmInfoView alloc] initWithFrame:CGRectZero];
-        _filmInfoView.delegate=self;
-        [self.contentView addSubview:_filmInfoView];
-        [_filmInfoView release];
+        UIImageView* iconImageView=[[UIImageView alloc] initWithFrame:CGRectZero];
+        iconImageView.image=[UIImage lsImageNamed:@""];
+        [self addSubview:iconImageView];
+        [iconImageView release];
     }
     return self;
 }
@@ -63,105 +64,95 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [[UIImage lsImageNamed:@"cinema_films_bg.png"] drawAsPatternInRect:CGRectMake(0, 0, rect.size.width, rect.size.height)];
+    CGFloat contentX = gap;
+    
+    LSFilm* film=[_filmArray objectAtIndex:_assignIndex];
+    CGRect nameRect = [film.filmName boundingRectWithSize:CGSizeMake(150.f, INT32_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontFilmName] context:nil];
+    [film.filmName drawInRect:CGRectMake(contentX, (rect.size.height-nameRect.size.height)/2, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontFilmName lineBreakMode:NSLineBreakByTruncatingTail]];
+    
+    contentX+=(nameRect.size.width+5.f);
+    [[NSString stringWithFormat:@"%@分",film.grade] drawInRect:CGRectMake(contentX, (rect.size.height-nameRect.size.height)/2, 50.f, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontFilmName color:LSColorTextRed]];
+    
+    [@"影片详情" drawInRect:CGRectMake(210.f, (rect.size.height-nameRect.size.height)/2, 80.f, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontFilmName color:LSColorTextGray]];
+    
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(290.f, (rect.size.height-20.f)/2, 20.f, 20.f)];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    _filmTableView.center=CGPointMake(self.width/2, self.height/2-46/2-5);
-    _filmTableView.bounds=CGRectMake(0, 0, self.height-46-20, self.width-30);
+    _filmTableView.center=CGPointMake(self.width/2, (self.height-44.f)/2);
+    _filmTableView.bounds=CGRectMake(0, 0, self.height-44.f, self.width);
     [_filmTableView reloadData];
     
-    _filmInfoView.frame=CGRectMake(10, 105, self.width-20, 46);
-
-    if(_lastIndex==0)
-    {
-        _animated=NO;
-        [self howToScroll];
-    }
-    else
-    {
-        NSIndexPath* indexPath=[NSIndexPath indexPathForRow:_lastIndex inSection:0];
-        [_filmTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-    }
-}
-
-#pragma mark- LSFilmInfoView的委托方法
-- (void)LSFilmInfoView:(LSFilmInfoView *)filmInfoView didClickForFilm:(LSFilm *)film
-{
-    if([_delegate respondsToSelector:@selector(LSCinemaInfoGroupCell: didSelectRowAtIndexPath:)])
-    {
-        [_delegate LSCinemaInfoFilmCell:self didSelectRowAtIndexPath:[_filmArray indexOfObject:film]];
-    }
+    [_filmTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_assignIndex inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
 #pragma mark- UITableView的委托方法
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return (self.width-63.f)/2;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return (self.width-63.f)/2;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _filmArray.count+4;
+    return _filmArray.count;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row<=1 || indexPath.row>=_filmArray.count+2)
-    {
-        return 70;
-    }
-    return 70;
+    return 63.f;
 }
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row<=1 || indexPath.row>=_filmArray.count+2)
-    {
-        UITableViewCell* cell=[tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-        if(cell==nil)
-        {
-            cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"] autorelease];
-            cell.contentView.transform=CGAffineTransformMakeRotation(M_PI/2);//将视图旋转90
-            cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            cell.contentView.backgroundColor=[UIColor clearColor];
-            cell.backgroundColor=[UIColor clearColor];
-        }
-        return cell;
-    }
-    
     LSCinemaFilmCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCinemaFilmCell"];
     if(cell==nil)
     {
         cell=[[[LSCinemaFilmCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCinemaFilmCell"] autorelease];
         cell.contentView.transform=CGAffineTransformMakeRotation(M_PI/2);//将视图旋转90
     }
-    cell.filmImageView.image=LSPlaceholderImage;
-    
+
     if(!tableView.isDragging && !tableView.isDecelerating)
     {
-        LSFilm* film=[_filmArray objectAtIndex:indexPath.row-2];
-//        LSFilm* film=[_filmArray objectAtIndex:indexPath.row];
-        [cell.filmImageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
+        LSFilm* film=[_filmArray objectAtIndex:indexPath.row];
+        [cell.imageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
     }
     return cell;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row>1 && indexPath.row<_filmArray.count+2)
+    if(_assignIndex!=indexPath.row)
     {
-        if(_lastIndex!=indexPath.row)
+        [_filmTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        
+        _assignIndex=indexPath.row;
+        [_delegate LSCinemaInfoFilmCell:self didChangeRowToIndexPath:_assignIndex];
+        
+        for(LSCinemaFilmCell* cell in tableView.visibleCells)
         {
-            _lastIndex=indexPath.row;
-            [self doScroll];
+            cell.isSelect=NO;
+            [cell setNeedsDisplay];
         }
-        else
-        {
-            //如果用户重复点击
-            if([_delegate respondsToSelector:@selector(LSCinemaInfoGroupCell: didSelectRowAtIndexPath:)])
-            {
-                [_delegate LSCinemaInfoFilmCell:self didSelectRowAtIndexPath:indexPath.row-2];
-            }
-        }
+        
+        LSCinemaFilmCell* cell=(LSCinemaFilmCell*)[tableView cellForRowAtIndexPath:indexPath];
+        cell.isSelect=YES;
+        [cell setNeedsDisplay];
+    }
+    else
+    {
+        //如果用户重复点击
+        [_delegate LSCinemaInfoFilmCell:self didSelectRowAtIndexPath:indexPath.row];
     }
 }
 
@@ -170,75 +161,28 @@
     if(!decelerate)//是否有减速,没有减速说明是匀速拖动
     {
         [self soapSmooth];
-        
-        [self howToScroll];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self soapSmooth];
-    
-    [self howToScroll];
 }
 
-#pragma mark- 计算偏移量
-- (void)howToScroll
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    if(_filmTableView.contentOffset.y>_lastContentoffsetY)//看后面的
+    _assignIndex=[_filmTableView indexPathForSelectedRow].row;
+    [_delegate LSCinemaInfoFilmCell:self didChangeRowToIndexPath:_assignIndex];
+    
+    for(LSCinemaFilmCell* cell in _filmTableView.visibleCells)
     {
-        if(_filmTableView.contentOffset.y-_lastContentoffsetY>=35 && _filmTableView.contentOffset.y-_lastContentoffsetY<105)
-        {
-            _lastIndex++;
-        }
-        else
-        {
-            _lastIndex+=(int)((_filmTableView.contentOffset.y-_lastContentoffsetY)/70);
-        }
-    }
-    else if(_filmTableView.contentOffset.y<_lastContentoffsetY)//看前面的
-    {
-        if(_lastContentoffsetY-_filmTableView.contentOffset.y>=35 && _lastContentoffsetY-_filmTableView.contentOffset.y<105)
-        {
-            _lastIndex--;
-        }
-        else
-        {
-            _lastIndex-=(int)((_lastContentoffsetY-_filmTableView.contentOffset.y)/70);
-        }
+        cell.isSelect=NO;
+        [cell setNeedsDisplay];
     }
     
-    if(_lastIndex<2)
-    {
-        _lastIndex=2;
-    }
-    else if(_lastIndex>_filmArray.count+1)
-    {
-        _lastIndex=_filmArray.count+1;
-    }
-    
-    [self doScroll];
-}
-- (void)doScroll
-{
-    [_filmTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_lastIndex inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:_animated];
-    _animated=YES;
-    
-    if(_filmArray.count>0)
-    {
-        LSFilm* film=[_filmArray objectAtIndex:_lastIndex-2];
-        _filmInfoView.film=film;
-        [_filmInfoView setNeedsDisplay];
-    }
-    
-    if(_lastContentoffsetY!=(_lastIndex-2+0.5)*70)
-    {
-        if([_delegate respondsToSelector:@selector(LSCinemaInfoFilmCell: didChangeRowToIndexPath:)])
-        {
-            [_delegate LSCinemaInfoFilmCell:self didChangeRowToIndexPath:_lastIndex-2];
-        }
-    }
-    _lastContentoffsetY=(_lastIndex-2+0.5)*70;
+    LSCinemaFilmCell* cell=(LSCinemaFilmCell*)[_filmTableView cellForRowAtIndexPath:[_filmTableView indexPathForSelectedRow]];
+    cell.isSelect=YES;
+    [cell setNeedsDisplay];
 }
 
 #pragma mark 肥皂滑代码实现
@@ -248,11 +192,8 @@
     for(LSCinemaFilmCell* cell in cellArray)
     {
         NSIndexPath* indexPath=[_filmTableView indexPathForCell:cell];
-        if(indexPath.row>1 && indexPath.row<_filmArray.count+2)
-        {
-            LSFilm* film=[_filmArray objectAtIndex:indexPath.row-2];
-            [cell.filmImageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
-        }
+        LSFilm* film=[_filmArray objectAtIndex:indexPath.row];
+        [cell.imageView setImageWithURL:[NSURL URLWithString:film.imageURL] placeholderImage:LSPlaceholderImage];
     }
 }
 

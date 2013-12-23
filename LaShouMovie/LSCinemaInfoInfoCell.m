@@ -8,9 +8,7 @@
 
 #import "LSCinemaInfoInfoCell.h"
 
-#define gapL 10.f
-#define basicWidth 200.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSCinemaInfoInfoCell
 
@@ -18,18 +16,15 @@
 
 + (CGFloat)heightForCinema:(LSCinema*)cinema
 {
-    CGFloat contentY=8.f;
+    CGFloat contentY=gap;
+    
+    CGRect nameRect=[cinema.cinemaName boundingRectWithSize:CGSizeMake(320.f-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
 
-    if (cinema.cinemaName)
-    {
-        CGSize size=[cinema.cinemaName sizeWithFont:LSFont17 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
-    if (cinema.address)
-    {
-        CGSize size=[cinema.address sizeWithFont:LSFont14 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
+    contentY+=(nameRect.size.height+gap);
+    
+    nameRect=[cinema.address boundingRectWithSize:CGSizeMake(320.f-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaInfo] context:nil];
+    
+    contentY+=(nameRect.size.height+gap);
     
     return contentY;
 }
@@ -45,20 +40,17 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor=[UIColor clearColor];
         
         _mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_mapButton setBackgroundImage:[UIImage lsImageNamed:@"cinema_info_map.png"] forState:UIControlStateNormal];
-        [_mapButton setBackgroundImage:[UIImage lsImageNamed:@"cinema_info_map_d.png"] forState:UIControlStateHighlighted];
+        [_mapButton setBackgroundImage:[UIImage lsImageNamed:@""] forState:UIControlStateNormal];
+        [_mapButton setBackgroundImage:[UIImage lsImageNamed:@""] forState:UIControlStateHighlighted];
         [_mapButton addTarget:self action:@selector(mapButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_mapButton];
         
         _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_phoneButton setBackgroundImage:[UIImage lsImageNamed:@"cinema_info_phone.png"] forState:UIControlStateNormal];
-        [_phoneButton setBackgroundImage:[UIImage lsImageNamed:@"cinema_info_phone_d.png"] forState:UIControlStateHighlighted];
+        [_phoneButton setBackgroundImage:[UIImage lsImageNamed:@""] forState:UIControlStateNormal];
+        [_phoneButton setBackgroundImage:[UIImage lsImageNamed:@""] forState:UIControlStateHighlighted];
         [_phoneButton addTarget:self action:@selector(phoneButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_phoneButton];
     }
@@ -82,46 +74,27 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRoundRectangleInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgGrayColor strokeColor:LSColorBgGrayColor borderWidth:0.f];
+    CGFloat contentX=gap;
+    CGFloat contentY=gap;
     
-    [self drawLineAtStartPointX:0 y:(rect.size.height-2.f) endPointX:rect.size.width y:(rect.size.height-2-6) strokeColor:LSColorLineWhiteColor lineWidth:0];
+    CGRect nameRect=[_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
+    [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaName]];
     
-    [self drawLineAtStartPointX:0 y:(rect.size.height-1.f) endPointX:rect.size.width y:(rect.size.height-1-6) strokeColor:LSColorLineGrayColor lineWidth:0];
+    contentY+=(nameRect.size.height+gap);
     
-    CGFloat contentY=8.f;
-    
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    if (_cinema.cinemaName)
-    {
-        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-        CGSize size=[_cinema.cinemaName sizeWithFont:LSFont17 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        [_cinema.cinemaName drawInRect:CGRectMake(gapL, contentY, size.width, size.height) withFont:LSFont17 lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
-    if (_cinema.address)
-    {
-        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-        CGSize size=[_cinema.address sizeWithFont:LSFont14 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        [_cinema.address drawInRect:CGRectMake(gapL, contentY, size.width, size.height) withFont:LSFont14 lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
+    nameRect=[_cinema.address boundingRectWithSize:CGSizeMake(rect.size.width-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaInfo] context:nil];
+    [_cinema.address drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaInfo]];
 }
 
 
 #pragma mark- 按钮单击方法
 - (void)mapButtonClick:(UIButton*)sender
 {
-    if([_delegate respondsToSelector:@selector(LSCinemaInfoInfoCell: didClickMapButton:)])
-    {
-        [_delegate LSCinemaInfoInfoCell:self didClickMapButton:sender];
-    }
+    [_delegate LSCinemaInfoInfoCell:self didClickMapButton:sender];
 }
 - (void)phoneButtonClick:(UIButton*)sender
 {
-    if([_delegate respondsToSelector:@selector(LSCinemaInfoInfoCell: didClickPhoneButton:)])
-    {
-        [_delegate LSCinemaInfoInfoCell:self didClickPhoneButton:sender];
-    }
+    [_delegate LSCinemaInfoInfoCell:self didClickPhoneButton:sender];
 }
 
 

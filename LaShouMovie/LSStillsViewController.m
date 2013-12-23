@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title=@"剧照";
+    self.title=@"海报";
     self.tableView.backgroundColor=[UIColor blackColor];
     
     self.tableView.bounds=CGRectMake(0.f, 0.f, self.view.height, self.view.width);
@@ -50,11 +50,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
+#pragma mark - UITableView的委托方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _film.stillArray.count;

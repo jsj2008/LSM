@@ -46,19 +46,24 @@ typedef enum
     
 } LSLoginType;
 
-#pragma mark- 视图右按钮类型
+#pragma mark- 影片列表样式
 typedef enum
 {
-    LSOtherButtonTypeNon           = 0,//无操作
-    LSOtherButtonTypeChangeDisplay = 1,//切换视图
-    LSOtherButtonTypeChangeCity    = 2,//切换位置
-    LSOtherButtonTypeMap           = 3,//显示地图
-    LSOtherButtonTypeShare         = 4,//分享
-    LSOtherButtonTypeRegister      = 5,//注册
-    LSOtherButtonTypeLogout        = 6,//注销
-    LSOtherButtonTypeDone          = 7//完成
+    LSFilmDisplayTypeList = 0,//海报样式
+    LSFilmDisplayTypePoster = 1//列表样式
     
-}LSOtherButtonType;
+} LSFilmDisplayType;
+
+#pragma mark- 影院数组index
+typedef enum
+{
+    LSCinemaArrayIndexMy=0,
+    LSCinemaArrayIndexSeat=1,
+    LSCinemaArrayIndexGroup=2,
+    LSCinemaArrayIndexSeatGroup=3,
+    LSCinemaArrayIndexNon=4
+    
+}LSCinemaArrayIndex;
 
 #pragma mark- 分享类型
 typedef enum
