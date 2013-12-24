@@ -43,8 +43,10 @@
     CGFloat contentX=gap;
     CGFloat contentY=gap;
 
-    [_schedule.startTime drawInRect:CGRectMake(contentX, contentY, 100.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleStartTime]];
-    [_schedule.expectEndTime drawInRect:CGRectMake(contentX, contentY+25.f, 100.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleStartTime]];
+    [_schedule.startTime drawInRect:CGRectMake(contentX, contentY, 100.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
+    [_schedule.expectEndTime drawInRect:CGRectMake(contentX, contentY+25.f, 100.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleSubtitle]];
+    
+    contentX=+100.f;
     
     NSString* text=nil;
     if(_schedule.dimensional==LSFilmDimensional2D)
@@ -59,35 +61,19 @@
     {
         text=[NSString stringWithFormat:@"%@",_schedule.language];
     }
+    [text drawInRect:CGRectMake(contentX, contentY, 140.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
+    [text drawInRect:CGRectMake(contentX, contentY+25.f, 140.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
     
-    if (_schedule.language)
-    {
-        
-        
-        CGSize size=[text sizeWithFont:LSFont15];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFontScheduleEndTime];
-    }
-    contentX+=75.f;
+    contentX+=140.f;
+
+    text = @"￥";
+    CGRect yRect=[text boundingRectWithSize:CGSizeMake(70.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontScheduleY] context:nil];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2, yRect.size.width, yRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleY color:LSColorTextRed]];
+
+    contentX+=yRect.size.width;
     
-    if (_schedule.hall.hallName!=nil)
-    {
-        CGSize size=[_schedule.hall.hallName sizeWithFont:LSFont15 constrainedToSize:CGSizeMake(70.f, rect.size.height) lineBreakMode:NSLineBreakByTruncatingTail];
-        [_schedule.hall.hallName drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, 70.f, size.height) withFont:LSFont15  lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentRight];
-    }
-    
-    
-    contentX=240.f;
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackRedColor.CGColor);
-    NSString* text = @"￥";
-    CGSize size=[text sizeWithFont:LSFont13];
-    [text drawInRect:CGRectMake(contentX,(rect.size.height-size.height)/2+2.f, size.width, size.height) withFont:LSFont13];
-    contentX+=size.width;
-    
-    text=[[NSString stringWithFormat:@"%.2f", _schedule.price] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
-    
-    [[UIImage lsImageNamed:@"cinemas_arrow.png"] drawInRect:CGRectMake(rect.size.width-30.f, (rect.size.height-15.f)/2, 10.f, 15.f)];
+    CGRect priceRect=[_schedule.price boundingRectWithSize:CGSizeMake(70.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontSchedulePrice] context:nil];
+    [_schedule.price drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2-(priceRect.size.height-yRect.size.height)/2, priceRect.size.width, priceRect.size.height) withFont:LSFont15];
 }
 
 @end

@@ -35,7 +35,7 @@
     NSString* _language;//语言
     LSHall* _hall;//放映厅
     NSString* _initialPrice;//原价
-    CGFloat _price;//终价
+    NSString* _price;//终价
     BOOL _isOnSale;//是否特价
     NSString* _startDate;//开始日期
     NSString* _startTime;//开始时间
@@ -49,7 +49,7 @@
 @property(nonatomic,retain) NSString* language;//语言
 @property(nonatomic,retain) LSHall* hall;;//放映厅
 @property(nonatomic,retain) NSString* initialPrice;//原价
-@property(nonatomic,assign) CGFloat price;//终价
+@property(nonatomic,retain) NSString* price;//终价
 @property(nonatomic,assign) BOOL isOnSale;//是否特价
 @property(nonatomic,retain) NSString* startDate;//开始日期
 @property(nonatomic,retain) NSString* startTime;//开始时间

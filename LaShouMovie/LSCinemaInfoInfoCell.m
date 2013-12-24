@@ -78,12 +78,12 @@
     CGFloat contentY=gap;
     
     CGRect nameRect=[_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
-    [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaName]];
+    [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaName color:LSColorWhite]];
     
     contentY+=(nameRect.size.height+gap);
     
     nameRect=[_cinema.address boundingRectWithSize:CGSizeMake(rect.size.width-gap-25.f-gap-25.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaInfo] context:nil];
-    [_cinema.address drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaInfo]];
+    [_cinema.address drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontCinemaInfo color:LSColorWhite]];
 }
 
 

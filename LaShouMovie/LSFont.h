@@ -59,8 +59,10 @@
 #define LSFontCinemaGroup           LSFont10
 
 #define LSFontScheduleDate          LSFont14
-#define LSFontScheduleStartTime     LSFont16
-#define LSFontScheduleEndTime       LSFont10
+#define LSFontScheduleTitle         LSFont16
+#define LSFontScheduleSubtitle      LSFont10
+#define LSFontScheduleY             LSFont10
+#define LSFontSchedulePrice         LSFont18
 
 #define LSFontScheduleCinemaName    LSFont18
 #define LSFontScheduleBold          LSFontBold16

@@ -40,7 +40,7 @@
             [hall release];
         }
         self.initialPrice=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"initialPrice"]];
-        self.price=[[safeDic objectForKey:@"price"] floatValue];
+        self.price=[[NSString stringWithFormat:@"%.2f", [[safeDic objectForKey:@"price"] floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
         self.isOnSale=[[safeDic objectForKey:@"campaignSign"] boolValue];
         self.startDate=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"startDate"]];
         self.startTime=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"startTime"]];
@@ -57,7 +57,7 @@
     self.language=nil;
     self.hall=nil;
     self.initialPrice=nil;
-//    self.price=nil;
+    self.price=nil;
 //    self.isOnSale=nil;
     self.startDate=nil;
     self.startTime=nil;
@@ -73,8 +73,8 @@
     [aCoder encodeObject:_language forKey:@"language"];
     [aCoder encodeObject:_hall forKey:@"hall"];
     [aCoder encodeObject:_initialPrice forKey:@"initialPrice"];
-    [aCoder encodeFloat:_price forKey:@"price"];
-    [aCoder encodeBool:_isOnSale forKey:@"isOnSalev"];
+    [aCoder encodeObject:_price forKey:@"price"];
+    [aCoder encodeBool:_isOnSale forKey:@"isOnSale"];
     [aCoder encodeObject:_startDate forKey:@"startDate"];
     [aCoder encodeObject:_startTime forKey:@"startTime"];
     [aCoder encodeObject:_expectEndTime forKey:@"expectEndTime"];
@@ -88,8 +88,8 @@
     self.language=[decoder decodeObjectForKey:@"language"];
     self.hall=[decoder decodeObjectForKey:@"hall"];
     self.initialPrice=[decoder decodeObjectForKey:@"initialPrice"];
-    self.price=[decoder decodeFloatForKey:@"price"];
-    self.isOnSale=[decoder decodeBoolForKey:@"isOnSalev"];
+    self.price=[decoder decodeObjectForKey:@"price"];
+    self.isOnSale=[decoder decodeBoolForKey:@"isOnSale"];
     self.startDate=[decoder decodeObjectForKey:@"startDate"];
     self.startTime=[decoder decodeObjectForKey:@"startTime"];
     self.expectEndTime=[decoder decodeObjectForKey:@"expectEndTime"];
