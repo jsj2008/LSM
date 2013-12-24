@@ -24,9 +24,9 @@
     NSArray* _sectionArray;//区信息(所有的区域)
     NSArray* _selectSeatArray;//选择的座位
     NSString* _originTotalPrice;//因为增加了优惠券，所以需要一个标记来记录最原始的价格
-    NSString* _totalPrice;//价格会随着选座变化
+    NSString* _totalPrice;//价格会随着选座变化。自动填充
     
-    NSArray* _couponArray;//使用优惠券
+    NSArray* _couponArray;//使用的优惠券
     NSString* _isUseCoupon;//是否使用优惠券
    
     /* 数据格式

@@ -8,7 +8,7 @@
 
 #import "LSSwitchScheduleCell.h"
 
-#define gapL 30
+#define gap 10.f
 
 @implementation LSSwitchScheduleCell
 
@@ -27,10 +27,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor= [UIColor clearColor];
     }
     return self;
 }
@@ -44,89 +40,42 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawLineAtStartPointX:20 y:rect.size.height endPointX:rect.size.width-20 y:rect.size.height strokeColor:LSColorBgRedYellowColor lineWidth:2];
+    [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorBlack lineWidth:1.f];
     
-    if(!_schedule)
-        return;
+    CGFloat contentX=gap;
+    CGFloat contentY=gap;
     
-    if (_isInitial)
+    [_schedule.startTime drawInRect:CGRectMake(contentX, contentY, 100.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
+    [_schedule.expectEndTime drawInRect:CGRectMake(contentX, contentY+25.f, 100.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleSubtitle]];
+    
+    contentX=+100.f;
+    
+    NSString* text=nil;
+    if(_schedule.dimensional==LSFilmDimensional2D)
     {
-        [self drawRoundRectangleInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgRedYellowColor strokeColor:LSColorBgRedYellowColor borderWidth:0.f];
+        text=[NSString stringWithFormat:@"%@ 2D",_schedule.language];
+    }
+    else if(_schedule.dimensional==LSFilmDimensional3D)
+    {
+        text=[NSString stringWithFormat:@"%@ 3D",_schedule.language];
     }
     else
     {
-        [self drawRoundRectangleInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgWhiteYellowColor strokeColor:LSColorBgWhiteYellowColor borderWidth:0.f];
+        text=[NSString stringWithFormat:@"%@",_schedule.language];
     }
+    [text drawInRect:CGRectMake(contentX, contentY, 140.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
+    [text drawInRect:CGRectMake(contentX, contentY+25.f, 140.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
     
-    CGFloat contentX=gapL;
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-    if (_schedule.startTime)
-    {
-        CGSize size=[_schedule.startTime sizeWithFont:LSFont15];
-        [_schedule.startTime drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
-    }
-    contentX+=50.f;//此处必须增加
+    contentX+=140.f;
     
-    if (_schedule.language!=nil)
-    {
-        NSString* text=nil;
-        if(_schedule.dimensional==LSFilmDimensional2D)
-        {
-            text=[NSString stringWithFormat:@"%@/2D",_schedule.language];
-        }
-        else if(_schedule.dimensional==LSFilmDimensional3D)
-        {
-            text=[NSString stringWithFormat:@"%@/3D",_schedule.language];
-        }
-        else
-        {
-            text=[NSString stringWithFormat:@"%@",_schedule.language];
-        }
-        
-        CGSize size=[text sizeWithFont:LSFont15];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
-    }
-    contentX+=75.f;
+    text = @"￥";
+    CGRect yRect=[text boundingRectWithSize:CGSizeMake(70.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontScheduleY] context:nil];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2, yRect.size.width, yRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleY color:LSColorTextRed]];
     
-    if (_schedule.hall.hallName!=nil)
-    {
-        CGSize size=[_schedule.hall.hallName sizeWithFont:LSFont15 constrainedToSize:CGSizeMake(70.f, rect.size.height) lineBreakMode:NSLineBreakByTruncatingTail];
-        [_schedule.hall.hallName drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, 70.f, size.height) withFont:LSFont15  lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentRight];
-    }
+    contentX+=yRect.size.width;
     
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackRedColor.CGColor);
-    
-    contentX=240.f;
-    NSString* text = @"￥";
-    CGSize size=[text sizeWithFont:LSFont13];
-    [text drawInRect:CGRectMake(contentX,(rect.size.height-size.height)/2+2.f, size.width, size.height) withFont:LSFont13 lineBreakMode:NSLineBreakByClipping];
-    contentX+=size.width;
-    
-    text = [[NSString stringWithFormat:@"%.2f", _schedule.price] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
-    
-    [[UIImage lsImageNamed:@"arrow_white.png"] drawInRect:CGRectMake(rect.size.width-30.f, (rect.size.height-15.f)/2, 10.f, 15.f)];
+    CGRect priceRect=[_schedule.price boundingRectWithSize:CGSizeMake(70.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontSchedulePrice] context:nil];
+    [_schedule.price drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2-(priceRect.size.height-yRect.size.height)/2, priceRect.size.width, priceRect.size.height) withFont:LSFont15];
 }
-
-/*
-#pragma mark- 重载触摸方法
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=LSColorBgRedYellowColor;
-    [super touchesBegan:touches withEvent:event];
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesEnded:touches withEvent:event];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesCancelled:touches withEvent:event];
-}
-*/
 
 @end

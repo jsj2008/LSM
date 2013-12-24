@@ -7,16 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSConfirmButtonView.h"
 #import "LSOrder.h"
 
 @protocol LSSeatsInfoViewDelegate;
-@interface LSSeatsInfoView : UIView
+@interface LSSeatsInfoView : UIView<LSConfirmButtonViewDelegate>
 {
-    UIButton* _confirmButton;
-    UIButton* _sectionButton;
     LSOrder* _order;
-    
     id<LSSeatsInfoViewDelegate> _delegate;
+    LSConfirmButtonView* _confirmButtonView;
 }
 @property(nonatomic,retain) LSOrder* order;
 @property(nonatomic,assign) id<LSSeatsInfoViewDelegate> delegate;
@@ -25,6 +24,7 @@
 
 @protocol LSSeatsInfoViewDelegate <NSObject>
 
-- (void)LSSeatsInfoView:(LSSeatsInfoView*)seatsInfoView didClickSectionButton:(UIButton*)sectionButton;
-- (void)LSSeatsInfoView:(LSSeatsInfoView*)seatsInfoView didClickConfirmButton:(UIButton*)confirmButton;
+@required
+- (void)LSSeatsInfoView:(LSSeatsInfoView*)seatsInfoView didClickConfirmButtonView:(LSConfirmButtonView*)confirmButtonView;
+
 @end

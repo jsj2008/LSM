@@ -8,19 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "LSSwitchSectionHeader.h"
+#import "FXBlurView.h"
 
 @protocol LSSwitchScheduleViewDelegate;
 @interface LSSwitchScheduleView : UIView<UITableViewDelegate,UITableViewDataSource,LSSwitchSectionHeaderDelegate>
 {
-    UITableView* _tableView;
+    UITableView* _scheduleTableView;
+    FXBlurView* _blurView;
     LSSwitchSectionHeader* _switchSectionHeader;
     NSArray* _scheduleArray;
     NSInteger _selectIndex;
     
     id<LSSwitchScheduleViewDelegate> _delegate;
 }
-
-@property(nonatomic,retain) UITableView* tableView;
 @property(nonatomic,retain) NSArray* scheduleArray;
 @property(nonatomic,assign) NSInteger selectIndex;
 @property(nonatomic,assign) id<LSSwitchScheduleViewDelegate> delegate;
@@ -29,7 +29,7 @@
 
 @protocol LSSwitchScheduleViewDelegate <NSObject>
 
+@required
 - (void)LSSwitchScheduleView:(LSSwitchScheduleView*)switchScheduleView didSelectRowAtIndexPath:(NSInteger)indexPath;
-- (void)LSSwitchScheduleView:(LSSwitchScheduleView*)switchScheduleView isSpread:(BOOL)isSpread;
 
 @end

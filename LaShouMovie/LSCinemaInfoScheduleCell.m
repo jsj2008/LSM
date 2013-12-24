@@ -73,7 +73,7 @@
     contentX+=yRect.size.width;
     
     CGRect priceRect=[_schedule.price boundingRectWithSize:CGSizeMake(70.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontSchedulePrice] context:nil];
-    [_schedule.price drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2-(priceRect.size.height-yRect.size.height)/2, priceRect.size.width, priceRect.size.height) withFont:LSFont15];
+    [_schedule.price drawInRect:CGRectMake(contentX, (rect.size.height-yRect.size.height)/2-(priceRect.size.height-yRect.size.height)/2, priceRect.size.width, priceRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontSchedulePrice color:LSColorTextRed]];
 }
 
 @end

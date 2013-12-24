@@ -69,7 +69,6 @@
     [_seatPlaceView release];
     
     _switchScheduleView = [[LSSwitchScheduleView alloc] initWithFrame:CGRectMake(0, HeightOfiPhoneX(480-20-44-44), self.view.width, _scheduleArray.count*44+44>HeightOfiPhoneX(480-20-44)?HeightOfiPhoneX(480-20-44):_scheduleArray.count*44+44)];
-    _switchScheduleView.tableView.scrollEnabled=NO;
     _switchScheduleView.scheduleArray=_scheduleArray;
     _switchScheduleView.selectIndex=[_scheduleArray indexOfObject:_schedule];
     _switchScheduleView.delegate=self;
@@ -365,37 +364,23 @@
 }
 
 #pragma mark- LSSwitchScheduleView的委托方法
-- (void)LSSwitchScheduleView:(LSSwitchScheduleView *)switchScheduleView isSpread:(BOOL)isSpread
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        if(isSpread)
-        {
-            _switchScheduleView.frame=CGRectMake(0.f, HeightOfiPhoneX(480.f-20.f-44.f-_switchScheduleView.height), _switchScheduleView.width, _switchScheduleView.height);
-            _switchScheduleView.tableView.scrollEnabled=YES;
-        }
-        else
-        {
-            _switchScheduleView.frame=CGRectMake(0.f, HeightOfiPhoneX(480.f-20.f-44.f-44.f), _switchScheduleView.width, _switchScheduleView.height);
-            _switchScheduleView.tableView.scrollEnabled=NO;
-        }
-    } completion:^(BOOL finished) {
-        
-        if(isSpread)
-        {
-            [_switchScheduleView.tableView scrollsToTop];
-        }
-        else
-        {
-            [_switchScheduleView.tableView scrollsToTop];
-        }
-    }];
-}
 - (void)LSSwitchScheduleView:(LSSwitchScheduleView *)switchScheduleView didSelectRowAtIndexPath:(NSInteger)indexPath
 {
-    self.schedule=[_scheduleArray objectAtIndex:indexPath];
-    _order.schedule=_schedule;
-    [_seatsInfoView setNeedsDisplay];
+    if(![self.schedule isEqual:[_scheduleArray objectAtIndex:indexPath]])
+    {
+        self.schedule=[_scheduleArray objectAtIndex:indexPath];
+        
+        _order.schedule=_schedule;
+        [_seatsInfoView setNeedsDisplay];
+        
+        _order.schedule=_schedule;
+        _order.selectSeatArray=nil;
+        
+    }
+    
+    
+    
+    
     
     [hud show:YES];
     [messageCenter LSMCSeatsWithDate:_schedule.startDate cinemaID:_cinema.cinemaID hallID:_schedule.hall.hallID mark:[_scheduleArray indexOfObject:_schedule]];
@@ -424,33 +409,7 @@
 }
 
 #pragma mark- LSSeatsInfoView的委托方法
-- (void)LSSeatsInfoView:(LSSeatsInfoView *)seatsInfoView didClickSectionButton:(UIButton *)sectionButton
-{
-    LSSelectorView* selectorView=[[LSSelectorView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, HeightOfiPhoneX(480.0f))];
-    selectorView.selectorViewType=LSSelectorViewTypeSection;
-    
-    NSMutableArray* positionMArray=[NSMutableArray arrayWithCapacity:0];
-    for(LSSection* section in _order.sectionArray)
-    {
-        [positionMArray addObject:section.sectionName];
-    }
-    
-    selectorView.contentFrame=CGRectMake((self.view.width-100.f)/2, (self.view.height-_order.sectionArray.count*44.f)/2, 100.f, _order.sectionArray.count*44.f);
-    selectorView.delegate=self;
-    for(int i=0;i<_order.sectionArray.count;i++)
-    {
-        LSSection* section=[_order.sectionArray objectAtIndex:i];
-        if([_order.section.sectionID isEqual:section.sectionID])
-        {
-            selectorView.selectIndex=i;
-        }
-    }
-    selectorView.positionArray=positionMArray;
-    [self.navigationController.tabBarController.view addSubview:selectorView];
-    [self.navigationController.tabBarController.view bringSubviewToFront:selectorView];
-    [selectorView release];
-}
-- (void)LSSeatsInfoView:(LSSeatsInfoView *)seatsInfoView didClickConfirmButton:(UIButton *)confirmButton
+- (void)LSSeatsInfoView:(LSSeatsInfoView *)seatsInfoView didClickConfirmButtonView:(LSConfirmButtonView *)confirmButtonView
 {
     if(_order.selectSeatArray.count>0)
     {
@@ -472,7 +431,7 @@
             loginViewController.delegate=self;
             
             LSNavigationController* navigationController=[[LSNavigationController alloc] initWithRootViewController:loginViewController];
-            [self presentModalViewController:navigationController animated:YES];
+            [self presentViewController:navigationController animated:YES completion:^{}];
             
             [loginViewController release];
             [navigationController release];
@@ -482,17 +441,6 @@
     {
         [LSAlertView showWithTag:0 title:nil message:@"还没有选择座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
     }
-}
-
-#pragma mark- LSSelectorView的委托方法
-- (void)LSSelectorView:(LSSelectorView *)selectorView didSelectRowAtIndexPath:(NSInteger)indexPath
-{
-    _selectSectionIndex=indexPath;
-    _order.section=[_order.sectionArray objectAtIndex:_selectSectionIndex];
-    _order.selectSeatArray=nil;
-    
-    [hud show:YES];
-    [messageCenter LSMCSeatSelectSeatsWithApiSource:_order.section.apiSource scheduleID:_schedule.scheduleID sectionID:_order.section.sectionID mark:[_scheduleArray indexOfObject:_schedule] mark2:_selectSectionIndex];
 }
 
 #pragma mark- LSLoginViewController的委托方法

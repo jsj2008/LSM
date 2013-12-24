@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSSchedule.h"
 
 @protocol LSSwitchSectionHeaderDelegate;
 @interface LSSwitchSectionHeader : UIView
 {
-    UIImageView* _arrowImageView;
-    UIButton* _button;
+    LSSchedule* _schedule;
     BOOL _isSpread;//是否为展开状态
     id<LSSwitchSectionHeaderDelegate> _delegate;
 }
+@property(nonatomic,retain) LSSchedule* schedule;
 @property(nonatomic,assign) BOOL isSpread;;
 @property(nonatomic,assign) id<LSSwitchSectionHeaderDelegate> delegate;
 
@@ -23,6 +24,7 @@
 
 @protocol LSSwitchSectionHeaderDelegate <NSObject>
 
+@required
 - (void)LSSwitchSectionHeader:(LSSwitchSectionHeader*)switchSectionHeader isSpread:(BOOL)isSpread;
 
 @end

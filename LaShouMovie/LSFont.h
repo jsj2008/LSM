@@ -63,6 +63,10 @@
 #define LSFontScheduleSubtitle      LSFont10
 #define LSFontScheduleY             LSFont10
 #define LSFontSchedulePrice         LSFont18
+#define LSFontScheduleSeat          LSFont14
+#define LSFontScheduleBuy           LSFont14
+
+#define LSFontSeatInfo              LSFont10
 
 #define LSFontScheduleCinemaName    LSFont18
 #define LSFontScheduleBold          LSFontBold16

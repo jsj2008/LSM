@@ -41,13 +41,11 @@
     NSString* _startTime;//开始时间
     NSString* _expectEndTime;//预计结束时间
 }
-
-
 @property(nonatomic,retain) NSString* scheduleID;//排期ID
 @property(nonatomic,assign) LSFilmDimensional dimensional;//2D、3D
 @property(nonatomic,assign) BOOL isIMAX;//iMax
 @property(nonatomic,retain) NSString* language;//语言
-@property(nonatomic,retain) LSHall* hall;;//放映厅
+@property(nonatomic,retain) LSHall* hall;//放映厅
 @property(nonatomic,retain) NSString* initialPrice;//原价
 @property(nonatomic,retain) NSString* price;//终价
 @property(nonatomic,assign) BOOL isOnSale;//是否特价

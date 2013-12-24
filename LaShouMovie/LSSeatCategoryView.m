@@ -10,12 +10,9 @@
 
 @implementation LSSeatCategoryView
 
-@synthesize screenTitle=_screenTitle;
-
 #pragma mark- 生命周期
 - (void)dealloc
 {
-    self.screenTitle=nil;
     [super dealloc];
 }
 
@@ -24,7 +21,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
+        self.backgroundColor=LSColorBackgroundGray;
     }
     return self;
 }
@@ -35,29 +32,14 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    [[UIImage lsImageNamed:@"seat_canbuy.png"] drawInRect:CGRectMake(2, 19, 16, 14)];
-    [[UIImage lsImageNamed:@"seat_sold.png"] drawInRect:CGRectMake(76, 19, 16, 14)];
-    [[UIImage lsImageNamed:@"seat_love.png"] drawInRect:CGRectMake(150, 19, 16, 14)];
-    [[UIImage lsImageNamed:@"seat_my.png"] drawInRect:CGRectMake(224, 19, 16, 14)];
-    
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-
-    [@"可选座位" drawInRect:CGRectMake(20, 19, 56, 16) withFont:LSFont12 lineBreakMode:NSLineBreakByClipping];
-
-    [@"已售座位" drawInRect:CGRectMake(94, 19, 56, 16) withFont:LSFont12 lineBreakMode:NSLineBreakByClipping];
-
-    [@"情侣座位" drawInRect:CGRectMake(168, 19, 56, 16) withFont:LSFont12 lineBreakMode:NSLineBreakByClipping];
-
-    [@"已选座位" drawInRect:CGRectMake(242, 19, 56, 16) withFont:LSFont12 lineBreakMode:NSLineBreakByClipping];
-    
-    if(_screenTitle)
-    {
-        [[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"seat_screen.png"] top:14 left:4 bottom:14 right:4]  drawInRect:CGRectMake(5, 41, 290, 28)];
-        
-        CGContextSetFillColorWithColor(contextRef, [UIColor redColor].CGColor);
-        [_screenTitle drawInRect:CGRectMake(5, 47, 290, 16)  withFont:LSFont13 lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
-    }
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(10.f, 5.f, 15.f, 15.f)];
+    [@"可选座位" drawInRect:CGRectMake(25.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(85.f, 5.f, 15.f, 15.f)];
+    [@"已售座位" drawInRect:CGRectMake(100.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(160.f, 5.f, 15.f, 15.f)];
+    [@"情侣座位" drawInRect:CGRectMake(175.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(235.f, 5.f, 15.f, 15.f)];
+    [@"已选座位" drawInRect:CGRectMake(250.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
 }
 
 

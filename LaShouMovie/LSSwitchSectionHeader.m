@@ -12,55 +12,44 @@
 
 @synthesize delegate=_delegate;
 @synthesize isSpread=_isSpread;
+@synthesize schedule=_schedule;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame = frame;
-        _button.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [_button setTitleEdgeInsets:UIEdgeInsetsMake(5, -30, 0, 0)];
-        _button.titleLabel.font = LSFont17;
-        [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_button setTitle:@"选择影院其他场次" forState:UIControlStateNormal];
-        [_button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_button];
+        UITapGestureRecognizer* tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfTap:)];
+        [self addGestureRecognizer:tapGestureRecognizer];
+        [tapGestureRecognizer release];
     }
     return self;
 }
 
-/*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-}
-*/
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+    NSString* text=[NSString stringWithFormat:@"%@ %@",_schedule.startDate,_schedule.startTime];
+    CGRect titleRect=[text boundingRectWithSize:CGSizeMake(rect.size.width, INT32_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontScheduleTitle] context:nil];
+    [text drawInRect:CGRectMake(0.f, (rect.size.height-titleRect.size.height)/2, titleRect.size.width, titleRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle color:LSColorTextGray textAlignment:NSTextAlignmentCenter]];
+    
     if(_isSpread)
     {
-        [_button setBackgroundImage:[UIImage lsImageNamed:@"seat_schedule_down.png"] forState:UIControlStateNormal];
+        [[UIImage lsImageNamed:@""] drawInRect:rect];
     }
     else
     {
-        [_button setBackgroundImage:[UIImage lsImageNamed:@"seat_schedule_up.png"] forState:UIControlStateNormal];
+        [[UIImage lsImageNamed:@""] drawInRect:rect];
     }
 }
 
-- (void)buttonClick:(UIButton*)sender
+- (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
     _isSpread=!_isSpread;
-    [self setNeedsLayout];
-    
-    if([_delegate respondsToSelector:@selector(LSSwitchSectionHeader: isSpread:)])
-    {
-        [_delegate LSSwitchSectionHeader:self isSpread:_isSpread];
-    }
+    [self setNeedsDisplay];
+    [_delegate LSSwitchSectionHeader:self isSpread:_isSpread];
 }
 
 @end

@@ -46,7 +46,8 @@
         }
         _selectSeatArray=[selectSeatArray retain];
     }
-    self.totalPrice=[NSString stringWithFormat:@"%f",_selectSeatArray.count*_schedule.price];
+    //自动填充
+    self.totalPrice=[[NSString stringWithFormat:@"%.2f",_selectSeatArray.count*[_schedule.price floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
 }
 
 - (void)setSection:(LSSection *)section

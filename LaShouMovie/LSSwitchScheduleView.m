@@ -12,7 +12,6 @@
 
 @implementation LSSwitchScheduleView
 
-@synthesize tableView=_tableView;
 @synthesize scheduleArray=_scheduleArray;
 @synthesize selectIndex=_selectIndex;
 @synthesize delegate=_delegate;
@@ -29,18 +28,24 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
+        _blurView=[[FXBlurView alloc] initWithFrame:CGRectZero];
+        _blurView.dynamic = NO;
+        _blurView.tintColor = [UIColor colorWithRed:0 green:0.5 blue:0.5 alpha:1];
+        [_blurView.layer displayIfNeeded]; //force immediate redraw
+        _blurView.contentMode = UIViewContentModeBottom;
+        [self addSubview:_blurView];
+        [_blurView release];
         
-        _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) style:UITableViewStylePlain];
-        _tableView.backgroundColor=[UIColor clearColor];
-        _tableView.clipsToBounds=YES;
-        _tableView.bounces=NO;
-        _tableView.showsVerticalScrollIndicator=NO;
-        _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-        _tableView.delegate=self;
-        _tableView.dataSource=self;
-        [self addSubview:_tableView];
-        [_tableView release];
+        _scheduleTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _scheduleTableView.clipsToBounds=YES;
+        _scheduleTableView.bounces=NO;
+        _scheduleTableView.showsVerticalScrollIndicator=NO;
+        _scheduleTableView.showsHorizontalScrollIndicator=NO;
+        _scheduleTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+        _scheduleTableView.delegate=self;
+        _scheduleTableView.dataSource=self;
+        [self addSubview:_scheduleTableView];
+        [_scheduleTableView release];
     }
     return self;
 }
@@ -54,12 +59,24 @@
 }
 */
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if(_scheduleArray.count>=3)
+    {
+        _scheduleTableView.frame=CGRectMake(0.f, 0.f, self.width, 60.f*3);
+        _scheduleTableView.showsVerticalScrollIndicator=YES;
+    }
+    else
+    {
+        _scheduleTableView.frame=CGRectMake(0.f, 0.f, self.width, 60.f*_scheduleArray.count);
+        _scheduleTableView.showsVerticalScrollIndicator=NO;
+    }
+    _blurView.frame=CGRectMake(0.f, 0.f, self.width, self.height);
+}
+
 
 #pragma mark- UITableView的委托方法
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 44.f;
@@ -67,6 +84,7 @@
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     _switchSectionHeader=[[[LSSwitchSectionHeader alloc] initWithFrame:CGRectZero] autorelease];
+    _switchSectionHeader.schedule=[_scheduleArray objectAtIndex:_selectIndex];
     _switchSectionHeader.delegate=self;
     return _switchSectionHeader;
 }
@@ -76,7 +94,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.f;
+    return 60.f;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -104,26 +122,26 @@
     cell.isInitial=YES;
     [cell setNeedsDisplay];
     
-    if([_delegate respondsToSelector:@selector(LSSwitchScheduleView: didSelectRowAtIndexPath:)])
-    {
-        [_delegate LSSwitchScheduleView:self didSelectRowAtIndexPath:indexPath.row];
-    }
+    [_delegate LSSwitchScheduleView:self didSelectRowAtIndexPath:indexPath.row];
     
     _switchSectionHeader.isSpread=NO;
+    _switchSectionHeader.schedule=[_scheduleArray objectAtIndex:_selectIndex];
     [_switchSectionHeader setNeedsLayout];
-    if([_delegate respondsToSelector:@selector(LSSwitchScheduleView: isSpread:)])
-    {
-        [_delegate LSSwitchScheduleView:self isSpread:NO];
-    }
+    
+    self.bounds=CGRectMake(0.f, 0.f, self.width, 44.f);
 }
 
 
 #pragma mark- LSSwitchSectionHeader的委托方法
 - (void)LSSwitchSectionHeader:(LSSwitchSectionHeader *)switchSectionHeader isSpread:(BOOL)isSpread
 {
-    if([_delegate respondsToSelector:@selector(LSSwitchScheduleView: isSpread:)])
+    if(isSpread)
     {
-        [_delegate LSSwitchScheduleView:self isSpread:isSpread];
+        self.bounds=CGRectMake(0.f, 0.f, self.width, 480.f-20.f-44.f);
+    }
+    else
+    {
+        self.bounds=CGRectMake(0.f, 0.f, self.width, 44.f);
     }
 }
 

@@ -9,9 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface LSSeatCategoryView : UIView
-{
-    NSString* _screenTitle;
-}
-@property(nonatomic,retain) NSString* screenTitle;
 
 @end
