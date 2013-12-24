@@ -15,8 +15,8 @@
 @synthesize film=_film;//影片
 @synthesize schedule=_schedule;//排期
 
-@synthesize section=_section;
 @synthesize sectionArray=_sectionArray;
+@synthesize maxTicketNumber=_maxTicketNumber;
 @synthesize selectSeatArray=_selectSeatArray;//
 @synthesize originTotalPrice=_originTotalPrice;
 @synthesize totalPrice=_totalPrice;//总价
@@ -36,6 +36,25 @@
 @synthesize message=_message;
 
 #pragma mark- 属性方法
+- (void)setSectionArray:(NSArray *)sectionArray
+{
+    if(![_sectionArray isEqual:sectionArray])
+    {
+        if(_sectionArray!=nil)
+        {
+            LSRELEASE(_sectionArray)
+        }
+        _sectionArray=[sectionArray retain];
+    }
+    
+    int totalNumber=0;
+    for(LSSection* section in _sectionArray)
+    {
+        totalNumber+=section.maxTicketNumber;
+    }
+    _maxTicketNumber=(int)(totalNumber/_sectionArray.count);
+}
+
 - (void)setSelectSeatArray:(NSArray *)selectSeatArray
 {
     if(![_selectSeatArray isEqual:selectSeatArray])
@@ -48,18 +67,6 @@
     }
     //自动填充
     self.totalPrice=[[NSString stringWithFormat:@"%.2f",_selectSeatArray.count*[_schedule.price floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-}
-
-- (void)setSection:(LSSection *)section
-{
-    if(![_section isEqual:section])
-    {
-        if(_section!=nil)
-        {
-            LSRELEASE(_section)
-        }
-        _section=[section copy];
-    }
 }
 
 - (NSInteger)expireSecond
@@ -124,7 +131,7 @@
         if([[safeDic objectForKey:@"section"] isKindOfClass:[NSDictionary class]])
         {
             LSSection* section=[[LSSection alloc] initWithDictionary:[safeDic objectForKey:@"section"]]; //座位信息
-            self.section=section;
+            self.sectionArray=[NSArray arrayWithObject:section];
             [section release];
         }
         
@@ -173,10 +180,10 @@
         if([[safeDic objectForKey:@"section"] isKindOfClass:[NSDictionary class]])
         {
             LSSection* section=[[LSSection alloc] initWithDictionary:[safeDic objectForKey:@"section"]]; //座位信息
-            self.section=section;
+            self.sectionArray=[NSArray arrayWithObject:section];
             [section release];
             
-            self.selectSeatArray=_section.seatArray;
+            self.selectSeatArray=section.seatArray;
         }
         
         self.orderID=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"trade_no"]];
@@ -254,9 +261,9 @@
     self.film=nil;//影片
     self.schedule=nil;//排期
 
-    self.section=nil;
     self.sectionArray=nil;
-    self.selectSeatArray=nil;// 
+//    self.maxTicketNumber=nil;
+    self.selectSeatArray=nil;//
 //    self.totalPrice=nil;//总价
     self.couponArray=nil;
     self.isUseCoupon=nil;
@@ -280,8 +287,8 @@
     [aCoder encodeObject:_cinema forKey:@"cinema"];
     [aCoder encodeObject:_film forKey:@"film"];
     [aCoder encodeObject:_schedule forKey:@"schedule"];
-    [aCoder encodeObject:_section forKey:@"section"];
     [aCoder encodeObject:_sectionArray forKey:@"sectionArray"];
+    [aCoder encodeInt:_maxTicketNumber forKey:@"maxTicketNumber"];
     [aCoder encodeObject:_selectSeatArray forKey:@"selectSeatArray"];
     [aCoder encodeObject:_originTotalPrice forKey:@"originTotalPrice"];
     [aCoder encodeObject:_totalPrice forKey:@"totalPrice"];
@@ -304,8 +311,8 @@
     self.cinema=[decoder decodeObjectForKey:@"cinema"];//影院
     self.film=[decoder decodeObjectForKey:@"film"];//影片
     self.schedule=[decoder decodeObjectForKey:@"schedule"];//排期
-    self.section=[decoder decodeObjectForKey:@"section"];
     self.sectionArray=[decoder decodeObjectForKey:@"sectionArray"];
+    self.maxTicketNumber=[decoder decodeIntForKey:@"maxTicketNumber"];
     self.selectSeatArray=[decoder decodeObjectForKey:@"selectSeatArray"];//
     self.originTotalPrice=[decoder decodeObjectForKey:@"originTotalPrice"];
     self.totalPrice=[decoder decodeObjectForKey:@"totalPrice"];//总价

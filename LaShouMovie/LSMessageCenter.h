@@ -159,8 +159,8 @@
 - (void)LSMCSchedulesWithCinemaID:(NSString*)cinemaID filmID:(NSString*)filmID mark:(int)mark;
 
 #pragma mark- 座位相关
-- (void)LSMCSeatsWithDate:(NSString*)date cinemaID:(NSString*)cinemaID hallID:(NSString*)hallID mark:(int)mark;
-- (void)LSMCSeatSelectSeatsWithApiSource:(LSApiSource)apiSource scheduleID:(NSString*)scheduleID sectionID:(NSString*)sectionID mark:(int)mark mark2:(int)mark2;
+- (void)LSMCSeatsWithDate:(NSString*)date cinemaID:(NSString*)cinemaID hallID:(NSString*)hallID;
+- (void)LSMCSeatSelectSeatsWithApiSource:(LSApiSource)apiSource scheduleID:(NSString*)scheduleID;
 
 #pragma mark- 订单相关
 - (void)LSMCOrdersWithStatus:(LSOrderStatus)status offset:(int)offset pageSize:(int)pageSize;

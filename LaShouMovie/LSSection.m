@@ -24,23 +24,23 @@
 @synthesize rowNumber=_rowNumber;
 @synthesize rowIDArray=_rowIDArray;
 
-- (id)copyWithZone:(NSZone *)zone
-{
-    LSSection* section=[[LSSection allocWithZone:zone] init];
-    section.apiSource=_apiSource;//票务供应商
-    section.sectionID=_sectionID;//片区编号
-    section.sectionName=_sectionName;//片区名称
-    section.maxTicketNumber=_maxTicketNumber;//最多购票数
-    
-    section.seatArray=[[[NSArray alloc] initWithArray:_seatArray copyItems:YES] autorelease];//座位数组
-    
-    //本地生成
-    section.columnNumber=_columnNumber;
-    section.rowNumber=_rowNumber;
-    section.rowIDArray=_rowIDArray;
-    
-    return section;
-}
+//- (id)copyWithZone:(NSZone *)zone
+//{
+//    LSSection* section=[[LSSection allocWithZone:zone] init];
+//    section.apiSource=_apiSource;//票务供应商
+//    section.sectionID=_sectionID;//片区编号
+//    section.sectionName=_sectionName;//片区名称
+//    section.maxTicketNumber=_maxTicketNumber;//最多购票数
+//    
+//    section.seatArray=[[[NSArray alloc] initWithArray:_seatArray copyItems:YES] autorelease];//座位数组
+//    
+//    //本地生成
+//    section.columnNumber=_columnNumber;
+//    section.rowNumber=_rowNumber;
+//    section.rowIDArray=_rowIDArray;
+//    
+//    return section;
+//}
 
 - (id)initWithDictionary:(NSDictionary *)safeDic
 {
@@ -65,7 +65,6 @@
             NSArray* tmpArray=[safeDic objectForKey:@"seats"];
             
             NSMutableArray* seatMArray=[NSMutableArray arrayWithCapacity:0];
-            //NSMutableDictionary* seatMDictionary=[NSMutableDictionary dictionaryWithCapacity:0];
             
             //realRowIDArray是影院提供的真实行号，可能是1、2、3，也可能是A、B、C
             NSMutableArray* realRowIDArray=[NSMutableArray arrayWithCapacity:0];
@@ -77,17 +76,6 @@
                 LSSeat* seat=[[LSSeat alloc] initWithDictionary:dic];
                 [seatMArray addObject:seat];
                 [seat release];
-                
-                //////////
-                //if([seatMDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]]==NULL)
-                //{
-                    //NSMutableDictionary* rowSeatMDictionary=[NSMutableDictionary dictionaryWithCapacity:0];
-                    //[seatMDictionary setObject:rowSeatMDictionary forKey:[NSNumber numberWithInt:seat.rowID]];
-                //}
-                
-                //NSMutableDictionary* rowSeatMDictionary=[seatMDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]];
-                //[rowSeatMDictionary setObject:seat forKey:[NSNumber numberWithFloat:seat.columnID]];
-                //////////
                 
                 //寻找屏幕行列坐标的最大值，就可以判定到底划分多少行多少列
                 if(seat.columnID>columns)
@@ -141,6 +129,7 @@
     return self;
 }
 
+//用额外的方法是为了提高执行效率
 - (void)makeSeatDictionary
 {
     NSMutableDictionary* seatMDictionary=[NSMutableDictionary dictionaryWithCapacity:0];
@@ -148,8 +137,7 @@
     {
         if([seatMDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]]==NULL)
         {
-            NSMutableDictionary* rowSeatMDictionary=[NSMutableDictionary dictionaryWithCapacity:0];
-            [seatMDictionary setObject:rowSeatMDictionary forKey:[NSNumber numberWithInt:seat.rowID]];
+            [seatMDictionary setObject:[NSMutableDictionary dictionaryWithCapacity:0] forKey:[NSNumber numberWithInt:seat.rowID]];
         }
         
         NSMutableDictionary* rowSeatMDictionary=[seatMDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]];

@@ -255,7 +255,7 @@ static LSUser* user=nil;
 
 #pragma mark- 座位相关
 #pragma mark 获取某影院某厅座位列表(包含座位状态信息,不包含已售信息)
-- (void)LSMCSeatsWithDate:(NSString*)date cinemaID:(NSString*)cinemaID hallID:(NSString*)hallID mark:(int)mark
+- (void)LSMCSeatsWithDate:(NSString*)date cinemaID:(NSString*)cinemaID hallID:(NSString*)hallID
 {
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        cinemaID, @"cinemaId",
@@ -265,21 +265,20 @@ static LSUser* user=nil;
                        [[NSString stringWithFormat:@"%@|%@|%@|%@",lsURLSource,hallID,cinemaID,lsURLSign] SHA256],@"signValue",
                        nil];    
     NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLSeatsByDate_CinemaID_HallID, lsURLSTID]];
-    [self requestWithURL:url requestType:lsRequestTypeSeatsByDate_CinemaID_HallID requestMark:mark params:dic];
+    [self requestWithURL:url requestType:lsRequestTypeSeatsByDate_CinemaID_HallID params:dic];
 }
 #pragma mark 获取某影院已售座位列表
-- (void)LSMCSeatSelectSeatsWithApiSource:(LSApiSource)apiSource scheduleID:(NSString*)scheduleID sectionID:(NSString*)sectionID mark:(int)mark mark2:(int)mark2
+- (void)LSMCSeatSelectSeatsWithApiSource:(LSApiSource)apiSource scheduleID:(NSString*)scheduleID
 {
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        [NSNumber numberWithInt:apiSource], @"api_source",
                        scheduleID,@"seqNo",
-                       sectionID,@"sectionId",
                        lsURLSource, @"source",
-                       [[NSString stringWithFormat:@"%@|%@|%@|%@|%@",lsURLSource,scheduleID,sectionID,[NSNumber numberWithInt:apiSource],lsURLSign] SHA256],@"signValue",
+                       [[NSString stringWithFormat:@"%@|%@|%@|%@",lsURLSource,scheduleID,[NSNumber numberWithInt:apiSource],lsURLSign] SHA256],@"signValue",
                        nil];
     
     NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLSeatSelectSeatsByApiSource_ScheduleID_SectionID, lsURLSTID]];
-    [self requestWithURL:url requestType:lsRequestTypeSeatSelectSeatsByApiSource_ScheduleID_SectionID requestMark:mark requestMark2:mark2 params:dic];
+    [self requestWithURL:url requestType:lsRequestTypeSeatSelectSeatsByApiSource_ScheduleID_SectionID params:dic];
 }
 
 

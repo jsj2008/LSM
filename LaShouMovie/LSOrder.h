@@ -20,8 +20,8 @@
     LSSchedule* _schedule;//排期信息
     
     //本地生成的字段
-    LSSection* _section;////区信息(当前正在使用的区域)
     NSArray* _sectionArray;//区信息(所有的区域)
+    int _maxTicketNumber;//综合得出的可选最多座位数
     NSArray* _selectSeatArray;//选择的座位
     NSString* _originTotalPrice;//因为增加了优惠券，所以需要一个标记来记录最原始的价格
     NSString* _totalPrice;//价格会随着选座变化。自动填充
@@ -161,8 +161,8 @@
 @property (nonatomic, retain) LSFilm* film;//影片
 @property (nonatomic, retain) LSSchedule* schedule;//排期
 
-@property (nonatomic, copy) LSSection* section;//copy保证当前区域信息每次都是原始的
 @property (nonatomic, retain) NSArray* sectionArray;//
+@property (nonatomic, assign) int maxTicketNumber;
 @property (nonatomic, retain) NSArray* selectSeatArray;//
 @property (nonatomic, copy) NSString* originTotalPrice;//总价
 @property (nonatomic, retain) NSString* totalPrice;//总价

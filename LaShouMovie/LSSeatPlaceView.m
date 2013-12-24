@@ -25,13 +25,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        
-        //生成屏幕
-        _seatCategoryView=[[LSSeatCategoryView alloc] initWithFrame:CGRectMake(20, 0, frame.size.width, 70)];
-        [self addSubview:_seatCategoryView];
-        [_seatCategoryView release];
-        
         _seatsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 70, frame.size.width-20, frame.size.height-70)];
         _seatsScrollView.backgroundColor = [UIColor clearColor];
         _seatsScrollView.delegate = self;
@@ -62,14 +55,14 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    [self drawRoundRectangleInRect:CGRectMake(0.f, 0.f, 20.f, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:[UIColor lightGrayColor] strokeColor:[UIColor lightGrayColor] borderWidth:0.f];
+    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(20.f, 0.f, 290.f, 20.f)];
+    [[NSString stringWithFormat:@"%@%@屏幕方向",_order.cinema.cinemaName,_order.schedule.hall.hallName] drawInRect:CGRectMake(40.f, 0.f, 250.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontSectionHeader color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _seatCategoryView.screenTitle=[NSString stringWithFormat:@"%@%@屏幕", _order.cinema.cinemaName, _order.schedule.hall.hallName];
-    if(_order.section)
+    if(_order.sectionArray)
     {
         [self showSeat];
     }
@@ -80,6 +73,8 @@
 {
     [_seatMapView removeFromSuperview];
     [_rowNumberView removeFromSuperview];
+    
+    
     
     //此宽高为具有边界的宽高
     CGFloat seatAreaWidth=_seatsScrollView.width/(_order.section.columnNumber);

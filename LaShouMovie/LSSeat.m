@@ -22,20 +22,20 @@
 @synthesize seatStatus=_seatStatus;
 @synthesize originSeatStatus=_originSeatStatus;
 
-- (id)copyWithZone:(NSZone *)zone
-{
-    LSSeat* seat=[[LSSeat allocWithZone:zone] init];
-    seat.realColumnID=_realColumnID;
-    seat.columnID=_columnID;
-    seat.realRowID=_realRowID;
-    seat.rowID=_rowID;
-    seat.isDamage=_isDamage;
-    seat.type=_type;
-    seat.isSold=_isSold;
-    seat.seatStatus=_seatStatus;
-    seat.originSeatStatus=_originSeatStatus;
-    return seat;
-}
+//- (id)copyWithZone:(NSZone *)zone
+//{
+//    LSSeat* seat=[[LSSeat allocWithZone:zone] init];
+//    seat.realColumnID=_realColumnID;
+//    seat.columnID=_columnID;
+//    seat.realRowID=_realRowID;
+//    seat.rowID=_rowID;
+//    seat.isDamage=_isDamage;
+//    seat.type=_type;
+//    seat.isSold=_isSold;
+//    seat.seatStatus=_seatStatus;
+//    seat.originSeatStatus=_originSeatStatus;
+//    return seat;
+//}
 
 - (id)initWithDictionary:(NSDictionary*)safeDic
 {

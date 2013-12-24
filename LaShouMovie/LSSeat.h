@@ -15,7 +15,7 @@ typedef enum
     LSSeatTypeLoveSecond=2//情侣座第二座位
 }LSSeatType;
 
-@interface LSSeat : NSObject<NSCoding,NSCopying>
+@interface LSSeat : NSObject<NSCoding>
 {
 //    {
 //        columnId = 10;

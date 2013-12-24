@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LSSection : NSObject<NSCoding,NSCopying>
+@interface LSSection : NSObject<NSCoding>
 {
 //    {
 //        "api_source" = 8;
@@ -38,8 +38,8 @@
 @property(nonatomic,retain) NSString* sectionName;//片区名称
 @property(nonatomic,assign) NSInteger maxTicketNumber;//最多购票数
 
-@property(nonatomic,copy) NSArray* seatArray;//座位数组
-@property(nonatomic,copy) NSDictionary* seatDictionary;//座位字典
+@property(nonatomic,retain) NSArray* seatArray;//座位数组
+@property(nonatomic,retain) NSDictionary* seatDictionary;//座位字典
 
 @property(nonatomic,assign) CGFloat columnNumber;//列数
 @property(nonatomic,assign) CGFloat rowNumber;//行数

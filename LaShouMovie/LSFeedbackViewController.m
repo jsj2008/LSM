@@ -28,7 +28,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor = LSColorBgWhiteColor;
     self.title=@"意见反馈";
     
     LSFeedbackView* feedbackView=[[LSFeedbackView alloc] initWithFrame:CGRectZero];

@@ -64,8 +64,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor=LSColorBgWhiteColor;
-    
     user=[LSUser currentUser];
     version=[LSVersion currentVersion];
     messageCenter=[LSMessageCenter defaultCenter];
@@ -293,7 +291,6 @@
 {
     LSCitiesViewController* citiesViewController=[[LSCitiesViewController alloc] init];
     citiesViewController.delegate=self;
-    citiesViewController.isShowBackBarButton=NO;
     
     UINavigationController* navigationController=[[UINavigationController alloc] initWithRootViewController:citiesViewController];
     [self presentModalViewController:navigationController animated:YES];

@@ -61,7 +61,7 @@
     }
     else
     {
-        text = [NSString stringWithFormat:@"最多可选%d个座位",_order.section.maxTicketNumber];
+        text = [NSString stringWithFormat:@"最多可选%d个座位",_order.maxTicketNumber];
     }
     [text drawInRect:CGRectMake(gap, gap, 180.f, self.height-gap*2) withAttributes:[LSAttribute attributeFont:LSFontScheduleSeat color:LSColorWhite]];
     

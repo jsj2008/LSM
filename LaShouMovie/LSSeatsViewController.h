@@ -16,21 +16,18 @@
 #import "LSOrder.h"
 #import "LSSection.h"
 #import "LSSwitchScheduleView.h"
+#import "LSSeatCategoryView.h"
 #import "LSSeatPlaceView.h"
 #import "LSSeatsInfoView.h"
-#import "LSSelectorView.h"
 
-@interface LSSeatsViewController : LSViewController<LSSwitchScheduleViewDelegate,LSSeatPlaceViewDelegate,LSSeatsInfoViewDelegate,LSLoginViewControllerDelegate,LSCreateOrderViewControllerDelegate,LSSelectorViewDelegate>
+@interface LSSeatsViewController : LSViewController<LSSwitchScheduleViewDelegate,LSSeatPlaceViewDelegate,LSSeatsInfoViewDelegate,LSLoginViewControllerDelegate,LSCreateOrderViewControllerDelegate>
 {
-    LSSwitchScheduleView* _switchScheduleView;
     LSSeatPlaceView* _seatPlaceView;
     LSSeatsInfoView* _seatsInfoView;
-    
     LSOrder* _order;
     
     LSCinema* _cinema;
     LSFilm* _film;
-    int _selectSectionIndex;
     LSSchedule* _schedule;//选择的排期
     NSArray* _scheduleArray;//全部的排期
 }
