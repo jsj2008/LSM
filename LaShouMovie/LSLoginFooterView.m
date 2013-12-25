@@ -20,7 +20,7 @@
         _loginButton=[UIButton buttonWithType:UIButtonTypeCustom];
         _loginButton.layer.cornerRadius=3.f;
         _loginButton.backgroundColor=LSColorButtonNormalRed;
-        _loginButton.titleLabel.font=LSFont14;
+        _loginButton.titleLabel.font=LSFontButton;
         [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_loginButton];

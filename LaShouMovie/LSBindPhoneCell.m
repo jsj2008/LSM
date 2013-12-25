@@ -34,6 +34,7 @@
         [_sendButton setTitleColor:LSColorButtonHighlightedRed forState:UIControlStateNormal];
         _sendButton.titleLabel.textAlignment=NSTextAlignmentRight;
         [_sendButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+        _sendButton.titleLabel.font=LSFontButton;
         [_sendButton addTarget:self action:@selector(sendButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_sendButton];
     }

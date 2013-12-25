@@ -40,6 +40,7 @@
 #define LSFontDefault               LSFont14
 #define LSFontRemark                LSFont12
 #define LSFontTool                  LSFont13
+#define LSFontButton                LSFont14
 
 #define LSFontNavigationTitle       LSFont20
 #define LSFontNavigationButton      LSFont16

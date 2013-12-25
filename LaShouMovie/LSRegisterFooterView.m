@@ -20,7 +20,7 @@
         _registerButton=[UIButton buttonWithType:UIButtonTypeCustom];
         _registerButton.layer.cornerRadius=3.f;
         _registerButton.backgroundColor=LSColorButtonNormalRed;
-        _registerButton.titleLabel.font=LSFont14;
+        _registerButton.titleLabel.font=LSFontButton;
         [_registerButton setTitle:@"注册" forState:UIControlStateNormal];
         [_registerButton addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_registerButton];

@@ -20,7 +20,7 @@
         _bindButton=[UIButton buttonWithType:UIButtonTypeCustom];
         _bindButton.layer.cornerRadius=3.f;
         _bindButton.backgroundColor=LSColorButtonNormalRed;
-        _bindButton.titleLabel.font=LSFont14;
+        _bindButton.titleLabel.font=LSFontButton;
         [_bindButton setTitle:@"验证" forState:UIControlStateNormal];
         [_bindButton addTarget:self action:@selector(bindButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bindButton];

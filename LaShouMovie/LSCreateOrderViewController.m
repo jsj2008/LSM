@@ -7,8 +7,8 @@
 //
 
 #import "LSCreateOrderViewController.h"
-#import "LSOrderView.h"
 #import "LSSeat.h"
+#import "LSCreateOrderCell.h"
 
 @interface LSCreateOrderViewController ()
 
@@ -39,56 +39,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title=@"提交订单";
-    self.view.backgroundColor = LSColorBgWhiteColor;
+    self.view.backgroundColor = LSColorBackgroundGray;
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeUserProfile object:nil];
-    
-    LSOrderView* orderView=[[LSOrderView alloc] initWithFrame:CGRectMake((self.view.width-265)/2, 10, 265, 0)];
-    orderView.order=_order;
-    [self.view  addSubview:orderView];
-    [orderView release];
-    
-    if(orderView.contentY>0)
-    {
-        orderView.frame=CGRectMake((self.view.width-265)/2, 10, 265, orderView.contentY);
-    }
-    
-    _mobileTextField=[[UITextField alloc] initWithFrame:CGRectMake((self.view.width-265)/2, 10+orderView.contentY+5, 265, 44)];
-    _mobileTextField.font=LSFont17;
-    if(user.mobile!=nil)
-    {
-        if(user.mobile.length>7)
-        {
-            NSMutableString* placeholder=[NSMutableString stringWithString:user.mobile];
-            [placeholder replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-            _mobileTextField.placeholder=placeholder;
-        }
-        else
-        {
-            _mobileTextField.placeholder=@" 请输入接收取票码的手机号";
-        }
-    }
-    else
-    {
-        _mobileTextField.placeholder=@" 请输入接收取票码的手机号";
-    }
-    _mobileTextField.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
-    _mobileTextField.borderStyle=UITextBorderStyleBezel;
-    _mobileTextField.keyboardType=UIKeyboardTypeNumberPad;
-    _mobileTextField.delegate=self;
-    [self.view addSubview:_mobileTextField];
-    [_mobileTextField release];
-    
-    _submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _submitButton.frame = CGRectMake((self.view.width-265)/2, 10+orderView.contentY+5+44+10, 265, 44);
-    [_submitButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"corder_confirm.png"] top:23 left:4 bottom:23 right:4] forState:UIControlStateNormal];
-    [_submitButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"corder_confirm_d.png"] top:23 left:4 bottom:23 right:4] forState:UIControlStateHighlighted];
-    _submitButton.titleLabel.font = LSFontBold18;
-    [_submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_submitButton setTitle:@"提交订单" forState:UIControlStateNormal];
-    [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_submitButton];
     
     UITapGestureRecognizer* tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfTap:)];
     tapGestureRecognizer.delegate=self;
@@ -97,8 +51,8 @@
     
     if(user.userID!=nil && user.password!=nil)
     {
-        [messageCenter LSMCUserProfile];
         [hud show:YES];
+        [messageCenter LSMCUserProfile];
     }
 }
 
@@ -108,7 +62,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)backButtonClick:(UIButton *)sender
+#pragma mark- 重载方法
+- (void)leftBarButtonItemClick:(UIBarButtonItem *)sender
 {
     if([_delegate respondsToSelector:@selector(LSCreateOrderViewControllerDidCreateOrder)])
     {
@@ -117,41 +72,9 @@
 }
 
 #pragma mark- 私有方法
-- (void)submitButtonClick:(UIButton*)sender
-{
-    [_mobileTextField resignFirstResponder];
-    
-    NSMutableString* seatsMString = [[NSMutableString alloc] initWithCapacity:0];
-    for (LSSeat* seat in _order.selectSeatArray)
-    {
-        [seatsMString appendFormat:@"%@:%@|", seat.realRowID, seat.realColumnID];
-    }
-    [seatsMString deleteCharactersInRange:NSMakeRange((seatsMString.length - 1), 1)];
-    NSString* mobileString=nil;
-    if(_mobileTextField.text.length==0)
-    {
-        if(user.mobile!=nil)
-        {
-            mobileString=user.mobile;
-        }
-        else
-        {
-            [LSAlertView showWithTag:0 title:nil message:@"请输入手机号，用于接收取票码" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            return;
-        }
-    }
-    else
-    {
-        mobileString=user.otherMobile;
-    }
-    
-    [hud show:YES];
-    [messageCenter LSMCOrderCreateWithScheduleID:_order.schedule.scheduleID sectionID:_order.section.sectionID seats:seatsMString mobile:mobileString isOnSale:_order.schedule.isOnSale];
-}
-
 - (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
-    [_mobileTextField resignFirstResponder];
+    [_createOrderFooterView resignFirstResponder];
 }
 
 
@@ -230,46 +153,64 @@
     }
 }
 
-#pragma mark- UITextField的委托方法
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+#pragma mark- UITableView的委托方法
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        self.view.frame=CGRectMake(self.view.left, self.view.top-(216-(self.view.height-_submitButton.bottom))-10, self.view.width, self.view.height);
-    }];
+    return 44.f*2+50.f;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    _createOrderFooterView=[[[LSCreateOrderFooterView alloc] initWithFrame:CGRectZero] autorelease];
+    _createOrderFooterView.delegate=self;
+    return _createOrderFooterView;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 0.f;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSCreateOrderCell* createOrderCell=[tableView dequeueReusableCellWithIdentifier:@"LSCreateOrderCell"];
+    if(createOrderCell==nil)
+    {
+        createOrderCell=[[[LSCreateOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCreateOrderCell"] autorelease];
+    }
+    return createOrderCell;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+#pragma mark- LSCreateOrderFooterView的委托方法
+- (void)LSCreateOrderFooterView:(LSCreateOrderFooterView *)createOrderFooterView didClickSubmitButton:(UIButton *)submitButton
 {
-    user.otherMobile=textField.text;
-    /*
-    if(user.otherMobile.length>3)
+    NSMutableString* seatsMString = [[NSMutableString alloc] initWithCapacity:0];
+    for (LSSeat* seat in _order.selectSeatArray)
     {
-        NSMutableString* placeholder=[NSMutableString stringWithString:user.otherMobile];
-        NSString* s=nil;
-        if(user.otherMobile.length==4)
+        [seatsMString appendFormat:@"%@:%@|", seat.realRowID, seat.realColumnID];
+    }
+    [seatsMString deleteCharactersInRange:NSMakeRange((seatsMString.length - 1), 1)];
+    NSString* mobileString=nil;
+    if(_mobileTextField.text.length==0)
+    {
+        if(user.mobile!=nil)
         {
-            s=@"*";
-        }
-        else if(user.otherMobile.length==5)
-        {
-            s=@"**";
-        }
-        else if(user.otherMobile.length==6)
-        {
-            s=@"***";
+            mobileString=user.mobile;
         }
         else
         {
-            s=@"****";
+            [LSAlertView showWithTag:0 title:nil message:@"请输入手机号，用于接收取票码" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            return;
         }
-        [placeholder replaceCharactersInRange:NSMakeRange(3, user.otherMobile.length-3) withString:s];
     }
-     */
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        self.view.frame=CGRectMake(self.view.left, LSiOS7?44.f+20.f:0.f, self.view.width, self.view.height);
-    }];
+    else
+    {
+        mobileString=user.otherMobile;
+    }
+    
+    [hud show:YES];
+    [messageCenter LSMCOrderCreateWithScheduleID:_order.schedule.scheduleID sectionID:_order.section.sectionID seats:seatsMString mobile:mobileString isOnSale:_order.schedule.isOnSale];
 }
 
 #pragma mark- UIAlertView的委托方法

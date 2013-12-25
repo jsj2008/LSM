@@ -7,16 +7,43 @@
 //
 
 #import "LSCreateOrderFooterView.h"
+#define gap 10.f
 
 @implementation LSCreateOrderFooterView
+
+@synthesize delegate=_delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        _phoneTextField=[[UITextField alloc] initWithFrame:CGRectZero];
+        _phoneTextField.layer.cornerRadius=3.f;
+        _phoneTextField.backgroundColor=LSColorWhite;
+        _phoneTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
+        _phoneTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        _phoneTextField.placeholder=@"输入接收订座凭证的手机号";
+        _phoneTextField.keyboardType=UIKeyboardTypeNumberPad;
+        [self addSubview:_phoneTextField];
+        [_phoneTextField release];
+        
+        _submitButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        _submitButton.layer.cornerRadius=3.f;
+        _submitButton.backgroundColor=LSColorButtonNormalRed;
+        _submitButton.titleLabel.font=LSFontButton;
+        [_submitButton setTitle:@"提交订单" forState:UIControlStateNormal];
+        [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_submitButton];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _phoneTextField.frame=CGRectMake(gap, gap*2, self.width-gap*2, 44.f);
+    _submitButton.frame=CGRectMake(gap, gap*3+44.f, self.width-gap*2, 44.f);
 }
 
 /*
@@ -28,4 +55,8 @@
 }
 */
 
+- (void)submitButtonClick:(UIButton*)sender
+{
+    [_delegate LSCreateOrderFooterView:self didClickSubmitButton:sender];
+}
 @end

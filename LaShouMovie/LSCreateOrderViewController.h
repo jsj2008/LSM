@@ -6,16 +6,15 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSViewController.h"
+#import "LSTableViewController.h"
 #import "LSOrder.h"
+#import "LSCreateOrderFooterView.h"
 #import "LSPayViewController.h"
 
 @protocol LSCreateOrderViewControllerDelegate;
-@interface LSCreateOrderViewController : LSViewController<UITextFieldDelegate,UIAlertViewDelegate,LSPayViewControllerDelegate>
+@interface LSCreateOrderViewController : LSTableViewController<LSPayViewControllerDelegate,LSCreateOrderFooterViewDelegate>
 {
-    UITextField* _mobileTextField;
-    UIButton* _submitButton;
-    
+    LSCreateOrderFooterView* _createOrderFooterView;
     LSOrder* _order;
     id<LSCreateOrderViewControllerDelegate> _delegate;
 }
@@ -26,6 +25,7 @@
 
 @protocol LSCreateOrderViewControllerDelegate <NSObject>
 
+@required
 - (void)LSCreateOrderViewControllerDidCreateOrder;
 
 @end
