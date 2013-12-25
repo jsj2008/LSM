@@ -11,7 +11,6 @@
 #import "LSPositionSectionHeader.h"
 #import "LSCinemaStatusView.h"
 #import "LSDistrictSelectorView.h"
-#import "LSSelectorView.h"
 
 @interface LSCinemasByFilmViewController : LSViewController
 <

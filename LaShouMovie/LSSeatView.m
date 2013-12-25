@@ -35,8 +35,6 @@
     return self;
 }
 
-
-
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
@@ -46,19 +44,19 @@
     switch (_seat.seatStatus)
     {
         case LSSeatStatusNormal:
-            imageName = @"seat_canbuy.png";
+            imageName = @"";
             break;
             
         case LSSeatStatusLove:
-            imageName = @"seat_love.png";
+            imageName = @"";
             break;
             
         case LSSeatStatusSelect:
-            imageName = @"seat_my.png";
+            imageName = @"";
             break;
             
         case LSSeatStatusSold:
-            imageName = @"seat_sold.png";
+            imageName = @"";
             break;
             
         default:
@@ -67,36 +65,32 @@
     
     if (imageName!=nil)
     {
-        [[UIImage lsImageNamed:imageName] drawInRect:CGRectMake(5.f, 5.f, rect.size.width-10.f, rect.size.height-10.f)];
+        [[UIImage lsImageNamed:imageName] drawInRect:CGRectMake(0.f, 0.f, rect.size.width, rect.size.height)];
     }
 }
 
 
 - (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
-    [self setNeedsDisplay];
-    
     if(_seat.originSeatStatus==LSSeatStatusSold || _seat.originSeatStatus==LSSeatStatusUnable)
     {
         return;
     }
-    else if(_seat.originSeatStatus==LSSeatStatusNormal || _seat.originSeatStatus==LSSeatStatusLove)//说明是原本状态
+    //如果原始状态是未选择类型，那么说明是本次的操作
+    else if(_seat.originSeatStatus==LSSeatStatusNormal || _seat.originSeatStatus==LSSeatStatusLove)
     {
-        if(_seat.seatStatus==_seat.originSeatStatus)//说明是原本状态
+        if(_seat.seatStatus==_seat.originSeatStatus)
         {
+            //未选择则选择
             _seat.seatStatus=LSSeatStatusSelect;
         }
         else if(_seat.seatStatus==LSSeatStatusSelect)
         {
+            //已选择则取消选择
             _seat.seatStatus=_seat.originSeatStatus;
         }
         
-        dispatch_queue_t queue_0=dispatch_queue_create("queue_0", NULL);
-        dispatch_async(queue_0, ^{
-            
-            [_delegate LSSeatView:self didSelectAtSeat:_seat];
-        });
-        dispatch_release(queue_0);
+        [_delegate LSSeatView:self didSelectAtSeat:_seat];
     }
 }
 

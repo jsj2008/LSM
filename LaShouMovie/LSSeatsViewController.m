@@ -90,109 +90,143 @@
 
 #pragma mark- 私有方法
 //判断座位是否合格
-- (BOOL)checkSeatArrayByRules:(NSArray*)seatArray
+- (BOOL)checkSeatArrayByRules:(NSDictionary*)seatArrayDic
 {
-    //判断是否在同一行
-    int currentRow=((LSSeat*)[seatArray objectAtIndex:0]).rowID;
-    for (LSSeat* seat in seatArray)
+    for(NSString* key in [seatArrayDic allKeys])
     {
-        if(currentRow!=seat.rowID)
+        //分别取得每一个区域和其对应的选座
+        NSArray* seatArray=[seatArrayDic objectForKey:key];
+        LSSection* section=nil;
+        for(LSSection* _section in _order.sectionArray)
         {
-            [LSAlertView showWithTag:0 title:nil message:@"请选择同一行座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            if([_section.sectionID isEqualToString:key])
+            {
+                section=_section;
+                break;
+            }
+        }
+        
+        if(!section)
+        {
             return NO;
         }
-    }
-    
-    /*
-    
-    //检查两边是否留有单个空位
-    {
-        BOOL isLeftLegal=YES;//假设左侧合法
-        LSSeat* firstSeat=[seatArray objectAtIndex:0];
-        id object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:firstSeat.rowID]] objectForKey:[NSNumber numberWithFloat:firstSeat.columnID-1]];
-        if(object!=NULL)//如果左边确实有座位
+        
+        //判断是否在同一行
+        int currentRow=((LSSeat*)[seatArray objectAtIndex:0]).rowID;
+        for (LSSeat* seat in seatArray)
         {
-            LSSeat* leftSeat=object;
-            if(leftSeat.seatStatus!=LSSeatStatusSold && leftSeat.seatStatus!=LSSeatStatusUnable)//如果左边座位没有卖出、没有损坏
+            if(currentRow!=seat.rowID)
             {
-                object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:leftSeat.rowID]] objectForKey:[NSNumber numberWithFloat:leftSeat.columnID-1]];
-                if(object!=NULL)//如果左边的左边确实有座位
+                [LSAlertView showWithTag:0 title:nil message:@"请选择同一行座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                return NO;
+            }
+        }
+        
+        //检查两边是否留有单个空位
+        {
+            BOOL isLeftLegal=YES;//假设左侧合法
+            LSSeat* firstSeat=[seatArray objectAtIndex:0];
+            id object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:firstSeat.rowID]] objectForKey:[NSNumber numberWithFloat:firstSeat.columnID-1]];
+            if(object!=NULL)//如果左边确实有座位
+            {
+                LSSeat* leftSeat=object;
+                if(leftSeat.seatStatus!=LSSeatStatusSold && leftSeat.seatStatus!=LSSeatStatusUnable)//如果左边座位没有卖出、没有损坏
                 {
-                    LSSeat* leftleftSeat=object;
-                    if(leftleftSeat.seatStatus==LSSeatStatusSold || leftleftSeat.seatStatus==LSSeatStatusUnable)//如果左左边座位被卖出、损坏
+                    object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:leftSeat.rowID]] objectForKey:[NSNumber numberWithFloat:leftSeat.columnID-1]];
+                    if(object!=NULL)//如果左边的左边确实有座位
+                    {
+                        LSSeat* leftleftSeat=object;
+                        if(leftleftSeat.seatStatus==LSSeatStatusSold || leftleftSeat.seatStatus==LSSeatStatusUnable)//如果左左边座位被卖出、损坏
+                        {
+                            isLeftLegal=NO;
+                        }
+                    }
+                    else
                     {
                         isLeftLegal=NO;
                     }
                 }
-                else
-                {
-                    isLeftLegal=NO;
-                }
+            }
+            
+            if(!isLeftLegal)
+            {
+                [LSAlertView showWithTag:0 title:nil message:@"请不要留左边单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                return NO;
             }
         }
-        
-        if(!isLeftLegal)
         {
-            [LSAlertView showWithTag:0 title:nil message:@"请不要留左边单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            return NO;
-        }
-    }
-    {
-        BOOL isrightLegal=YES;//假设右边合法
-        LSSeat* lastSeat=[seatArray lastObject];
-        id object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:lastSeat.rowID]] objectForKey:[NSNumber numberWithFloat:lastSeat.columnID+1]];
-        if(object!=NULL)//如果右边确实有座位
-        {
-            LSSeat* rightSeat=object;
-            if(rightSeat.seatStatus!=LSSeatStatusSold && rightSeat.seatStatus!=LSSeatStatusUnable)//如果右边座位没有卖出、没有损坏
+            BOOL isrightLegal=YES;//假设右边合法
+            LSSeat* lastSeat=[seatArray lastObject];
+            id object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:lastSeat.rowID]] objectForKey:[NSNumber numberWithFloat:lastSeat.columnID+1]];
+            if(object!=NULL)//如果右边确实有座位
             {
-                object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:rightSeat.rowID]] objectForKey:[NSNumber numberWithFloat:rightSeat.columnID+1]];
-                if(object!=NULL)//如果左边的左边确实有座位
+                LSSeat* rightSeat=object;
+                if(rightSeat.seatStatus!=LSSeatStatusSold && rightSeat.seatStatus!=LSSeatStatusUnable)//如果右边座位没有卖出、没有损坏
                 {
-                    LSSeat* rightrightSeat=object;
-                    if(rightrightSeat.seatStatus==LSSeatStatusSold || rightrightSeat.seatStatus==LSSeatStatusUnable)//如果右右边座位被卖出、损坏
+                    object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:rightSeat.rowID]] objectForKey:[NSNumber numberWithFloat:rightSeat.columnID+1]];
+                    if(object!=NULL)//如果左边的左边确实有座位
+                    {
+                        LSSeat* rightrightSeat=object;
+                        if(rightrightSeat.seatStatus==LSSeatStatusSold || rightrightSeat.seatStatus==LSSeatStatusUnable)//如果右右边座位被卖出、损坏
+                        {
+                            isrightLegal=NO;
+                        }
+                    }
+                    else
                     {
                         isrightLegal=NO;
                     }
                 }
-                else
-                {
-                    isrightLegal=NO;
-                }
+            }
+            
+            if(!isrightLegal)
+            {
+                [LSAlertView showWithTag:0 title:nil message:@"请不要留右边单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                return NO;
             }
         }
         
-        if(!isrightLegal)
+        //检查是否留有单个间隔座位
+        int currentColumn=((LSSeat*)[seatArray objectAtIndex:0]).columnID;
+        for (int i=0;i<seatArray.count;i++)
         {
-            [LSAlertView showWithTag:0 title:nil message:@"请不要留右边单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            return NO;
-        }
-    }
-    
-    //检查是否留有单个间隔座位
-    int currentColumn=((LSSeat*)[seatArray objectAtIndex:0]).columnID;
-    for (int i=0;i<seatArray.count;i++)
-    {
-        LSSeat* seat=[seatArray objectAtIndex:i];
-        if(currentColumn!=seat.columnID)//不是连续的行号，需要判断间隔位置的状态
-        {
-            BOOL isCanNotSelect=YES;//假设中间的间隔是合法
-            id object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn]];
-            if(object!=NULL && object!=nil)//如果中间确实有座位
+            LSSeat* seat=[seatArray objectAtIndex:i];
+            if(currentColumn!=seat.columnID)//不是连续的行号，需要判断间隔位置的状态
             {
-                LSSeat* currentSeat=object;
-                if(currentSeat.originSeatStatus!=LSSeatStatusSold && currentSeat.originSeatStatus!=LSSeatStatusUnable)//如果这个座位没有卖出、没有损坏
+                BOOL isCanNotSelect=YES;//假设中间的间隔是合法
+                id object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn]];
+                if(object!=NULL && object!=nil)//如果中间确实有座位
                 {
-                    //
-                    //以下判断以中间间隔至少两个座位为基础
-                    //
-                    object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn-1]];
-                    if(object!=NULL && object!=nil)//如果左边确实有座位
+                    LSSeat* currentSeat=object;
+                    if(currentSeat.originSeatStatus!=LSSeatStatusSold && currentSeat.originSeatStatus!=LSSeatStatusUnable)//如果这个座位没有卖出、没有损坏
                     {
-                        LSSeat* leftSeat=object;
-                        if(leftSeat.seatStatus==LSSeatStatusSelect || leftSeat.seatStatus==LSSeatStatusSold || leftSeat.seatStatus==LSSeatStatusUnable)//如果左边座位被选择、被卖出、被损坏
+                        //
+                        //以下判断以中间间隔至少两个座位为基础
+                        //
+                        object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn-1]];
+                        if(object!=NULL && object!=nil)//如果左边确实有座位
                         {
-                            object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn+1]];
+                            LSSeat* leftSeat=object;
+                            if(leftSeat.seatStatus==LSSeatStatusSelect || leftSeat.seatStatus==LSSeatStatusSold || leftSeat.seatStatus==LSSeatStatusUnable)//如果左边座位被选择、被卖出、被损坏
+                            {
+                                object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn+1]];
+                                if(object!=NULL && object!=nil)//如果右边确实有座位
+                                {
+                                    LSSeat* rightSeat=object;
+                                    if(rightSeat.seatStatus==LSSeatStatusSelect || rightSeat.seatStatus==LSSeatStatusSold || rightSeat.seatStatus==LSSeatStatusUnable)//如果右边座位被选择、被卖出、被损坏
+                                    {
+                                        isCanNotSelect=NO;
+                                    }
+                                }
+                                else//如果右边没有座位，说明右边是走廊
+                                {
+                                    isCanNotSelect=NO;
+                                }
+                            }
+                        }
+                        else//如果左边没有座位，说明左边是走廊
+                        {
+                            object=[[section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn+1]];
                             if(object!=NULL && object!=nil)//如果右边确实有座位
                             {
                                 LSSeat* rightSeat=object;
@@ -207,37 +241,20 @@
                             }
                         }
                     }
-                    else//如果左边没有座位，说明左边是走廊
-                    {
-                        object=[[_order.section.seatDictionary objectForKey:[NSNumber numberWithInt:currentRow]] objectForKey:[NSNumber numberWithFloat:currentColumn+1]];
-                        if(object!=NULL && object!=nil)//如果右边确实有座位
-                        {
-                            LSSeat* rightSeat=object;
-                            if(rightSeat.seatStatus==LSSeatStatusSelect || rightSeat.seatStatus==LSSeatStatusSold || rightSeat.seatStatus==LSSeatStatusUnable)//如果右边座位被选择、被卖出、被损坏
-                            {
-                                isCanNotSelect=NO;
-                            }
-                        }
-                        else//如果右边没有座位，说明右边是走廊
-                        {
-                            isCanNotSelect=NO;
-                        }
-                    }
                 }
+                
+                if(!isCanNotSelect)
+                {
+                    [LSAlertView showWithTag:0 title:nil message:@"请不要留中间单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    return NO;
+                }
+                
+                i--;
             }
             
-            if(!isCanNotSelect)
-            {
-                [LSAlertView showWithTag:0 title:nil message:@"请不要留中间单个座位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                return NO;
-            }
-            
-            i--;
+            currentColumn++;
         }
-        
-        currentColumn++;
     }
-     */
     
     return YES;
 }
@@ -376,21 +393,21 @@
         self.schedule=[_scheduleArray objectAtIndex:indexPath];
         
         _order.schedule=_schedule;
-        _order.selectSeatArray=nil;
+        _order.selectSeatArrayDic=nil;
         [_seatsInfoView setNeedsDisplay];
         
         [hud show:YES];
-        [messageCenter LSMCSeatsWithDate:_schedule.startDate cinemaID:_cinema.cinemaID hallID:_schedule.hall.hallID mark:indexPath];
+        [messageCenter LSMCSeatsWithDate:_schedule.startDate cinemaID:_cinema.cinemaID hallID:_schedule.hall.hallID];
     }
 }
 
 
 #pragma mark- LSSeatPlaceView的委托方法
-- (void)LSSeatPlaceView:(LSSeatPlaceView *)seatPlaceView didChangeSelectSeatArray:(NSArray *)selectSeatArray
+- (void)LSSeatPlaceView:(LSSeatPlaceView *)seatPlaceView didChangeSelectSeatArrayDic:(NSDictionary *)selectSeatArrayDic
 {
-    if(selectSeatArray!=nil)
+    if(selectSeatArrayDic!=nil)
     {
-        _order.selectSeatArray=selectSeatArray;
+        _order.selectSeatArrayDic=selectSeatArrayDic;
         [_seatsInfoView setNeedsDisplay];
     }
     else
@@ -402,10 +419,10 @@
 #pragma mark- LSSeatsInfoView的委托方法
 - (void)LSSeatsInfoView:(LSSeatsInfoView *)seatsInfoView didClickConfirmButtonView:(LSConfirmButtonView *)confirmButtonView
 {
-    if(_order.selectSeatArray.count>0)
+    if([_order.totalPrice floatValue]>0.f)
     {
         //座位规则的验证
-        if(![self checkSeatArrayByRules:_order.selectSeatArray])
+        if(![self checkSeatArrayByRules:_order.selectSeatArrayDic])
         {
             return;
         }
@@ -455,7 +472,7 @@
         
         _order.originTotalPrice=nil;
         _order.totalPrice=nil;
-        _order.selectSeatArray=nil;
+        _order.selectSeatArrayDic=nil;
         
         _order.couponArray=nil;
         _order.isUseCoupon=nil;

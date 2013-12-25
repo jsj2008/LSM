@@ -59,8 +59,8 @@
             int rows=0;
             
             //记录屏幕行列的最小值，以下两个参数不对外(因为没有意义)，只用于开发调试查看
-            CGFloat minColumns=MAXFLOAT;
-            int minRows=INT_MAX;
+//            CGFloat minColumns=MAXFLOAT;
+//            int minRows=INT_MAX;
             
             NSArray* tmpArray=[safeDic objectForKey:@"seats"];
             
@@ -74,6 +74,7 @@
             for(NSDictionary* dic in tmpArray)
             {
                 LSSeat* seat=[[LSSeat alloc] initWithDictionary:dic];
+                seat.sectionID=_sectionID;
                 [seatMArray addObject:seat];
                 [seat release];
                 
@@ -88,14 +89,14 @@
                 }
                 
                 //寻找屏幕行列坐标的最小值，就可以确定从第几行第几列开始显示
-                if(seat.columnID<minColumns)
-                {
-                    minColumns=seat.columnID;
-                }
-                if(seat.rowID<minRows)
-                {
-                    minRows=seat.rowID;
-                }
+//                if(seat.columnID<minColumns)
+//                {
+//                    minColumns=seat.columnID;
+//                }
+//                if(seat.rowID<minRows)
+//                {
+//                    minRows=seat.rowID;
+//                }
                 
                 if(![rowIDArray containsObject:[NSNumber numberWithFloat:seat.rowID]])
                 {
@@ -104,8 +105,6 @@
                 }
             }
             self.seatArray=seatMArray;
-            //self.seatDictionary=seatMDictionary;
-            
             //LSLOG(@"最大列数%f     最大行数%d     最小列数%f     最小行数%d",columns,rows,minColumns,minRows);
             
             self.columnNumber=columns;
@@ -118,8 +117,8 @@
             {
                 if([[rowIDArray objectAtIndex:i] intValue]>i+1)
                 {
-                    [rowIDArray insertObject:@"space" atIndex:i];
-                    [realRowIDArray insertObject:@"space" atIndex:i];
+                    [rowIDArray insertObject:LSSeatRowSpace atIndex:i];
+                    [realRowIDArray insertObject:LSSeatRowSpace atIndex:i];
                 }
             }
             
@@ -170,7 +169,7 @@
     [aCoder encodeObject:_seatArray forKey:@"seatArray"];
     
     [aCoder encodeFloat:_columnNumber forKey:@"columnNumber"];
-    [aCoder encodeFloat:_rowNumber forKey:@"rowNumber"];
+    [aCoder encodeInt:_rowNumber forKey:@"rowNumber"];
     [aCoder encodeObject:_rowIDArray forKey:@"rowIDArray"];
 }
 
@@ -183,7 +182,7 @@
     self.seatArray=[decoder decodeObjectForKey:@"seatArray"];
     
     self.columnNumber=[decoder decodeFloatForKey:@"columnNumber"];
-    self.rowNumber=[decoder decodeFloatForKey:@"rowNumber"];
+    self.rowNumber=[decoder decodeIntForKey:@"rowNumber"];
     self.rowIDArray=[decoder decodeObjectForKey:@"rowIDArray"];
     
     return self;

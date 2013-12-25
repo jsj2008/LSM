@@ -10,21 +10,20 @@
 
 @interface LSRowNumberView : UIView
 {
-    NSArray* _rowIDArray;
+    NSArray* _rowIDArray;//内部嵌套的冯区域的行ID数组 ,为了满足多个区域的情况
     
     //
     //以下参数为外部传入，用以设定整体的布局
     //
-    CGFloat _basicAreaSide;//带边界的基本宽高
-    CGFloat _basicContentSide;//不带边界的基本宽高
-    CGFloat _basicPadding;//边界的基本值
-    CGFloat _paddingY;
+    CGFloat _paddingY;//纵向两头的间隔
+    CGFloat _seatHeight;//高
+    CGFloat _basicPaddingY;//两行间的间隔
+    CGFloat _space;//两区域间的间隔
 }
 @property(nonatomic,retain) NSArray* rowIDArray;
-
-@property(nonatomic,assign) CGFloat basicAreaSide;//带边界的基本宽高
-@property(nonatomic,assign) CGFloat basicContentSide;//不带边界的基本宽高
-@property(nonatomic,assign) CGFloat basicPadding;//边界的基本值
 @property(nonatomic,assign) CGFloat paddingY;
+@property(nonatomic,assign) CGFloat seatHeight;
+@property(nonatomic,assign) CGFloat basicPaddingY;
+@property(nonatomic,assign) CGFloat space;
 
 @end

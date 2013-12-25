@@ -67,6 +67,7 @@
 #define LSFontScheduleBuy           LSFont14
 
 #define LSFontSeatInfo              LSFont10
+#define LSFontSeatRowID             LSFont10
 
 #define LSFontScheduleCinemaName    LSFont18
 #define LSFontScheduleBold          LSFontBold16

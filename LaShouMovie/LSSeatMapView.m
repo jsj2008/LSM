@@ -7,23 +7,26 @@
 //
 
 #import "LSSeatMapView.h"
+#import "LSSection.h"
 
 @implementation LSSeatMapView
 
-@synthesize section=_section;
+@synthesize order=_order;
 @synthesize delegate=_delegate;
 
-@synthesize basicAreaSide=_basicAreaSide;//带边界的基本宽高
-@synthesize basicContentSide=_basicContentSide;//不带边界的基本宽高
-@synthesize basicPadding=_basicPadding;//边界的基本值
+@synthesize seatHeight=_seatHeight;
+@synthesize seatWidth=_seatWidth;
+@synthesize basicPadding=_basicPadding;
 @synthesize paddingX=_paddingX;
 @synthesize paddingY=_paddingY;
+@synthesize space=_space;
 
 #pragma mark- 生命周期
 - (void)dealloc
 {
-    self.section=nil;
-    LSRELEASE(_selectSeatArray)
+    self.order=nil;
+    LSRELEASE(_selectSeatMArray)
+    LSRELEASE(_selectSeatArrayMDic)
     [super dealloc];
 }
 
@@ -32,8 +35,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
-        _selectSeatArray=[[NSMutableArray alloc] initWithCapacity:0];
+        _selectSeatMArray=[[NSMutableArray alloc] initWithCapacity:0];
+        _selectSeatArrayMDic=[[NSMutableDictionary alloc] initWithCapacity:0];
     }
     return self;
 }
@@ -53,25 +56,26 @@
     
     CGFloat positionX=0.f;
     CGFloat positionY=0.f;
-    for (LSSeat* seat in _section.seatArray)
+    
+    for(LSSection* section in _order.sectionArray)
     {
-//        positionX=_paddingX+_basicAreaSide*(seat.columnID-1)+_basicPadding;
-//        positionY=_paddingY+_basicAreaSide*(seat.rowID-1)+_basicPadding;
-//        
-//        LSSeatView* seatView=[[LSSeatView alloc] initWithFrame:CGRectMake(positionX, positionY, _basicContentSide, _basicContentSide)];
-//        seatView.seat=seat;
-//        seatView.delegate=self;
-//        [self addSubview:seatView];
-//        [seatView release];
+        for (LSSeat* seat in section.seatArray)
+        {
+            //座位的视图坐标是从1开始的
+            positionX=_paddingX+(_seatWidth+_basicPadding)*(seat.columnID-1);
+            positionY=_paddingY+(_seatHeight+_basicPadding)*(seat.rowID-1);
+            
+            LSSeatView* seatView=[[LSSeatView alloc] initWithFrame:CGRectMake(positionX, positionY, _seatWidth, _seatHeight)];
+            seatView.seat=seat;
+            seatView.delegate=self;
+            [self addSubview:seatView];
+            [seatView release];
+        }
         
-        positionX=_paddingX+_basicAreaSide*(seat.columnID-1);
-        positionY=_paddingY+_basicAreaSide*(seat.rowID-1);
-        
-        LSSeatView* seatView=[[LSSeatView alloc] initWithFrame:CGRectMake(positionX, positionY, _basicAreaSide, _basicAreaSide)];
-        seatView.seat=seat;
-        seatView.delegate=self;
-        [self addSubview:seatView];
-        [seatView release];
+        //最后一行是不加行间距的
+        _paddingY+=(_seatWidth+_basicPadding)*section.rowNumber-_basicPadding;
+        //强制增加纵向高度
+        _paddingY+=_space;
     }
 }
 
@@ -81,31 +85,50 @@
 {
     if(seat.type==LSSeatTypeNormal)
     {
-        if([_selectSeatArray containsObject:seat])
+        if([_selectSeatMArray containsObject:seat])
         {
-            [_selectSeatArray removeObject:seat];
+            [[_selectSeatArrayMDic objectForKey:seat.sectionID] removeObject:seat];
+            [_selectSeatMArray removeObject:seat];
         }
         else
         {
-            if(_selectSeatArray.count==_section.maxTicketNumber)
+            if(_selectSeatMArray.count==_order.maxTicketNumber)
             {
+                seat.seatStatus=seat.originSeatStatus;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    seat.seatStatus=seat.originSeatStatus;
                     [seatView setNeedsDisplay];
                 });
-                
-                [_delegate LSSeatMapView:self didChangeSelectSeatArray:nil];
+                [_delegate LSSeatMapView:self didChangeSelectSeatArrayDic:nil];
             }
             else
             {
-                [_selectSeatArray addObject:seat];
-                [_selectSeatArray sortUsingSelector:@selector(sortByColumnID:)];
+                if([_selectSeatArrayMDic objectForKey:seat.sectionID]==NULL)
+                {
+                    [_selectSeatArrayMDic setObject:[NSMutableArray arrayWithCapacity:0] forKey:seat.sectionID];
+                }
+                
+                NSMutableArray* selectSeatMArray=[_selectSeatArrayMDic objectForKey:seat.sectionID];
+                [selectSeatMArray addObject:seat];
+                [selectSeatMArray sortUsingSelector:@selector(sortByColumnID:)];
+                
+                [_selectSeatMArray addObject:seat];
             }
         }
     }
-    else
+    else//选择的情侣座
     {
+        //查找当前的座位到底属于哪个区域
+        LSSection* _section=nil;
+        for(LSSection* seaction in _order.sectionArray)
+        {
+            if([seaction.sectionID isEqualToString:seat.sectionID])
+            {
+                _section=seaction;
+                break;
+            }
+        }
+        
         LSSeat* leftSeat=[[_section.seatDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]] objectForKey:[NSNumber numberWithFloat:seat.columnID-1]];
         LSSeat* rightSeat=[[_section.seatDictionary objectForKey:[NSNumber numberWithInt:seat.rowID]] objectForKey:[NSNumber numberWithFloat:seat.columnID+1]];
         
@@ -133,37 +156,50 @@
         }
     }
     
-    [_delegate LSSeatMapView:self didChangeSelectSeatArray:_selectSeatArray];
+    [_delegate LSSeatMapView:self didChangeSelectSeatArrayDic:_selectSeatArrayMDic];
 }
 
 - (void)changeAnotherSeatView:(LSSeatView *)seatView seat:(LSSeat *)seat anotherSeat:(LSSeat *)anotherSeat
 {
-    if([_selectSeatArray containsObject:seat])
+    if([_selectSeatMArray containsObject:seat])
     {
-        [_selectSeatArray removeObject:seat];
         anotherSeat.seatStatus=anotherSeat.originSeatStatus;
         [self tapAnotherSeatView:anotherSeat];
-        [_selectSeatArray removeObject:anotherSeat];
+        
+        [[_selectSeatArrayMDic objectForKey:seat.sectionID] removeObject:seat];
+        [[_selectSeatArrayMDic objectForKey:seat.sectionID] removeObject:anotherSeat];
+        
+        [_selectSeatMArray removeObject:seat];
+        [_selectSeatMArray removeObject:anotherSeat];
     }
     else
     {
-        if(_selectSeatArray.count==_section.maxTicketNumber || _selectSeatArray.count==_section.maxTicketNumber-1)
+        if(_selectSeatMArray.count==_order.maxTicketNumber || _selectSeatMArray.count==_order.maxTicketNumber-1)
         {
+            seat.seatStatus=seat.originSeatStatus;
             dispatch_async(dispatch_get_main_queue(), ^{
-                
-                seat.seatStatus=seat.originSeatStatus;
+
                 [seatView setNeedsDisplay];
             });
-            
-            [_delegate LSSeatMapView:self didChangeSelectSeatArray:nil];
+            [_delegate LSSeatMapView:self didChangeSelectSeatArrayDic:nil];
         }
         else
         {
-            [_selectSeatArray addObject:seat];
             anotherSeat.seatStatus=LSSeatStatusSelect;
             [self tapAnotherSeatView:anotherSeat];
-            [_selectSeatArray addObject:anotherSeat];
-            [_selectSeatArray sortUsingSelector:@selector(sortByColumnID:)];
+            
+            if([_selectSeatArrayMDic objectForKey:seat.sectionID]==NULL)
+            {
+                [_selectSeatArrayMDic setObject:[NSMutableArray arrayWithCapacity:0] forKey:seat.sectionID];
+            }
+            
+            NSMutableArray* selectSeatMArray=[_selectSeatArrayMDic objectForKey:seat.sectionID];
+            [selectSeatMArray addObject:seat];
+            [selectSeatMArray addObject:anotherSeat];
+            [selectSeatMArray sortUsingSelector:@selector(sortByColumnID:)];
+            
+            [_selectSeatMArray addObject:seat];
+            [_selectSeatMArray addObject:anotherSeat];
         }
     }
 }
@@ -181,6 +217,7 @@
                     
                     [seatView setNeedsDisplay];
                 });
+                break;
             }
         }
     });

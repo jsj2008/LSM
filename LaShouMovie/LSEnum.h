@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define LSSeatRowSpace @"space"
+
 #pragma mark- 断网提示方式
 typedef enum
 {
@@ -114,15 +116,6 @@ typedef enum
     
 } LSCinemaBuyType;
 
-
-#pragma mark- 选择器类型
-typedef enum
-{
-    LSSelectorViewTypeLocation = 0,//显示地域
-    LSSelectorViewTypeSection  = 1 //显示影厅
-    
-}LSSelectorViewType;
-
 #pragma mark- 影片视觉类型
 typedef enum
 {
@@ -149,6 +142,15 @@ typedef enum
     LSApiSourceJinYi        = 7,//金逸
     LSApiSourceHiMovie      = 8 //HiMovie
 }LSApiSource;
+
+#pragma mark- 座位类型
+typedef enum
+{
+    LSSeatTypeNormal=0,//普通座位
+    LSSeatTypeLoveFirst=1,//情侣座首座位
+    LSSeatTypeLoveSecond=2//情侣座第二座位
+    
+}LSSeatType;
 
 #pragma mark- 座位状态
 typedef enum

@@ -29,7 +29,7 @@
     
     //以下数据有本地生成
     CGFloat _columnNumber;//列数
-    CGFloat _rowNumber;//行数
+    int _rowNumber;//行数
     
     NSArray* _rowIDArray;//行标数组
 }
@@ -42,7 +42,7 @@
 @property(nonatomic,retain) NSDictionary* seatDictionary;//座位字典
 
 @property(nonatomic,assign) CGFloat columnNumber;//列数
-@property(nonatomic,assign) CGFloat rowNumber;//行数
+@property(nonatomic,assign) int rowNumber;//行数
 @property(nonatomic,retain) NSArray* rowIDArray;//行标数组
 
 - (id)initWithDictionary:(NSDictionary *)safeDic;

@@ -17,7 +17,8 @@
 
 @synthesize sectionArray=_sectionArray;
 @synthesize maxTicketNumber=_maxTicketNumber;
-@synthesize selectSeatArray=_selectSeatArray;//
+@synthesize rowIDArray=_rowIDArray;
+@synthesize selectSeatArrayDic=_selectSeatArrayDic;//
 @synthesize originTotalPrice=_originTotalPrice;
 @synthesize totalPrice=_totalPrice;//总价
 @synthesize couponArray=_couponArray;
@@ -47,26 +48,35 @@
         _sectionArray=[sectionArray retain];
     }
     
-    int totalNumber=0;
+    //自动填充
+    _maxTicketNumber=0;
+    NSMutableArray* rowIDMArray=[NSMutableArray arrayWithCapacity:0];
     for(LSSection* section in _sectionArray)
     {
-        totalNumber+=section.maxTicketNumber;
+        _maxTicketNumber=_maxTicketNumber<section.maxTicketNumber?section.maxTicketNumber:_maxTicketNumber;
+        [rowIDMArray addObjectsFromArray:section.rowIDArray];
     }
-    _maxTicketNumber=(int)(totalNumber/_sectionArray.count);
+    self.rowIDArray=rowIDMArray;
 }
 
-- (void)setSelectSeatArray:(NSArray *)selectSeatArray
+- (void)setSelectSeatArrayDic:(NSDictionary *)selectSeatArrayDic
 {
-    if(![_selectSeatArray isEqual:selectSeatArray])
+    if(![_selectSeatArrayDic isEqual:selectSeatArrayDic])
     {
-        if(_selectSeatArray!=nil)
+        if(_selectSeatArrayDic!=nil)
         {
-            LSRELEASE(_selectSeatArray)
+            LSRELEASE(_selectSeatArrayDic)
         }
-        _selectSeatArray=[selectSeatArray retain];
+        _selectSeatArrayDic=[selectSeatArrayDic retain];
     }
+    
     //自动填充
-    self.totalPrice=[[NSString stringWithFormat:@"%.2f",_selectSeatArray.count*[_schedule.price floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
+    int totalNumber=0;
+    for(NSArray* seatArray in [_selectSeatArrayDic allValues])
+    {
+        totalNumber+=seatArray.count;
+    }
+    self.totalPrice=[[NSString stringWithFormat:@"%.2f",totalNumber*[_schedule.price floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
 }
 
 - (NSInteger)expireSecond
@@ -183,7 +193,7 @@
             self.sectionArray=[NSArray arrayWithObject:section];
             [section release];
             
-            self.selectSeatArray=section.seatArray;
+            self.selectSeatArrayDic=[NSDictionary dictionaryWithObject:section.seatArray forKey:section.sectionID];
         }
         
         self.orderID=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"trade_no"]];
@@ -263,7 +273,8 @@
 
     self.sectionArray=nil;
 //    self.maxTicketNumber=nil;
-    self.selectSeatArray=nil;//
+    self.rowIDArray=nil;
+    self.selectSeatArrayDic=nil;//
 //    self.totalPrice=nil;//总价
     self.couponArray=nil;
     self.isUseCoupon=nil;
@@ -289,7 +300,8 @@
     [aCoder encodeObject:_schedule forKey:@"schedule"];
     [aCoder encodeObject:_sectionArray forKey:@"sectionArray"];
     [aCoder encodeInt:_maxTicketNumber forKey:@"maxTicketNumber"];
-    [aCoder encodeObject:_selectSeatArray forKey:@"selectSeatArray"];
+    [aCoder encodeObject:_rowIDArray forKey:@"rowIDArray"];
+    [aCoder encodeObject:_selectSeatArrayDic forKey:@"selectSeatArrayDic"];
     [aCoder encodeObject:_originTotalPrice forKey:@"originTotalPrice"];
     [aCoder encodeObject:_totalPrice forKey:@"totalPrice"];
     [aCoder encodeObject:_couponArray forKey:@"couponArray"];
@@ -313,7 +325,8 @@
     self.schedule=[decoder decodeObjectForKey:@"schedule"];//排期
     self.sectionArray=[decoder decodeObjectForKey:@"sectionArray"];
     self.maxTicketNumber=[decoder decodeIntForKey:@"maxTicketNumber"];
-    self.selectSeatArray=[decoder decodeObjectForKey:@"selectSeatArray"];//
+    self.rowIDArray=[decoder decodeObjectForKey:@"rowIDArray"];
+    self.selectSeatArrayDic=[decoder decodeObjectForKey:@"selectSeatArrayDic"];//
     self.originTotalPrice=[decoder decodeObjectForKey:@"originTotalPrice"];
     self.totalPrice=[decoder decodeObjectForKey:@"totalPrice"];//总价
     self.couponArray=[decoder decodeObjectForKey:@"couponArray"];//使用优惠券

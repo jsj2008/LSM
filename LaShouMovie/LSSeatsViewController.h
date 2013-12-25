@@ -35,7 +35,6 @@
 @property(nonatomic,retain) LSCinema* cinema;
 @property(nonatomic,retain) LSFilm* film;
 @property(nonatomic,retain) LSSchedule* schedule;
-
 @property(nonatomic,retain) NSArray* scheduleArray;
 
 @end

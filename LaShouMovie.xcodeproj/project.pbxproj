@@ -473,6 +473,8 @@
 		18D4AF3B184F3D43000AAE01 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF32184F3D42000AAE01 /* ASINetworkQueue.m */; };
 		18D4AF41184F3E50000AAE01 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF3E184F3E50000AAE01 /* Reachability.m */; };
 		18D4AF42184F3E50000AAE01 /* ReachabilityAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */; };
+		18D54155186ADA3E004D161A /* LSCreateOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54154186ADA3E004D161A /* LSCreateOrderCell.m */; };
+		18D54159186AE1ED004D161A /* LSCreateOrderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */; };
 		18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */; };
 		18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE35E17F1796400016442 /* LSQQWBAuthViewController.m */; };
 		18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE36417F1893600016442 /* LSSinaWBAuthViewController.m */; };
@@ -511,7 +513,6 @@
 		1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B652117EDEDFB0068C6CA /* LSQQAuthViewController.m */; };
 		1D9DA4581846394F002A436D /* LSPayFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D9DA4571846394F002A436D /* LSPayFooterView.m */; };
 		1DACCF5B17F0966700855F27 /* LSCreateOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */; };
-		1DACCF5F17F0977200855F27 /* LSOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF5E17F0977200855F27 /* LSOrderView.m */; };
 		1DACCF6317F0A21100855F27 /* LSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF6217F0A21100855F27 /* LSAlertView.m */; };
 		1DACCF6817FBA95000855F27 /* LSNothingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF6717FBA95000855F27 /* LSNothingCell.m */; };
 		1DACCF6C17FBBCB700855F27 /* LSUnpayOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF6B17FBBCB700855F27 /* LSUnpayOrderCell.m */; };
@@ -1250,6 +1251,10 @@
 		18D4AF3E184F3E50000AAE01 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		18D4AF3F184F3E50000AAE01 /* ReachabilityAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityAppDelegate.h; sourceTree = "<group>"; };
 		18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityAppDelegate.m; sourceTree = "<group>"; };
+		18D54153186ADA3E004D161A /* LSCreateOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderCell.h; sourceTree = "<group>"; };
+		18D54154186ADA3E004D161A /* LSCreateOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderCell.m; sourceTree = "<group>"; };
+		18D54157186AE1ED004D161A /* LSCreateOrderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderFooterView.h; sourceTree = "<group>"; };
+		18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderFooterView.m; sourceTree = "<group>"; };
 		18DCE34A17F027FD00016442 /* LSCinemaStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaStatusView.h; sourceTree = "<group>"; };
 		18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaStatusView.m; sourceTree = "<group>"; };
 		18DCE35D17F1796400016442 /* LSQQWBAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSQQWBAuthViewController.h; sourceTree = "<group>"; };
@@ -1327,8 +1332,6 @@
 		1D9DA4571846394F002A436D /* LSPayFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayFooterView.m; sourceTree = "<group>"; };
 		1DACCF5917F0966700855F27 /* LSCreateOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderViewController.h; sourceTree = "<group>"; };
 		1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderViewController.m; sourceTree = "<group>"; };
-		1DACCF5D17F0977200855F27 /* LSOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSOrderView.h; sourceTree = "<group>"; };
-		1DACCF5E17F0977200855F27 /* LSOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSOrderView.m; sourceTree = "<group>"; };
 		1DACCF6117F0A21100855F27 /* LSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSAlertView.h; sourceTree = "<group>"; };
 		1DACCF6217F0A21100855F27 /* LSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSAlertView.m; sourceTree = "<group>"; };
 		1DACCF6617FBA95000855F27 /* LSNothingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSNothingCell.h; sourceTree = "<group>"; };
@@ -2102,7 +2105,8 @@
 		1822396E17CEE8D900F61D5F /* CreateOrder */ = {
 			isa = PBXGroup;
 			children = (
-				1DACCF5C17F0974B00855F27 /* OrderView */,
+				18D54156186AE1CA004D161A /* CreateOrderFooterView */,
+				1DACCF5C17F0974B00855F27 /* CreateOrderCell */,
 				1DACCF5917F0966700855F27 /* LSCreateOrderViewController.h */,
 				1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */,
 			);
@@ -3436,6 +3440,15 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		18D54156186AE1CA004D161A /* CreateOrderFooterView */ = {
+			isa = PBXGroup;
+			children = (
+				18D54157186AE1ED004D161A /* LSCreateOrderFooterView.h */,
+				18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */,
+			);
+			name = CreateOrderFooterView;
+			sourceTree = "<group>";
+		};
 		18DCE34917F027AD00016442 /* CinemaStatusView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3633,13 +3646,13 @@
 			name = PayFooterView;
 			sourceTree = "<group>";
 		};
-		1DACCF5C17F0974B00855F27 /* OrderView */ = {
+		1DACCF5C17F0974B00855F27 /* CreateOrderCell */ = {
 			isa = PBXGroup;
 			children = (
-				1DACCF5D17F0977200855F27 /* LSOrderView.h */,
-				1DACCF5E17F0977200855F27 /* LSOrderView.m */,
+				18D54153186ADA3E004D161A /* LSCreateOrderCell.h */,
+				18D54154186ADA3E004D161A /* LSCreateOrderCell.m */,
 			);
-			name = OrderView;
+			name = CreateOrderCell;
 			sourceTree = "<group>";
 		};
 		1DACCF6017F0A14B00855F27 /* AlertView */ = {
@@ -4158,7 +4171,6 @@
 				1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */,
 				18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */,
 				1DACCF5B17F0966700855F27 /* LSCreateOrderViewController.m in Sources */,
-				1DACCF5F17F0977200855F27 /* LSOrderView.m in Sources */,
 				1DACCF6317F0A21100855F27 /* LSAlertView.m in Sources */,
 				18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */,
 				18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */,
@@ -4191,9 +4203,11 @@
 				1DACCF6C17FBBCB700855F27 /* LSUnpayOrderCell.m in Sources */,
 				1DACCF7017FDB90D00855F27 /* LSSimpleCountDownView.m in Sources */,
 				1DACCF7317FE9D0400855F27 /* LSSettingViewController.m in Sources */,
+				18D54155186ADA3E004D161A /* LSCreateOrderCell.m in Sources */,
 				1DACCF7717FE9DC900855F27 /* LSSettingSwitchCell.m in Sources */,
 				1DACCF7A17FE9E0B00855F27 /* LSSettingTextCell.m in Sources */,
 				186D767C1846E80C00F36035 /* LSCouponMoneyCell.m in Sources */,
+				18D54159186AE1ED004D161A /* LSCreateOrderFooterView.m in Sources */,
 				1DACCF7D17FE9E2700855F27 /* LSSettingCell.m in Sources */,
 				1DACCF8017FEF63200855F27 /* LSAboutViewController.m in Sources */,
 				1808647918617FD70077B97B /* LSBindPhoneCell.m in Sources */,

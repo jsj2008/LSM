@@ -8,13 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
-{
-    LSSeatTypeNormal=0,//普通座位
-    LSSeatTypeLoveFirst=1,//情侣座首座位
-    LSSeatTypeLoveSecond=2//情侣座第二座位
-}LSSeatType;
-
 @interface LSSeat : NSObject<NSCoding>
 {
 //    {
@@ -25,12 +18,14 @@ typedef enum
 //        rowNum = 10;
 //        type = 0;
 //    }
-
+    
+    NSString* _sectionID;
+    
     //现实列编号是相对于事实的，也就是这个座位在电影院中的行编号
     NSString* _realColumnID;//现实列编号
     
     //列编号是相对于客户端成图的，也就是为了方便计算与排布的编号。
-#warning 这里之所以使用CGFloat型，是为了以后出现座位差隔的情况
+    //这里之所以使用CGFloat型，是为了以后出现座位差隔的情况
     CGFloat _columnID;//列编号
     
     NSString* _realRowID;//现实行编号
@@ -45,7 +40,7 @@ typedef enum
     LSSeatStatus _seatStatus;
     LSSeatStatus _originSeatStatus;
 }
-
+@property(nonatomic,retain) NSString* sectionID;
 @property(nonatomic,retain) NSString* realColumnID;
 @property(nonatomic,assign) CGFloat columnID;
 @property(nonatomic,retain) NSString* realRowID;

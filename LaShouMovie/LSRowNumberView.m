@@ -8,10 +8,13 @@
 
 #import "LSRowNumberView.h"
 
-#define LSSeatRowSpace @"space"
-
 @implementation LSRowNumberView
+
 @synthesize rowIDArray=_rowIDArray;
+@synthesize paddingY=_paddingY;
+@synthesize seatHeight=_seatHeight;
+@synthesize basicPaddingY=_basicPaddingY;
+@synthesize space=_space;
 
 #pragma mark- 生命周期
 - (void)dealloc
@@ -25,35 +28,33 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = LSColorBackgroundGray;
         self.userInteractionEnabled = NO;
         self.clipsToBounds = YES;
     }
-    
     return self;
 }
-
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    if (_rowIDArray.count==0)
-        return;
-    
-    CGFloat positionY=_paddingY;
-    
-    for(NSString* number in _rowIDArray)
+    CGFloat contentY=_paddingY;
+    for(NSArray* rowIDArray in _rowIDArray)
     {
-        positionY+=_basicPadding;
-        if(![number isEqual:@"space"])
+        for(NSString* number in rowIDArray)
         {
-            [number drawInRect:CGRectMake(0, positionY, rect.size.width, _basicContentSide) withFont:[UIFont systemFontOfSize:15.0f*(_basicAreaSide/40.f)] lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
+            if(![number isEqualToString:LSSeatRowSpace])
+            {
+                [number drawInRect:CGRectMake(0.f, contentY, rect.size.width, _seatHeight) withAttributes:[LSAttribute attributeFont:LSFontSeatRowID color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
+            }
+            contentY+=(_seatHeight+_basicPaddingY);
         }
-        positionY+=(_basicContentSide+_basicPadding);
+        
+        contentY-=_basicPaddingY;
+        contentY+=_space;
     }
 }
-
 
 @end

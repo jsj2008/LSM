@@ -10,6 +10,7 @@
 
 @implementation LSSeat
 
+@synthesize sectionID=_sectionID;
 @synthesize realColumnID=_realColumnID;
 @synthesize columnID=_columnID;
 @synthesize realRowID=_realRowID;
@@ -90,6 +91,7 @@
 
 - (void)dealloc
 {
+    self.sectionID=nil;
     self.realColumnID=nil;
 //    self.columnID=nil;
     self.realRowID=nil;
@@ -113,6 +115,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeObject:_sectionID forKey:@"sectionID"];
     [aCoder encodeObject:_realColumnID forKey:@"realColumnID"];
     [aCoder encodeFloat:_columnID forKey:@"columnID"];
     [aCoder encodeObject:_realRowID forKey:@"realRowID"];
@@ -124,6 +127,7 @@
 
 -(id)initWithCoder:(NSCoder *)decoder
 {
+    self.sectionID=[decoder decodeObjectForKey:@"sectionID"];
     self.realColumnID=[decoder decodeObjectForKey:@"realColumnID"];
     self.columnID=[decoder decodeFloatForKey:@"columnID"];
     self.realRowID=[decoder decodeObjectForKey:@"realRowID"];
