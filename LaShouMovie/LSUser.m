@@ -31,6 +31,8 @@
 @synthesize isCreateCard=_isCreateCard;
 @synthesize networkStatus=_networkStatus;
 
+@synthesize payWayArray=_payWayArray;
+
 static LSUser* user=nil;
 
 + (LSUser *)currentUser
@@ -93,6 +95,8 @@ static LSUser* user=nil;
     
     [aCoder encodeBool:_isImageOnlyWhenWifi forKey:@"isImageOnlyWhenWifi"];
     [aCoder encodeBool:_isCreateCard forKey:@"isCreateCard"];
+    
+    [aCoder encodeObject:_payWayArray forKey:@"payWayArray"];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
@@ -110,6 +114,8 @@ static LSUser* user=nil;
     
     self.isImageOnlyWhenWifi=[decoder decodeBoolForKey:@"isImageOnlyWhenWifi"];
     self.isCreateCard=[decoder decodeBoolForKey:@"isCreateCard"];
+    
+    self.payWayArray=[decoder decodeObjectForKey:@"payWayArray"];
     return self;
 }
 

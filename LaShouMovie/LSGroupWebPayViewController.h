@@ -24,6 +24,7 @@
 
 @protocol LSGroupWebPayViewControllerDelegate <NSObject>
 
+@required
 - (void)LSGroupWebPayViewControllerDidPay;
 
 @end

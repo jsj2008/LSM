@@ -52,6 +52,8 @@
     BOOL _isImageOnlyWhenWifi;
     BOOL _isCreateCard;
     NetworkStatus _networkStatus;
+    
+    NSArray* _payWayArray;
 }
 
 @property(nonatomic,retain) NSString* userID;
@@ -74,6 +76,8 @@
 @property(nonatomic,assign) BOOL isImageOnlyWhenWifi;
 @property(nonatomic,assign) BOOL isCreateCard;
 @property(nonatomic,assign) NetworkStatus networkStatus;
+
+@property(nonatomic,retain) NSArray* payWayArray;
 
 + (LSUser *)currentUser;
 - (void)logout;

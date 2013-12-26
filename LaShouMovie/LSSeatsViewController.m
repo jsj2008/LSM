@@ -435,7 +435,6 @@
         {
             //在确定按钮的时候首先保证用户是已经登陆的
             LSLoginViewController* loginViewController=[[LSLoginViewController alloc] init];
-            loginViewController.internetStatusRemindType=LSInternetStatusRemindTypeAlert;
             loginViewController.delegate=self;
             
             LSNavigationController* navigationController=[[LSNavigationController alloc] initWithRootViewController:loginViewController];

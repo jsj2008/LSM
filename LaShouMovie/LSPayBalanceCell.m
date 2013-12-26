@@ -8,9 +8,7 @@
 
 #import "LSPayBalanceCell.h"
 
-#define gapL 10.f
-#define basicWidth 280.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSPayBalanceCell
 
@@ -28,11 +26,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
     }
     return self;
 }
@@ -46,28 +39,23 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRoundRectangleInRect:CGRectMake(gapL, 0.f, rect.size.width-2*gapL, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgWhiteColor strokeColor:LSColorLineGrayColor borderWidth:0.5];
+    CGFloat contentX=gap;
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    
-    CGFloat contentX=gapL;
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
     NSString* text = @"拉手余额:";
-    CGSize size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, 80.f, size.height) withFont:LSFont15 lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
-    contentX+=(80.f+5.f);
+    CGSize titleSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-titleSize.height)/2, titleSize.width, titleSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    
+    contentX=rect.size.width-gap;
+    
+    text=_order.totalPrice;
+    CGSize priceSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-priceSize.height)/2-(priceSize.height-titleSize.height)/2, priceSize.width, priceSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
+    
+    contentX-=(priceSize.width+5.f);
     
     text = @"￥";
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2+1.5f, size.width, size.height) withFont:LSFont15];
-    contentX+=size.width;
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-    text = [[NSString stringWithFormat:@"%.2f", _order.userBalance] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    size=[text sizeWithFont:LSFontBold20];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2-1.f, size.width, size.height) withFont:LSFontBold20];
-    contentX+=size.width;
+    CGSize ySize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayY]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-ySize.height)/2+(titleSize.height-ySize.height)/2, ySize.width, ySize.height) withAttributes:[LSAttribute attributeFont:LSFontPayY]];
 }
 
 @end

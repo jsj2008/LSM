@@ -473,6 +473,9 @@
 		18D4AF42184F3E50000AAE01 /* ReachabilityAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */; };
 		18D54159186AE1ED004D161A /* LSCreateOrderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */; };
 		18D5415C186BC491004D161A /* LSCreateOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D5415B186BC491004D161A /* LSCreateOrderView.m */; };
+		18D54163186C1003004D161A /* LSPayWayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54162186C1003004D161A /* LSPayWayCell.m */; };
+		18D54167186C1058004D161A /* LSPayWay.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54166186C1058004D161A /* LSPayWay.m */; };
+		18D5416C186C3D62004D161A /* LSWebPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D5416B186C3D62004D161A /* LSWebPayViewController.m */; };
 		18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */; };
 		18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE35E17F1796400016442 /* LSQQWBAuthViewController.m */; };
 		18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE36417F1893600016442 /* LSSinaWBAuthViewController.m */; };
@@ -509,7 +512,6 @@
 		1D1B460A17E60514001DBB72 /* LSSeatPlaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B460917E60514001DBB72 /* LSSeatPlaceView.m */; };
 		1D1B460E17E60603001DBB72 /* LSSeatCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B460D17E60603001DBB72 /* LSSeatCategoryView.m */; };
 		1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B652117EDEDFB0068C6CA /* LSQQAuthViewController.m */; };
-		1D9DA4581846394F002A436D /* LSPayFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D9DA4571846394F002A436D /* LSPayFooterView.m */; };
 		1DACCF5B17F0966700855F27 /* LSCreateOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */; };
 		1DACCF6317F0A21100855F27 /* LSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF6217F0A21100855F27 /* LSAlertView.m */; };
 		1DACCF6817FBA95000855F27 /* LSNothingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DACCF6717FBA95000855F27 /* LSNothingCell.m */; };
@@ -1249,6 +1251,12 @@
 		18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderFooterView.m; sourceTree = "<group>"; };
 		18D5415A186BC491004D161A /* LSCreateOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderView.h; sourceTree = "<group>"; };
 		18D5415B186BC491004D161A /* LSCreateOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderView.m; sourceTree = "<group>"; };
+		18D54161186C1003004D161A /* LSPayWayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayWayCell.h; sourceTree = "<group>"; };
+		18D54162186C1003004D161A /* LSPayWayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayWayCell.m; sourceTree = "<group>"; };
+		18D54165186C1058004D161A /* LSPayWay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayWay.h; sourceTree = "<group>"; };
+		18D54166186C1058004D161A /* LSPayWay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayWay.m; sourceTree = "<group>"; };
+		18D5416A186C3D62004D161A /* LSWebPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSWebPayViewController.h; sourceTree = "<group>"; };
+		18D5416B186C3D62004D161A /* LSWebPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSWebPayViewController.m; sourceTree = "<group>"; };
 		18DCE34A17F027FD00016442 /* LSCinemaStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaStatusView.h; sourceTree = "<group>"; };
 		18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaStatusView.m; sourceTree = "<group>"; };
 		18DCE35D17F1796400016442 /* LSQQWBAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSQQWBAuthViewController.h; sourceTree = "<group>"; };
@@ -1322,8 +1330,6 @@
 		1D1B460D17E60603001DBB72 /* LSSeatCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSSeatCategoryView.m; sourceTree = "<group>"; };
 		1D7B652017EDEDFB0068C6CA /* LSQQAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSQQAuthViewController.h; sourceTree = "<group>"; };
 		1D7B652117EDEDFB0068C6CA /* LSQQAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSQQAuthViewController.m; sourceTree = "<group>"; };
-		1D9DA4561846394F002A436D /* LSPayFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayFooterView.h; sourceTree = "<group>"; };
-		1D9DA4571846394F002A436D /* LSPayFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayFooterView.m; sourceTree = "<group>"; };
 		1DACCF5917F0966700855F27 /* LSCreateOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderViewController.h; sourceTree = "<group>"; };
 		1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderViewController.m; sourceTree = "<group>"; };
 		1DACCF6117F0A21100855F27 /* LSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSAlertView.h; sourceTree = "<group>"; };
@@ -2088,6 +2094,7 @@
 		1822396D17CEE8D200F61D5F /* Buy */ = {
 			isa = PBXGroup;
 			children = (
+				18D54169186C3D24004D161A /* WebPay */,
 				186D76721846E69F00F36035 /* Coupon */,
 				1822397217CEE99500F61D5F /* Pay */,
 				1822396E17CEE8D900F61D5F /* CreateOrder */,
@@ -2109,7 +2116,7 @@
 		1822397217CEE99500F61D5F /* Pay */ = {
 			isa = PBXGroup;
 			children = (
-				1D9DA45418463856002A436D /* PayFooterView */,
+				18DCE37017F443DB00016442 /* CountDownView */,
 				183441C61845E1F1003D1AB6 /* PayCell */,
 				18F1D40917F829CA002AD7B7 /* SecurityCodeView */,
 				18DCE36D17F41E4500016442 /* LSPayViewController.h */,
@@ -2167,6 +2174,8 @@
 				183441D41845E418003D1AB6 /* LSPayBalanceCell.m */,
 				183441D61845E430003D1AB6 /* LSPayNeedPayCell.h */,
 				183441D71845E430003D1AB6 /* LSPayNeedPayCell.m */,
+				18D54161186C1003004D161A /* LSPayWayCell.h */,
+				18D54162186C1003004D161A /* LSPayWayCell.m */,
 			);
 			name = PayCell;
 			sourceTree = "<group>";
@@ -2831,7 +2840,6 @@
 				184836B117DDC50F00417C3C /* AdView */,
 				1DACCF6517FBA92100855F27 /* NothingCell */,
 				18EC155517F95DDB008AAE60 /* MySectionHeader */,
-				18DCE37017F443DB00016442 /* CountDownView */,
 				18DCE34917F027AD00016442 /* CinemaStatusView */,
 				186F744E17DF0326001B61D3 /* PositionSectionHeader */,
 				184836AD17DD79DA00417C3C /* SegmentedControl */,
@@ -3158,6 +3166,7 @@
 		1871DF9117D4992400B285F5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				18D54164186C102E004D161A /* PayWay */,
 				1871DFCC17D8737200B285F5 /* Status */,
 				1871DFC817D8732800B285F5 /* Error */,
 				184836B517DDC71800417C3C /* Advertisment */,
@@ -3440,6 +3449,24 @@
 			name = CreateOrderView;
 			sourceTree = "<group>";
 		};
+		18D54164186C102E004D161A /* PayWay */ = {
+			isa = PBXGroup;
+			children = (
+				18D54165186C1058004D161A /* LSPayWay.h */,
+				18D54166186C1058004D161A /* LSPayWay.m */,
+			);
+			name = PayWay;
+			sourceTree = "<group>";
+		};
+		18D54169186C3D24004D161A /* WebPay */ = {
+			isa = PBXGroup;
+			children = (
+				18D5416A186C3D62004D161A /* LSWebPayViewController.h */,
+				18D5416B186C3D62004D161A /* LSWebPayViewController.m */,
+			);
+			name = WebPay;
+			sourceTree = "<group>";
+		};
 		18DCE34917F027AD00016442 /* CinemaStatusView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3626,15 +3653,6 @@
 				1D1B460D17E60603001DBB72 /* LSSeatCategoryView.m */,
 			);
 			name = SeatCategoryView;
-			sourceTree = "<group>";
-		};
-		1D9DA45418463856002A436D /* PayFooterView */ = {
-			isa = PBXGroup;
-			children = (
-				1D9DA4561846394F002A436D /* LSPayFooterView.h */,
-				1D9DA4571846394F002A436D /* LSPayFooterView.m */,
-			);
-			name = PayFooterView;
 			sourceTree = "<group>";
 		};
 		1DACCF6017F0A14B00855F27 /* AlertView */ = {
@@ -4073,6 +4091,7 @@
 				18CCD21117CF450300BEF2C9 /* SBJsonStreamParserState.m in Sources */,
 				18CCD21217CF450300BEF2C9 /* SBJsonStreamTokeniser.m in Sources */,
 				18CCD21317CF450300BEF2C9 /* SBJsonStreamWriter.m in Sources */,
+				18D5416C186C3D62004D161A /* LSWebPayViewController.m in Sources */,
 				18CCD21417CF450300BEF2C9 /* SBJsonStreamWriterAccumulator.m in Sources */,
 				18CCD21517CF450300BEF2C9 /* SBJsonStreamWriterState.m in Sources */,
 				18CCD21617CF450300BEF2C9 /* SBJsonWriter.m in Sources */,
@@ -4146,6 +4165,7 @@
 				1D1B460E17E60603001DBB72 /* LSSeatCategoryView.m in Sources */,
 				181BB23817E69D3200745B70 /* LSSeatsInfoView.m in Sources */,
 				181BB23C17E6A52E00745B70 /* LSHall.m in Sources */,
+				18D54163186C1003004D161A /* LSPayWayCell.m in Sources */,
 				181BB24117E6CA4A00745B70 /* LSSection.m in Sources */,
 				181BB24517E6E3DA00745B70 /* LSSeatMapView.m in Sources */,
 				181BB24917E6E45200745B70 /* LSRowNumberView.m in Sources */,
@@ -4153,6 +4173,7 @@
 				1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */,
 				18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */,
 				1DACCF5B17F0966700855F27 /* LSCreateOrderViewController.m in Sources */,
+				18D54167186C1058004D161A /* LSPayWay.m in Sources */,
 				1DACCF6317F0A21100855F27 /* LSAlertView.m in Sources */,
 				18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */,
 				18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */,
@@ -4269,7 +4290,6 @@
 				1844917A1816176500D2DDCB /* LSWelcomeView.m in Sources */,
 				186CF2D6182360D100A567D4 /* iCarousel.m in Sources */,
 				18D4AF35184F3D43000AAE01 /* ASIDataCompressor.m in Sources */,
-				1D9DA4581846394F002A436D /* LSPayFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

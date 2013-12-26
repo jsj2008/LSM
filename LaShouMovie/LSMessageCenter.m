@@ -329,20 +329,32 @@ static LSUser* user=nil;
     [self requestWithURL:url requestType:lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale params:dic];
 }
 #pragma mark 获取支付宝支付信息
-- (void)LSMCOrderAlipayInfoWithOrderID:(NSString*)orderID isUseCoupon:(NSString*)isUseCoupon
+- (void)LSMCOrderOtherPayInfoWithOrderID:(NSString*)orderID payWay:(LSPayWayType)payWay isUseCoupon:(NSString*)isUseCoupon
 {
     LSAlipay* alipay=[LSAlipay currentAlipay];
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        user.userID, @"uid",
-                       alipay.accessToken!=nil?alipay.accessToken:@"",@"access_token",
                        orderID,@"trade_no",
                        lsURLSource, @"source",
                        isUseCoupon,@"isUsed",
                        [[NSString stringWithFormat:@"%@|%@|%@|%@|%@",lsURLSource,orderID,user.userID,alipay.accessToken!=nil?alipay.accessToken:@"",lsURLSign] SHA256],@"signValue",
                        nil];
 
-    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLOrderAlipayInfoByOrderID, lsURLSTID]];
-    [self requestWithURL:url requestType:lsRequestTypeOrderAlipayInfoByOrderID params:dic];
+    NSMutableDictionary* mDic=[NSMutableDictionary dictionaryWithDictionary:dic];
+//    LSPayWayTypeNon     = 0,//未选择
+//    LSPayWayTypeBalance = 1,//余额
+//    LSPayWayTypeAlipay  = 2,//支付宝
+//    LSPayWayTypeTenpay  = 3,//财付通
+//    LSPayWayTypeUPOMP   = 4,//银联
+//    LSPayWayTypeBank    = 5 //银行卡
+    [mDic setObject:[NSNumber numberWithInt:payWay] forKey:@""];
+    if(payWay==LSPayWayTypeAlipay)
+    {
+        [mDic setObject:(alipay.accessToken!=nil?alipay.accessToken:@"") forKey:@"access_token"];
+    }
+    
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLOrderOtherPayInfoByOrderID_PayWay_IsCoupon, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeOrderOtherPayInfoByOrderID_PayWay_IsCoupon params:mDic];
 }
 
 
@@ -476,8 +488,8 @@ static LSUser* user=nil;
       [mDic setObject:securityCode forKey:@"payCode"];
     }
     
-    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLPayBalancePayByOrderID_SecurityCode, lsURLSTID]];
-    [self requestWithURL:url requestType:lsRequestTypePayBalancePayByOrderID_SecurityCode params:mDic];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLPayBalancePayByOrderID_IsCoupon_SecurityCode, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypePayBalancePayByOrderID_IsCoupon_SecurityCode params:mDic];
 }
 
 
@@ -1063,7 +1075,7 @@ static LSUser* user=nil;
         {
             
         }
-        else if([request.requestType isEqualToString:lsRequestTypeOrderAlipayInfoByOrderID])
+        else if([request.requestType isEqualToString:lsRequestTypeOrderOtherPayInfoByOrderID_PayWay_IsCoupon])
         {
             if([safeObject isKindOfClass:[LSStatus class]] || [safeObject isKindOfClass:[LSError class]])
             {
@@ -1071,6 +1083,8 @@ static LSUser* user=nil;
             }
             else
             {
+#warning 这里需要处理所有的支付类型
+                
                 if([safeObject objectForKey:@"AlipayInfo"]!=NULL && [[safeObject objectForKey:@"AlipayInfo"] isKindOfClass:[NSDictionary class]])
                 {
                     if(![[[safeObject objectForKey:@"AlipayInfo"] objectForKey:@"ALI_INFO"] isEqual:LSNULL])

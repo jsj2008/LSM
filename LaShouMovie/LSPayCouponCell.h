@@ -23,7 +23,8 @@
 
 @protocol LSPayCouponCellDelegate <NSObject>
 
-- (void)LSPayCouponCellDidSelect;
+@required
+- (void)LSPayCouponCell:(LSPayCouponCell*)payCouponCell didClickCouponButton:(UIButton*)sender;
 
 @end
 

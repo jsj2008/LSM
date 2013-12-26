@@ -33,7 +33,7 @@
 #define lsURLOrderCount                                                     @"/MyList/orderListCount"
 #define lsURLOrderCreateByScheduleID_SectionID_Seats_Mobile_OnSale          @"/Order/createOrder"
 #define lsURLOrderCancelByOrderID                                           @"/Order/cancelOrder"
-#define lsURLOrderAlipayInfoByOrderID                                       @"/AlipayInfo/getTheAlipaySdkUrl"
+#define lsURLOrderOtherPayInfoByOrderID_PayWay_IsCoupon                     @""
 
 #pragma mark- 团购相关
 #define lsURLGroupsByType_Offset_PageSize                                   @"/GroupOrder/orderList"
@@ -50,7 +50,7 @@
 
 
 #pragma mark- 支付相关
-#define lsURLPayBalancePayByOrderID_SecurityCode                @"/Pay/goPay"
+#define lsURLPayBalancePayByOrderID_IsCoupon_SecurityCode                @"/Pay/goPay"
 
 #pragma mark- 优惠券相关
 #define lsURLCouponUseByOrderID_CinemaID_CouponID               @"/Voucher/getVouchersFromClients"

@@ -29,6 +29,7 @@
     
     NSArray* _couponArray;//使用的优惠券
     NSString* _isUseCoupon;//是否使用优惠券
+    LSPayWayType _payWay;
    
     /* 数据格式
      
@@ -170,6 +171,7 @@
 @property (nonatomic, retain) NSString* totalPrice;//总价
 @property (nonatomic, retain) NSArray* couponArray;//使用优惠券
 @property (nonatomic, retain) NSString* isUseCoupon;//是否使用优惠券
+@property (nonatomic, assign) LSPayWayType payWay;//是否使用优惠券
 
 @property (nonatomic, retain) NSString* orderID; //订单编号
 @property (nonatomic, assign) NSTimeInterval timeOffset; //服务器时间与本地时间的时间差

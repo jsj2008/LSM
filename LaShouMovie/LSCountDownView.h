@@ -31,6 +31,7 @@
 
 @protocol LSCountDownViewDelegate <NSObject>
 
+@required
 - (void)LSCountDownViewDidTimeout;
 
 @end

@@ -8,9 +8,7 @@
 
 #import "LSPayCouponCell.h"
 
-#define gapL 10.f
-#define basicWidth 280.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSPayCouponCell
 
@@ -29,18 +27,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
-        
         _couponButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_couponButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"btn_coupon_nor.png"] top:20 left:10 bottom:20 right:10]  forState:UIControlStateNormal];
-        [_couponButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"btn_coupon_sel.png"] top:20 left:10 bottom:20 right:10]  forState:UIControlStateHighlighted];
-        [_couponButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        _couponButton.titleLabel.font = LSFont15;
-        [_couponButton setTitle:@"使用优惠券" forState:UIControlStateNormal];
-        [_couponButton addTarget:self action:@selector(spreadButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_couponButton setBackgroundImage:[UIImage lsImageNamed:@""]  forState:UIControlStateNormal];
+        [_couponButton setBackgroundImage:[UIImage lsImageNamed:@"btn_coupon_sel.png"] forState:UIControlStateHighlighted];
+        [_couponButton addTarget:self action:@selector(couponButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_couponButton];
     }
     return self;
@@ -56,46 +46,34 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _couponButton.frame=CGRectMake(self.width-gapL*2-90.f, (self.height-25.f)/2, 90.f, 25.f);
+    _couponButton.frame=CGRectMake(self.width-gap-30.f, (self.height-30.f)/2, 30.f, 30.f);
 }
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRoundRectangleInRect:CGRectMake(gapL, 0.f, rect.size.width-2*gapL, rect.size.height) topRadius:0.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgWhiteColor strokeColor:LSColorLineGrayColor borderWidth:0.5];
+    CGFloat contentX=gap;
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
+    NSString* text = @"优惠券:";
+    CGSize titleSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-titleSize.height)/2, titleSize.width, titleSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
     
-    CGFloat contentX=gapL;
+    contentX=rect.size.width-gap*2-30.f;
     
-    if(_order.totalPrice)
-    {
-        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-        NSString* text = @"优惠券:";
-        CGSize size=[text sizeWithFont:LSFont15];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, 80.f, size.height) withFont:LSFont15 lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
-        contentX+=(80.f+5.f);
-        
-        CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-        text = [NSString stringWithFormat:@"%d", _order.couponArray.count];
-        size=[text sizeWithFont:LSFontBold20];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2-1.f, size.width, size.height) withFont:LSFontBold20];
-        contentX+=(size.width+5.f);
-        
-        CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-        text = @"张";
-        size=[text sizeWithFont:LSFont15];
-        [text drawInRect:CGRectMake(contentX, (rect.size.height-size.height)/2, size.width, size.height) withFont:LSFont15];
-        contentX+=size.width;
-    }
+    text = @"张";
+    CGSize subSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPaySubtitle]];
+    [text drawInRect:CGRectMake(contentX-subSize.width, (rect.size.height-subSize.height)/2+(titleSize.height-subSize.height)/2, subSize.width, subSize.height) withAttributes:[LSAttribute attributeFont:LSFontPaySubtitle color:LSColorTextGray]];
+    
+    contentX-=subSize.width;
+    
+    text=[NSString stringWithFormat:@"%d",_order.couponArray.count];
+    CGSize priceSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-priceSize.height)/2-(priceSize.height-titleSize.height)/2, priceSize.width, priceSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
 }
 
 #pragma mark- 私有方法
-- (void)spreadButtonClick:(UIButton*)sender
+- (void)couponButtonClick:(UIButton*)sender
 {
-    if([_delegate respondsToSelector:@selector(LSPayCouponCellDidSelect)])
-    {
-        [_delegate LSPayCouponCellDidSelect];
-    }
+    [_delegate LSPayCouponCell:self didClickCouponButton:sender];
 }
 
 @end

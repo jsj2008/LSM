@@ -10,14 +10,17 @@
 
 #define LSSeatRowSpace @"space"
 
-#pragma mark- 断网提示方式
+#pragma mark- 支付方式
 typedef enum
 {
-    LSInternetStatusRemindTypeImage = 0,//图片提示
-    LSInternetStatusRemindTypeAlert = 1,//提醒提示
-    LSInternetStatusRemindTypeNon   = 2 //没有提示
+    LSPayWayTypeNon     = 0,//未选择
+    LSPayWayTypeBalance = 1,//余额
+    LSPayWayTypeAlipay  = 2,//支付宝
+    LSPayWayTypeTenpay  = 3,//财付通
+    LSPayWayTypeUPOMP   = 4,//银联
+    LSPayWayTypeBank    = 5 //银行卡
     
-} LSInternetStatusRemindType;
+} LSPayWayType;
 
 #pragma mark- 提醒出现位置
 typedef enum
@@ -32,6 +35,9 @@ typedef enum
 #pragma mark- 登陆方式
 typedef enum
 {
+    //失败
+    LSLoginTypeNon    = 0,//不登陆
+    
     //以下三项为联合登陆
     LSLoginTypeSinaWB = 1,//
     LSLoginTypeQQWB   = 2,//
@@ -41,11 +47,8 @@ typedef enum
     
     //以下一项为支付宝跳转启动
     LSLoginTypeAlipay = 5,//支付宝跳转
-    LSLoginTypeAlipayNotActive = 6,//支付宝失活状态
-    
-    //失败
-    LSLoginTypeNon    = 0//不登陆
-    
+    LSLoginTypeAlipayNotActive = 6//支付宝失活状态
+
 } LSLoginType;
 
 #pragma mark- 影片列表样式
@@ -146,7 +149,7 @@ typedef enum
 #pragma mark- 座位类型
 typedef enum
 {
-    LSSeatTypeNormal=0,//普通座位
+    LSSeatTypeNormal=0,   //普通座位
     LSSeatTypeLoveFirst=1,//情侣座首座位
     LSSeatTypeLoveSecond=2//情侣座第二座位
     
@@ -162,14 +165,6 @@ typedef enum
     LSSeatStatusUnable = 4 //不可选
     
 } LSSeatStatus;
-
-#pragma mark- 付款类型
-typedef enum
-{
-    LSPayTypeBalance = 0,//余额支付
-    LSPayTypeAlipay  = 1 //支付宝支付
-    
-} LSPayType;
 
 #pragma mark- 券类型
 typedef enum
@@ -198,12 +193,6 @@ typedef enum
 #pragma mark- 是否使用卡券
 #define LSOrderUseCouponYes @"T"
 #define LSOrderUseCouponNo  @"F"
-//typedef enum
-//{
-//    LSOrderUseCouponYes = @"T",//使用
-//    LSOrderUseCouponNo  = @"F",//不使用
-//    
-//} LSOrderUseCoupon;
 
 #pragma mark- 订单状态
 typedef enum

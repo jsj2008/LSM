@@ -56,7 +56,6 @@
         self.goodsTips=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"goodsTips"]];//温馨提示
         self.phone=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"sp_phone"]];//客服
         
-        
         if(![[safeDic objectForKey:@"sp_allBranch"] isKindOfClass:[NSArray class]])
         {
             NSMutableArray* branchMArray=[NSMutableArray arrayWithCapacity:0];

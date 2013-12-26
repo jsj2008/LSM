@@ -19,7 +19,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
+        self.backgroundColor=LSColorNavigationRed;
         _minute=-1;
         _second=-1;
     }
@@ -31,34 +31,22 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-    
     if (_timeout)
     {
         NSString* text = @"已超时";
-        [text drawInRect:CGRectMake(0.f, 2.f, rect.size.width, rect.size.height-2*2) withFont:LSFontBold20 lineBreakMode:NSLineBreakByClipping  alignment:NSTextAlignmentCenter];
+        [text drawInRect:rect withAttributes:[LSAttribute attributeFont:LSFontPayTime color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
     }
     else
     {
         if(_minute>=0 && _second>=0)
         {
-//            [[UIImage lsImageNamed:@"seat_line.png"] drawAtPoint:CGPointMake(0, rect.size.height/2)];
-//            [[UIImage lsImageNamed:@"time_bg.png"] drawAtPoint:CGPointMake(rect.size.width/2-34, 2)];
-//            [[UIImage lsImageNamed:@"time_bg.png"] drawAtPoint:CGPointMake(rect.size.width/2+4, 2)];
-            CGContextDrawImage(contextRef, CGRectMake(0, rect.size.height/2, rect.size.width, 1), [UIImage lsImageNamed:@"seat_line.png"].CGImage);
-            CGContextDrawImage(contextRef, CGRectMake(rect.size.width/2-34, 2, 30, 25), [UIImage lsImageNamed:@"time_bg.png"].CGImage);
-            CGContextDrawImage(contextRef, CGRectMake(rect.size.width/2+4, 2, 30, 25), [UIImage lsImageNamed:@"time_bg.png"].CGImage);
-//            [[UIImage lsImageNamed:@"seat_line.png"] drawInRect:CGRectMake(0, rect.size.height/2, rect.size.width, 1)];
-//            [[UIImage lsImageNamed:@"time_bg.png"] drawInRect:CGRectMake(rect.size.width/2-34, 2, 30, 25)];
-//            [[UIImage lsImageNamed:@"time_bg.png"] drawInRect:CGRectMake(rect.size.width/2+4, 2, 30, 25)];
-            NSString* text = [NSString stringWithFormat:@"%02d : %02d",_minute,_second];
-            [text drawInRect:CGRectMake(0, 2, rect.size.width, 25) withFont:LSFontBold20 lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
+            NSString* text = [NSString stringWithFormat:@"支付剩余时间：%02d分%02d",_minute,_second];
+            [text drawInRect:rect withAttributes:[LSAttribute attributeFont:LSFontPayTime color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
         }
         else
         {
             NSString* text = @"计时器错误";
-            [text drawInRect:CGRectMake(0, 2, rect.size.width, rect.size.height-2*2) withFont:LSFontBold20 lineBreakMode:NSLineBreakByClipping  alignment:NSTextAlignmentCenter];
+            [text drawInRect:rect withAttributes:[LSAttribute attributeFont:LSFontPayTime color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
         }
     }
 }
@@ -92,10 +80,7 @@
         {
             _timeout=YES;
             [self stopCountDown];
-            if([_delegate respondsToSelector:@selector(LSCountDownViewDidTimeout)])
-            {
-                [_delegate LSCountDownViewDidTimeout];
-            }
+            [_delegate LSCountDownViewDidTimeout];
         }
         else
         {

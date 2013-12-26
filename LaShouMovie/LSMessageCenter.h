@@ -65,7 +65,7 @@
 #define lsRequestTypeOrderCount                                                      @"lsRequestTypeOrderCount"
 #define lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale      @"lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale"
 #define lsRequestTypeOrderCancelByOrderID                                            @"lsRequestTypeOrderCancelByOrderID"
-#define lsRequestTypeOrderAlipayInfoByOrderID                                        @"lsRequestTypeOrderAlipayInfoByOrderID"
+#define lsRequestTypeOrderOtherPayInfoByOrderID_PayWay_IsCoupon                                      @"lsRequestTypeOrderOtherPayInfoByOrderID_PayWay_IsCoupon"
 
 #pragma mark- 团购相关
 #define lsRequestTypeGroupsByType_Offset_PageSize                   @"lsRequestTypeGroupsByType_Offset_PageSize"
@@ -79,7 +79,7 @@
 #define lsRequestTypeTicketPasswordByTicketID                       @"lsRequestTypeTicketPasswordByTicketID"
 
 #pragma mark- 支付相关
-#define lsRequestTypePayBalancePayByOrderID_SecurityCode            @"lsRequestTypePayBalancePayByOrderID_SecurityCode"
+#define lsRequestTypePayBalancePayByOrderID_IsCoupon_SecurityCode            @"lsRequestTypePayBalancePayByOrderID_IsCoupon_SecurityCode"
 
 #pragma mark- 优惠券相关
 #define lsRequestTypeCouponUseByOrderID_CinemaID_CouponID           @"lsRequestTypeCouponUseByOrderID_CinemaID_CouponID"
@@ -166,7 +166,7 @@
 - (void)LSMCOrdersWithStatus:(LSOrderStatus)status offset:(int)offset pageSize:(int)pageSize;
 - (void)LSMCOrderCount;
 - (void)LSMCOrderCreateWithScheduleID:(NSString*)scheduleID sectionID:(NSString*)sectionID seats:(NSString*)seats mobile:(NSString*)mobile isOnSale:(BOOL)isOnSale;
-- (void)LSMCOrderAlipayInfoWithOrderID:(NSString*)orderID isUseCoupon:(NSString*)isUseCoupon;
+- (void)LSMCOrderOtherPayInfoWithOrderID:(NSString*)orderID payWay:(LSPayWayType)payWay isUseCoupon:(NSString*)isUseCoupon;
 
 #pragma mark- 团购相关
 - (void)LSMCGroupsWithStatus:(LSGroupStatus)status offset:(int)offset pageSize:(int)pageSize;

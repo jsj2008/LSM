@@ -18,7 +18,6 @@
 
 @synthesize leftBarButtonSystemItem=_leftBarButtonSystemItem;
 @synthesize rightBarButtonSystemItem=_rightBarButtonSystemItem;
-@synthesize internetStatusRemindType=_internetStatusRemindType;
 
 #pragma mark- 属性方法
 - (void)setLeftBarButtonSystemItem:(UIBarButtonSystemItem)leftBarButtonSystemItem

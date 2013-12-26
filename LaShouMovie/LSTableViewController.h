@@ -14,13 +14,11 @@
     MBProgressHUD* hud;
     LSUser* user;
     LSMessageCenter* messageCenter;
-    LSInternetStatusRemindType _internetStatusRemindType;
     UIBarButtonSystemItem _leftBarButtonSystemItem;
     UIBarButtonSystemItem _rightBarButtonSystemItem;
 }
 @property(nonatomic,assign) UIBarButtonSystemItem leftBarButtonSystemItem;
 @property(nonatomic,assign) UIBarButtonSystemItem rightBarButtonSystemItem;
-@property(nonatomic,assign) LSInternetStatusRemindType internetStatusRemindType;
 
 - (void)initRefreshControl;
 - (void)setBarButtonItemWithImageName:(NSString *)imageName isRight:(BOOL)isRight;

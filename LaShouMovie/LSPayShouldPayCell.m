@@ -42,26 +42,26 @@
     CGFloat contentX=gap;
     
     NSString* text = @"应付金额:";
-    CGSize size=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
-    [text drawInRect:<#(CGRect)#> withAttributes:<#(NSDictionary *)#>];
-    contentX+=(80.f+5.f);
+    CGSize titleSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-titleSize.height)/2, titleSize.width, titleSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    
+    contentX=rect.size.width-gap;
+    
+    text = @"(含服务费)";
+    CGSize subSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPaySubtitle]];
+    [text drawInRect:CGRectMake(contentX-subSize.width, (rect.size.height-subSize.height)/2+(titleSize.height-subSize.height)/2, subSize.width, subSize.height) withAttributes:[LSAttribute attributeFont:LSFontPaySubtitle color:LSColorTextGray]];
+    
+    contentX-=subSize.width;
+
+    text=_order.totalPrice;
+    CGSize priceSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-priceSize.height)/2-(priceSize.height-titleSize.height)/2, priceSize.width, priceSize.height) withAttributes:[LSAttribute attributeFont:LSFontPayPrice]];
+    
+    contentX-=(priceSize.width+5.f);
     
     text = @"￥";
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-gapL-size.height)/2+gapL+1.5f, size.width, size.height) withFont:LSFont15];
-    contentX+=size.width;
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-    text = [[NSString stringWithFormat:@"%.2f", [_order.originTotalPrice floatValue]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    size=[text sizeWithFont:LSFontBold20];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-gapL-size.height)/2+gapL-1.f, size.width, size.height) withFont:LSFontBold20];
-    contentX+=(size.width+5.f);
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
-    text = @"(含服务费)";
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-gapL-size.height)/2+gapL, size.width, size.height) withFont:LSFont15];
-    contentX+=size.width;
+    CGSize ySize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayY]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-ySize.height)/2+(titleSize.height-ySize.height)/2, ySize.width, ySize.height) withAttributes:[LSAttribute attributeFont:LSFontPayY]];
 }
 
 @end

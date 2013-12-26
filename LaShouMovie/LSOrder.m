@@ -23,6 +23,7 @@
 @synthesize totalPrice=_totalPrice;//总价
 @synthesize couponArray=_couponArray;
 @synthesize isUseCoupon=_isUseCoupon;
+@synthesize payWay=_payWay;
 
 @synthesize orderID=_orderID; //订单编号
 @synthesize timeOffset=_timeOffset; //服务器时间与本地时间的时间差
@@ -278,6 +279,7 @@
 //    self.totalPrice=nil;//总价
     self.couponArray=nil;
     self.isUseCoupon=nil;
+//    self.payWay=nil;
     
     self.orderID=nil; //订单编号
 //    self.timeOffset=nil; //服务器时间与本地时间的时间差
@@ -306,6 +308,8 @@
     [aCoder encodeObject:_totalPrice forKey:@"totalPrice"];
     [aCoder encodeObject:_couponArray forKey:@"couponArray"];
     [aCoder encodeObject:_isUseCoupon forKey:@"isUseCoupon"];
+    [aCoder encodeInt:_payWay forKey:@"payWay"];
+    
     [aCoder encodeObject:_orderID forKey:@"orderID"];
     [aCoder encodeInt:_timeOffset forKey:@"timeOffset"];
     [aCoder encodeObject:_serverTime forKey:@"serverTime"];
@@ -314,6 +318,7 @@
     [aCoder encodeBool:_isExpire forKey:@"isExpire"];
     [aCoder encodeFloat:_needPay forKey:@"needPay"];
     [aCoder encodeFloat:_userBalance forKey:@"userBalance"];
+    
     [aCoder encodeObject:_confirmationID forKey:@"confirmationID"];
     [aCoder encodeObject:_message forKey:@"message"];
 }
@@ -331,6 +336,8 @@
     self.totalPrice=[decoder decodeObjectForKey:@"totalPrice"];//总价
     self.couponArray=[decoder decodeObjectForKey:@"couponArray"];//使用优惠券
     self.isUseCoupon=[decoder decodeObjectForKey:@"isUseCoupon"];
+    self.payWay=[decoder decodeIntForKey:@"payWay"];
+    
     self.orderID=[decoder decodeObjectForKey:@"orderID"];//订单编号
     self.timeOffset=[decoder decodeIntForKey:@"timeOffset"];//服务器时间与本地时间的时间差
     self.serverTime=[decoder decodeObjectForKey:@"serverTime"];
@@ -339,6 +346,7 @@
     self.isExpire=[decoder decodeBoolForKey:@"isExpire"];//是否已过期
     self.needPay=[decoder decodeFloatForKey:@"needPay"];//需支付
     self.userBalance=[decoder decodeFloatForKey:@"userBalance"];//用户账户余额
+    
     self.confirmationID=[decoder decodeObjectForKey:@"confirmationID"];
     self.message=[decoder decodeObjectForKey:@"message"];
     return self;

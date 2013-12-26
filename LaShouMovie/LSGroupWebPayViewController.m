@@ -51,11 +51,11 @@
 //     //par=dWlkPTQ5Mjk2MTYyJnB3PThjYjRjZmZmYTZkMmIzMDU3NDkzNzRiZmU5OGM0Y2U5JnRuPTc4MDk0MTJkOTIwYThlYjExNTgmZnI9MTAxNzkmc249NWE2NGY0MGZkM2RhNjY2YTM1NDg1ZjY2MDgzNjBkOGE=
 //     postDate="par="+new String(encode);
     
-    UIWebView* _payWebView=[[UIWebView alloc]initWithFrame:self.view.bounds];
-    _payWebView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    _payWebView.delegate=self;
-    [self.view addSubview:_payWebView];
-    [_payWebView release];
+    UIWebView* payWebView=[[UIWebView alloc]initWithFrame:self.view.bounds];
+    payWebView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    payWebView.delegate=self;
+    [self.view addSubview:payWebView];
+    [payWebView release];
     
     
     NSString* key=@"Qi/n%;3w<*e#T6)";
@@ -68,7 +68,7 @@
     NSMutableURLRequest* request=[[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod: @"POST"];
     [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    [_payWebView loadRequest:request];
+    [payWebView loadRequest:request];
     [request release];
 }
 

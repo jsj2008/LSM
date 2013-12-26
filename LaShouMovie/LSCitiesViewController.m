@@ -81,7 +81,7 @@
 #pragma mark- 重载方法
 - (void)leftBarButtonItemClick:(UIBarButtonItem *)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 - (void)refreshControlEventValueChanged

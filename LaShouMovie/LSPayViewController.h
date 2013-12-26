@@ -8,19 +8,17 @@
 
 #import "LSTableViewController.h"
 #import "LSOrder.h"
-#import "LSPayFooterView.h"
+#import "LSCountDownView.h"
 #import "LSSecurityCodeView.h"
-#import "LSPayFilmCell.h"
-#import "LSPaySeatCell.h"
 #import "LSPayCouponCell.h"
 #import "LSPaidOrdersViewController.h"
 #import "LSCouponViewController.h"
 #import "UPOMP.h"
 
 @protocol LSPayViewControllerDelegate;
-@interface LSPayViewController : LSTableViewController<UPOMPDelegate,LSPaidOrdersViewControllerDelegate,LSCouponViewControllerDelegate,UIAlertViewDelegate,LSSecurityCodeViewDelegate,LSPayFooterViewDelegate,LSPayFilmCellDelegate,LSPaySeatCellDelegate,LSPayCouponCellDelegate>
+@interface LSPayViewController : LSTableViewController<UPOMPDelegate,LSPaidOrdersViewControllerDelegate,LSCouponViewControllerDelegate,UIAlertViewDelegate,LSSecurityCodeViewDelegate,LSCountDownViewDelegate,LSPayCouponCellDelegate>
 {
-    LSPayFooterView* _payFooterView;
+    LSCountDownView* _countDownView;
     BOOL _isSpread;
     
     LSOrder* _order;
