@@ -60,7 +60,12 @@
     
     //生成底部说明
     LSCouponFooterView* couponFooterView=[[LSCouponFooterView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, 160.f)];
-    couponFooterView.seatNumber=_order.selectSeatArray.count;
+    int totalNumber=0;
+    for(NSArray* selectSeatArray in [_order.selectSeatArrayDic allValues])
+    {
+        totalNumber+=selectSeatArray.count;
+    }
+    couponFooterView.seatNumber=totalNumber;
     self.tableView.tableFooterView=couponFooterView;
     [couponFooterView release];
 }

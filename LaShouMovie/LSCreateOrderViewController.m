@@ -8,7 +8,7 @@
 
 #import "LSCreateOrderViewController.h"
 #import "LSSeat.h"
-#import "LSCreateOrderCell.h"
+#import "LSCreateOrderView.h"
 
 @interface LSCreateOrderViewController ()
 
@@ -43,6 +43,24 @@
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeUserProfile object:nil];
+    [messageCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [messageCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    LSCreateOrderView* createOrderView=[[LSCreateOrderView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, 30.f)];
+    createOrderView.order=_order;
+    [self.view addSubview:createOrderView];
+    [createOrderView release];
+    
+    [UIView animateWithDuration:1.f animations:^{
+        
+        createOrderView.frame=CGRectMake(0.f, 0.f, self.view.width, createOrderView.contentY);
+    } completion:^(BOOL finished) {
+        
+        LSCreateOrderFooterView* createOrderFooterView=[[LSCreateOrderFooterView alloc] initWithFrame:CGRectMake(0.f, createOrderView.bottom, self.view.width, 128.f)];
+        createOrderFooterView.delegate=self;
+        [self.view addSubview:createOrderFooterView];
+        [createOrderFooterView release];
+    }];
     
     UITapGestureRecognizer* tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfTap:)];
     tapGestureRecognizer.delegate=self;
@@ -65,16 +83,33 @@
 #pragma mark- 重载方法
 - (void)leftBarButtonItemClick:(UIBarButtonItem *)sender
 {
-    if([_delegate respondsToSelector:@selector(LSCreateOrderViewControllerDidCreateOrder)])
-    {
-        [_delegate LSCreateOrderViewControllerDidCreateOrder];
-    }
+    [_delegate LSCreateOrderViewControllerDidCreateOrder];
 }
 
 #pragma mark- 私有方法
 - (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
     [_createOrderFooterView resignFirstResponder];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification
+{
+    //得到键盘的高度
+    CGFloat keyboardHeight=[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    
+    CGFloat gap=keyboardHeight-(self.view.height-_createOrderFooterView.bottom);
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.view.top=self.view.top-gap>0.f?gap:0.f;
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.view.top=LSiOS7?0.f:20.f+44.f;
+    }];
 }
 
 
@@ -124,7 +159,7 @@
             {
                 NSMutableString* placeholder=[NSMutableString stringWithString:user.mobile];
                 [placeholder replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-                _mobileTextField.placeholder=placeholder;
+                _createOrderFooterView.phoneTextField.placeholder=placeholder;
             }
         }
         else if([notification.name isEqual:lsRequestTypeOrderCreateOrderByScheduleID_SectionID_Seats_Mobile_OnSale])
@@ -153,46 +188,21 @@
     }
 }
 
-#pragma mark- UITableView的委托方法
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 44.f*2+50.f;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    _createOrderFooterView=[[[LSCreateOrderFooterView alloc] initWithFrame:CGRectZero] autorelease];
-    _createOrderFooterView.delegate=self;
-    return _createOrderFooterView;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 0.f;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    LSCreateOrderCell* createOrderCell=[tableView dequeueReusableCellWithIdentifier:@"LSCreateOrderCell"];
-    if(createOrderCell==nil)
-    {
-        createOrderCell=[[[LSCreateOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCreateOrderCell"] autorelease];
-    }
-    return createOrderCell;
-}
-
 #pragma mark- LSCreateOrderFooterView的委托方法
 - (void)LSCreateOrderFooterView:(LSCreateOrderFooterView *)createOrderFooterView didClickSubmitButton:(UIButton *)submitButton
 {
     NSMutableString* seatsMString = [[NSMutableString alloc] initWithCapacity:0];
-    for (LSSeat* seat in _order.selectSeatArray)
+    
+    for(NSArray* selectSeatArray in [_order.selectSeatArrayDic allValues])
     {
-        [seatsMString appendFormat:@"%@:%@|", seat.realRowID, seat.realColumnID];
+        for(LSSeat* seat in selectSeatArray)
+        {
+            [seatsMString appendFormat:@"%@:%@|", seat.realRowID, seat.realColumnID];
+        }
     }
     [seatsMString deleteCharactersInRange:NSMakeRange((seatsMString.length - 1), 1)];
     NSString* mobileString=nil;
-    if(_mobileTextField.text.length==0)
+    if(_createOrderFooterView.phoneTextField.text.length==0)
     {
         if(user.mobile!=nil)
         {
@@ -200,7 +210,10 @@
         }
         else
         {
-            [LSAlertView showWithTag:0 title:nil message:@"请输入手机号，用于接收取票码" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [LSAlertView showWithView:self.view message:@"请输入手机号，用于接收取票码" time:2.f completion:^(void) {
+                
+                [_createOrderFooterView.phoneTextField becomeFirstResponder];
+            }];
             return;
         }
     }
@@ -210,25 +223,13 @@
     }
     
     [hud show:YES];
-    [messageCenter LSMCOrderCreateWithScheduleID:_order.schedule.scheduleID sectionID:_order.section.sectionID seats:seatsMString mobile:mobileString isOnSale:_order.schedule.isOnSale];
-}
-
-#pragma mark- UIAlertView的委托方法
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(alertView.tag==0)
-    {
-        [_mobileTextField becomeFirstResponder];
-    }
+    [messageCenter LSMCOrderCreateWithScheduleID:_order.schedule.scheduleID seats:seatsMString mobile:mobileString isOnSale:_order.schedule.isOnSale];
 }
 
 #pragma mark- LSPayViewController的委托方法
 - (void)LSPayViewControllerDidPay
 {
-    if([_delegate respondsToSelector:@selector(LSCreateOrderViewControllerDidCreateOrder)])
-    {
-        [_delegate LSCreateOrderViewControllerDidCreateOrder];
-    }
+    [_delegate LSCreateOrderViewControllerDidCreateOrder];
 }
 
 @end

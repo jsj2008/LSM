@@ -62,7 +62,7 @@
         text=[NSString stringWithFormat:@"%@",_schedule.language];
     }
     [text drawInRect:CGRectMake(contentX, contentY, 140.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
-    [text drawInRect:CGRectMake(contentX, contentY+25.f, 140.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
+    [_schedule.hall.hallName drawInRect:CGRectMake(contentX, contentY+25.f, 140.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle]];
     
     contentX+=140.f;
 

@@ -7,10 +7,12 @@
 //
 
 #import "LSCreateOrderFooterView.h"
+
 #define gap 10.f
 
 @implementation LSCreateOrderFooterView
 
+@synthesize phoneTextField=_phoneTextField;
 @synthesize delegate=_delegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -42,8 +44,8 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _phoneTextField.frame=CGRectMake(gap, gap*2, self.width-gap*2, 44.f);
-    _submitButton.frame=CGRectMake(gap, gap*3+44.f, self.width-gap*2, 44.f);
+    _phoneTextField.frame=CGRectMake(gap, gap, self.width-gap*2, 44.f);
+    _submitButton.frame=CGRectMake(gap, gap+44.f+gap*2, self.width-gap*2, 44.f);
 }
 
 /*

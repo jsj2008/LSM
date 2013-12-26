@@ -49,21 +49,22 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    NSString* text=nil;
+    NSString* text=@"";
     //绘制座位信息
-    if (_order.selectSeatArray.count>0)
+    for(NSArray* selectSeatArray in [_order.selectSeatArrayDic allValues])
     {
-        text=@"";
-        for(LSSeat* seat in _order.selectSeatArray)
+        for(LSSeat* seat in selectSeatArray)
         {
             text=[text stringByAppendingString:[NSString stringWithFormat:@"%@排%@ ",seat.realRowID,seat.realColumnID]];
         }
     }
-    else
+    
+    if ([text isEqualToString:@""])
     {
         text = [NSString stringWithFormat:@"最多可选%d个座位",_order.maxTicketNumber];
     }
-    [text drawInRect:CGRectMake(gap, gap, 180.f, self.height-gap*2) withAttributes:[LSAttribute attributeFont:LSFontScheduleSeat color:LSColorWhite]];
+    
+    [text drawInRect:CGRectMake(gap, gap, 180.f, self.height-gap*2) withAttributes:[LSAttribute attributeFont:LSFontSeatSelect color:LSColorWhite]];
     
     _confirmButtonView.price=_order.totalPrice;
     [_confirmButtonView setNeedsDisplay];

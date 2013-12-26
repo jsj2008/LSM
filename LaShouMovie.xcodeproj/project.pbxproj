@@ -77,8 +77,6 @@
 		182238F917CE041D00F61D5F /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 182238F817CE041D00F61D5F /* libicucore.dylib */; };
 		1822397917CF1E2400F61D5F /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1822397717CF1E2400F61D5F /* libMobClickLibrary.a */; };
 		183441C41845C7EB003D1AB6 /* LSCoupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441C31845C7EB003D1AB6 /* LSCoupon.m */; };
-		183441C91845E2E0003D1AB6 /* LSPayFilmCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441C81845E2E0003D1AB6 /* LSPayFilmCell.m */; };
-		183441CC1845E2F4003D1AB6 /* LSPaySeatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441CB1845E2F4003D1AB6 /* LSPaySeatCell.m */; };
 		183441CF1845E3C8003D1AB6 /* LSPayShouldPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441CE1845E3C8003D1AB6 /* LSPayShouldPayCell.m */; };
 		183441D21845E3EF003D1AB6 /* LSPayCouponCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441D11845E3EF003D1AB6 /* LSPayCouponCell.m */; };
 		183441D51845E418003D1AB6 /* LSPayBalanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 183441D41845E418003D1AB6 /* LSPayBalanceCell.m */; };
@@ -473,8 +471,8 @@
 		18D4AF3B184F3D43000AAE01 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF32184F3D42000AAE01 /* ASINetworkQueue.m */; };
 		18D4AF41184F3E50000AAE01 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF3E184F3E50000AAE01 /* Reachability.m */; };
 		18D4AF42184F3E50000AAE01 /* ReachabilityAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */; };
-		18D54155186ADA3E004D161A /* LSCreateOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54154186ADA3E004D161A /* LSCreateOrderCell.m */; };
 		18D54159186AE1ED004D161A /* LSCreateOrderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */; };
+		18D5415C186BC491004D161A /* LSCreateOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D5415B186BC491004D161A /* LSCreateOrderView.m */; };
 		18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */; };
 		18DCE35F17F1796500016442 /* LSQQWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE35E17F1796400016442 /* LSQQWBAuthViewController.m */; };
 		18DCE36517F1893600016442 /* LSSinaWBAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE36417F1893600016442 /* LSSinaWBAuthViewController.m */; };
@@ -707,10 +705,6 @@
 		1822397817CF1E2400F61D5F /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		183441C21845C7EB003D1AB6 /* LSCoupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCoupon.h; sourceTree = "<group>"; };
 		183441C31845C7EB003D1AB6 /* LSCoupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCoupon.m; sourceTree = "<group>"; };
-		183441C71845E2E0003D1AB6 /* LSPayFilmCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayFilmCell.h; sourceTree = "<group>"; };
-		183441C81845E2E0003D1AB6 /* LSPayFilmCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayFilmCell.m; sourceTree = "<group>"; };
-		183441CA1845E2F4003D1AB6 /* LSPaySeatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPaySeatCell.h; sourceTree = "<group>"; };
-		183441CB1845E2F4003D1AB6 /* LSPaySeatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPaySeatCell.m; sourceTree = "<group>"; };
 		183441CD1845E3C8003D1AB6 /* LSPayShouldPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayShouldPayCell.h; sourceTree = "<group>"; };
 		183441CE1845E3C8003D1AB6 /* LSPayShouldPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayShouldPayCell.m; sourceTree = "<group>"; };
 		183441D01845E3EF003D1AB6 /* LSPayCouponCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayCouponCell.h; sourceTree = "<group>"; };
@@ -1251,10 +1245,10 @@
 		18D4AF3E184F3E50000AAE01 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		18D4AF3F184F3E50000AAE01 /* ReachabilityAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityAppDelegate.h; sourceTree = "<group>"; };
 		18D4AF40184F3E50000AAE01 /* ReachabilityAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityAppDelegate.m; sourceTree = "<group>"; };
-		18D54153186ADA3E004D161A /* LSCreateOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderCell.h; sourceTree = "<group>"; };
-		18D54154186ADA3E004D161A /* LSCreateOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderCell.m; sourceTree = "<group>"; };
 		18D54157186AE1ED004D161A /* LSCreateOrderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderFooterView.h; sourceTree = "<group>"; };
 		18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderFooterView.m; sourceTree = "<group>"; };
+		18D5415A186BC491004D161A /* LSCreateOrderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCreateOrderView.h; sourceTree = "<group>"; };
+		18D5415B186BC491004D161A /* LSCreateOrderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCreateOrderView.m; sourceTree = "<group>"; };
 		18DCE34A17F027FD00016442 /* LSCinemaStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemaStatusView.h; sourceTree = "<group>"; };
 		18DCE34B17F027FD00016442 /* LSCinemaStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCinemaStatusView.m; sourceTree = "<group>"; };
 		18DCE35D17F1796400016442 /* LSQQWBAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSQQWBAuthViewController.h; sourceTree = "<group>"; };
@@ -2105,8 +2099,7 @@
 		1822396E17CEE8D900F61D5F /* CreateOrder */ = {
 			isa = PBXGroup;
 			children = (
-				18D54156186AE1CA004D161A /* CreateOrderFooterView */,
-				1DACCF5C17F0974B00855F27 /* CreateOrderCell */,
+				18D54156186AE1CA004D161A /* CreateOrderView */,
 				1DACCF5917F0966700855F27 /* LSCreateOrderViewController.h */,
 				1DACCF5A17F0966700855F27 /* LSCreateOrderViewController.m */,
 			);
@@ -2166,10 +2159,6 @@
 		183441C61845E1F1003D1AB6 /* PayCell */ = {
 			isa = PBXGroup;
 			children = (
-				183441C71845E2E0003D1AB6 /* LSPayFilmCell.h */,
-				183441C81845E2E0003D1AB6 /* LSPayFilmCell.m */,
-				183441CA1845E2F4003D1AB6 /* LSPaySeatCell.h */,
-				183441CB1845E2F4003D1AB6 /* LSPaySeatCell.m */,
 				183441CD1845E3C8003D1AB6 /* LSPayShouldPayCell.h */,
 				183441CE1845E3C8003D1AB6 /* LSPayShouldPayCell.m */,
 				183441D01845E3EF003D1AB6 /* LSPayCouponCell.h */,
@@ -3440,13 +3429,15 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
-		18D54156186AE1CA004D161A /* CreateOrderFooterView */ = {
+		18D54156186AE1CA004D161A /* CreateOrderView */ = {
 			isa = PBXGroup;
 			children = (
+				18D5415A186BC491004D161A /* LSCreateOrderView.h */,
+				18D5415B186BC491004D161A /* LSCreateOrderView.m */,
 				18D54157186AE1ED004D161A /* LSCreateOrderFooterView.h */,
 				18D54158186AE1ED004D161A /* LSCreateOrderFooterView.m */,
 			);
-			name = CreateOrderFooterView;
+			name = CreateOrderView;
 			sourceTree = "<group>";
 		};
 		18DCE34917F027AD00016442 /* CinemaStatusView */ = {
@@ -3644,15 +3635,6 @@
 				1D9DA4571846394F002A436D /* LSPayFooterView.m */,
 			);
 			name = PayFooterView;
-			sourceTree = "<group>";
-		};
-		1DACCF5C17F0974B00855F27 /* CreateOrderCell */ = {
-			isa = PBXGroup;
-			children = (
-				18D54153186ADA3E004D161A /* LSCreateOrderCell.h */,
-				18D54154186ADA3E004D161A /* LSCreateOrderCell.m */,
-			);
-			name = CreateOrderCell;
 			sourceTree = "<group>";
 		};
 		1DACCF6017F0A14B00855F27 /* AlertView */ = {
@@ -4186,12 +4168,12 @@
 				18DCE3A317F445D400016442 /* NSURL+scheme.m in Sources */,
 				18F1D3F517F7CB98002AD7B7 /* LSAlipay.m in Sources */,
 				18F1D3F817F7F470002AD7B7 /* LSPaidOrdersViewController.m in Sources */,
+				18D5415C186BC491004D161A /* LSCreateOrderView.m in Sources */,
 				18D4AF39184F3D43000AAE01 /* ASIHTTPRequest.m in Sources */,
 				18F1D3FB17F7F4A7002AD7B7 /* LSUnpayOrdersViewController.m in Sources */,
 				18F1D40117F7F527002AD7B7 /* LSTicketsViewController.m in Sources */,
 				18F1D40517F7F59E002AD7B7 /* LSPaidOrderCell.m in Sources */,
 				18F1D40817F81402002AD7B7 /* NSDate+Extension.m in Sources */,
-				183441CC1845E2F4003D1AB6 /* LSPaySeatCell.m in Sources */,
 				18F1D40F17F82A22002AD7B7 /* LSSecurityCodeView.m in Sources */,
 				18F1D41317F93F13002AD7B7 /* LSMyViewController.m in Sources */,
 				18F1D41717F93F4A002AD7B7 /* LSMyInfoCell.m in Sources */,
@@ -4203,7 +4185,6 @@
 				1DACCF6C17FBBCB700855F27 /* LSUnpayOrderCell.m in Sources */,
 				1DACCF7017FDB90D00855F27 /* LSSimpleCountDownView.m in Sources */,
 				1DACCF7317FE9D0400855F27 /* LSSettingViewController.m in Sources */,
-				18D54155186ADA3E004D161A /* LSCreateOrderCell.m in Sources */,
 				1DACCF7717FE9DC900855F27 /* LSSettingSwitchCell.m in Sources */,
 				1DACCF7A17FE9E0B00855F27 /* LSSettingTextCell.m in Sources */,
 				186D767C1846E80C00F36035 /* LSCouponMoneyCell.m in Sources */,
@@ -4257,7 +4238,6 @@
 				18072AF7180925AB0013CCA6 /* LSRootAnnotation.m in Sources */,
 				186A647618642B8D002F8B4C /* LSDistrictSelectorView.m in Sources */,
 				18072AFB1809270D0013CCA6 /* LSCinemaMapViewController.m in Sources */,
-				183441C91845E2E0003D1AB6 /* LSPayFilmCell.m in Sources */,
 				18072AFF180929B40013CCA6 /* LSAnnotation.m in Sources */,
 				18072B0418092CDA0013CCA6 /* LSAnnotationView.m in Sources */,
 				1835E1B5180B935000E80602 /* LSCinemaAnnotation.m in Sources */,
@@ -4371,7 +4351,7 @@
 				GCC_PREFIX_HEADER = "LaShouMovie/LaShouMovie-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "LaShouMovie/LaShouMovie-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/LaShouMovie/UMAnalytics",
@@ -4397,7 +4377,7 @@
 				GCC_PREFIX_HEADER = "LaShouMovie/LaShouMovie-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "LaShouMovie/LaShouMovie-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/LaShouMovie/UMAnalytics",

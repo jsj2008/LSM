@@ -8,9 +8,7 @@
 
 #import "LSPayShouldPayCell.h"
 
-#define gapL 10.f
-#define basicWidth 280.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSPayShouldPayCell
 
@@ -28,10 +26,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.backgroundColor=[UIColor clearColor];
     }
     return self;
 }
@@ -45,16 +39,11 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRoundRectangleInRect:CGRectMake(gapL, gapL, rect.size.width-2*gapL, rect.size.height-gapL) topRadius:3.f bottomRadius:0.f isBottomLine:NO fillColor:LSColorBgWhiteColor strokeColor:LSColorLineGrayColor borderWidth:0.5];
+    CGFloat contentX=gap;
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    
-    CGFloat contentX=gapL;
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
     NSString* text = @"应付金额:";
-    CGSize size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, (rect.size.height-gapL-size.height)/2+gapL, 80.f, size.height) withFont:LSFont15 lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
+    CGSize size=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontPayTitle]];
+    [text drawInRect:<#(CGRect)#> withAttributes:<#(NSDictionary *)#>];
     contentX+=(80.f+5.f);
     
     text = @"￥";

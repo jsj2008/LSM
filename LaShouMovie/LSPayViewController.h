@@ -33,6 +33,7 @@
 
 @protocol LSPayViewControllerDelegate <NSObject>
 
+@required
 - (void)LSPayViewControllerDidPay;
 
 @end

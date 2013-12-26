@@ -16,9 +16,8 @@
 //使用不占用内存的图片
 + (UIImage*)lsImageNamed:(NSString*)name;
 + (UIImage*)lsImageNamed:(NSString*)name is568:(BOOL)is568;
-
++ (UIImage *)stretchableImageWithImageName:(NSString *)name top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
 + (UIImage *)stretchableImageWithImage:(UIImage *)image top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
-
 
 //计算图片宽高
 //{

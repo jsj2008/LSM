@@ -46,11 +46,10 @@
 #define LSFontNavigationButton      LSFont16
 
 #define LSFontSectionHeader         LSFont14
-#define LSFontSection               LSFont14
+
 #define LSFontCity                  LSFont16
 
 #define LSFontFilmName              LSFont16
-#define LSFontFilmNameBold          LSFontBold16
 #define LSFontFilmInfo              LSFont10
 #define LSFontFilmDetail            LSFont13
 #define LSFontFilmBrief             LSFont12
@@ -64,15 +63,21 @@
 #define LSFontScheduleSubtitle      LSFont10
 #define LSFontScheduleY             LSFont10
 #define LSFontSchedulePrice         LSFont18
-#define LSFontScheduleSeat          LSFont14
-#define LSFontScheduleBuy           LSFont14
 
-#define LSFontSeatInfo              LSFont10
+#define LSFontSeatCategory          LSFont10
+#define LSFontSeatScreen            LSFont10
 #define LSFontSeatRowID             LSFont10
+#define LSFontSeatSelect            LSFont14
+#define LSFontSeatY                 LSFont10
+#define LSFontSeatPrice             LSFont18
+#define LSFontSeatBuy               LSFont14
 
-#define LSFontScheduleCinemaName    LSFont18
-#define LSFontScheduleBold          LSFontBold16
-#define LSFontSchedule              LSFont10
+#define LSFontCreateOrderFilm       LSFont16
+#define LSFontCreateOrderTitle      LSFont14
+#define LSFontCreateOrderSubtitle   LSFont13
+
+#define LSFontPayTitle              LSFont14
+#define LSFontPaySubtitle           LSFont10
 
 @interface LSFont : NSObject
 

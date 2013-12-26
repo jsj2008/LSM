@@ -31,7 +31,7 @@
 
         _positionButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        _positionButton.titleLabel.font = LSFontSection;
+        _positionButton.titleLabel.font = LSFontButton;
         [_positionButton setTitleColor:LSColorTextRed forState:UIControlStateNormal];
         [_positionButton setTitle:@"切换区域" forState:UIControlStateNormal];
         [_positionButton addTarget:self action:@selector(positionButtonClick:) forControlEvents:UIControlEventTouchUpInside];

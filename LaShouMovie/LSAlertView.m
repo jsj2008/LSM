@@ -14,13 +14,10 @@
 
 + (void)showWithTag:(int)tag title:(NSString *)title message:(NSString *)message delegate:(id <UIAlertViewDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
 {
-    //dispatch_sync(dispatch_get_main_queue(), ^{
-        
-        UIAlertView* alertView=[[UIAlertView alloc] initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil];
-        alertView.tag = tag;
-        [alertView show];
-        [alertView release];
-    //});
+    UIAlertView* alertView=[[UIAlertView alloc] initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil];
+    alertView.tag = tag;
+    [alertView show];
+    [alertView release];
 }
 
 + (void)showWithView:(UIView*)view message:(NSString *)message time:(CGFloat)time
@@ -33,6 +30,18 @@
     [hud showAnimated:YES whileExecutingBlock:^{
         sleep(time);
     }];
+}
+
++ (void)showWithView:(UIView*)view message:(NSString *)message time:(CGFloat)time completion:(void (^)())completion
+{
+    MBProgressHUD* hud=[[MBProgressHUD alloc] initWithView:view];
+    hud.mode=MBProgressHUDModeText;
+    hud.labelText=message;
+    [view addSubview:hud];
+    [view bringSubviewToFront:hud];
+    [hud showAnimated:YES whileExecutingBlock:^{
+        sleep(time);
+    } completionBlock:completion];
 }
 
 + (void)showWithView:(UIView*)view from:(LSAlertViewFrom)from message:(NSString *)message time:(CGFloat)time

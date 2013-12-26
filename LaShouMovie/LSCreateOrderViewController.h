@@ -6,15 +6,18 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSTableViewController.h"
+#import "LSViewController.h"
 #import "LSOrder.h"
 #import "LSCreateOrderFooterView.h"
+#import "LSCreateOrderView.h"
 #import "LSPayViewController.h"
 
 @protocol LSCreateOrderViewControllerDelegate;
-@interface LSCreateOrderViewController : LSTableViewController<LSPayViewControllerDelegate,LSCreateOrderFooterViewDelegate>
+@interface LSCreateOrderViewController : LSViewController<LSPayViewControllerDelegate,LSCreateOrderFooterViewDelegate>
 {
+    LSCreateOrderView* _createOrderView;
     LSCreateOrderFooterView* _createOrderFooterView;
+    
     LSOrder* _order;
     id<LSCreateOrderViewControllerDelegate> _delegate;
 }

@@ -53,6 +53,11 @@ static BOOL isRetina=NO;
     return [UIImage  imageWithContentsOfFile:path];
 }
 
++ (UIImage *)stretchableImageWithImageName:(NSString *)name top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right
+{
+    return [UIImage stretchableImageWithImage:[UIImage lsImageNamed:name] top:top left:left bottom:bottom right:right];
+}
+
 + (UIImage *)stretchableImageWithImage:(UIImage *)image top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right
 {
     if(image)
