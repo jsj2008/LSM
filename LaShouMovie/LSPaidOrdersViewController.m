@@ -8,8 +8,8 @@
 
 #import "LSPaidOrdersViewController.h"
 #import "LSOrder.h"
-#import "LSNothingCell.h"
-#import "LSCinemaMapViewController.h"   
+#import "LSCinemaMapViewController.h"
+#import "LSPaidOrderCell.h"
 
 @interface LSPaidOrdersViewController ()
 
@@ -41,7 +41,6 @@
     [super viewDidLoad];
     
     self.title = @"已付款";
-    self.internetStatusRemindType=LSInternetStatusRemindTypeNon;
     _orderMArray=[[NSMutableArray alloc] initWithCapacity:0];
     _offset=0;
     _pageSize=10;
@@ -77,9 +76,9 @@
 }
 
 #pragma mark- 重载方法
-- (void)backButtonClick:(UIButton*)sender
+- (void)leftBarButtonItemClick:(UIBarButtonItem *)sender
 {
-    if([_delegate respondsToSelector:@selector(LSPaidOrdersViewControllerDidBack)])
+    if(_delegate)
     {
         [_delegate LSPaidOrdersViewControllerDidBack];
     }

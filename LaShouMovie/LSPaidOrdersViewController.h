@@ -7,10 +7,9 @@
 //
 
 #import "LSTableViewController.h"
-#import "LSPaidOrderCell.h"
 
 @protocol LSPaidOrdersViewControllerDelegate;
-@interface LSPaidOrdersViewController : LSTableViewController<LSPaidOrderCellDelegate,UIActionSheetDelegate>
+@interface LSPaidOrdersViewController : LSTableViewController<UIActionSheetDelegate>
 {
     NSMutableArray* _orderMArray;//已付款订单列表
     int _offset;
@@ -29,6 +28,7 @@
 
 @protocol LSPaidOrdersViewControllerDelegate <NSObject>
 
+@required
 - (void)LSPaidOrdersViewControllerDidBack;
 
 @end
