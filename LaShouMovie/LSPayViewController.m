@@ -58,6 +58,11 @@
     [_countDownView startCountDown];
     self.tableView.tableHeaderView=_countDownView;
     [_countDownView release];
+    
+    _payFooterView=[[LSPayFooterView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.width, 84.f)];
+    _payFooterView.delegate=self;
+    self.tableView.tableFooterView=_payFooterView;
+    [_payFooterView release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -280,6 +285,8 @@
         [cell setNeedsLayout];
         
         _order.payWay=cell.payWay.payWayID;
+        _payFooterView.title=cell.payWay.payWayName;
+        [_payFooterView setNeedsLayout];
     }
 }
 
@@ -294,19 +301,21 @@
 }
 
 #pragma mark- LSPayFooterView的委托
-- (void)LSPayFooterViewDidToPayByPayType:(LSPayType)payType
+- (void)LSPayFooterView:(LSPayFooterView *)payFooterView didClickPayButton:(UIButton *)payButton
 {
-    if(payType==LSPayTypeBalance)
+    if(_order.payWay==LSPayWayTypeBalance)
     {
         [hud show:YES];
         [messageCenter LSMCPayBalancePayWithOrderID:_order.orderID isUseCoupon:_order.isUseCoupon securityCode:nil];
     }
-    else if(payType==LSPayTypeAlipay)
+    else if(_order.payWay==LSPayWayTypeAlipay)
     {
         [hud show:YES];
         [messageCenter LSMCOrderOtherPayInfoWithOrderID:_order.orderID payWay:_order.payWay isUseCoupon:_order.isUseCoupon];
     }
 }
+
+#pragma mark- LSCountDownView的委托
 - (void)LSCountDownViewDidTimeout
 {
     [_delegate LSPayViewControllerDidPay];
@@ -326,7 +335,7 @@
     {
         //纯优惠券支付完成
         [_countDownView stopCountDown];
-        [self makePaidOrdersViewController:LSPayTypeBalance];
+        [self makePaidOrdersViewController:LSPayWayTypeBalance];
     }
 }
 
@@ -389,7 +398,7 @@
             //			}
             LSLOG(@"支付宝支付成功从WAP跳回来");
             [_countDownView stopCountDown];
-            [self makePaidOrdersViewController:LSPayTypeAlipay];
+            [self makePaidOrdersViewController:LSPayWayTypeAlipay];
         }
         else
         {

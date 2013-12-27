@@ -8,7 +8,7 @@
 
 #import "LSCouponViewController.h"
 #import "LSCoupon.h"
-#import "LSCouponFooterView.h"
+#import "LSCouponTableFooterView.h"
 
 @interface LSCouponViewController ()
 
@@ -23,7 +23,6 @@
 - (void)dealloc
 {
     self.order=nil;
-    [_useButton release];
     LSRELEASE(_couponMArray)
     [super dealloc];
 }
@@ -41,7 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title=@"优惠券";
+    self.title=@"使用优惠券";
     _couponMArray=[[NSMutableArray alloc] initWithCapacity:0];
     if(_order.couponArray.count>0)
     {
@@ -59,15 +58,14 @@
     [messageCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     //生成底部说明
-    LSCouponFooterView* couponFooterView=[[LSCouponFooterView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, 160.f)];
-    int totalNumber=0;
-    for(NSArray* selectSeatArray in [_order.selectSeatArrayDic allValues])
-    {
-        totalNumber+=selectSeatArray.count;
-    }
-    couponFooterView.seatNumber=totalNumber;
-    self.tableView.tableFooterView=couponFooterView;
-    [couponFooterView release];
+    LSCouponTableFooterView* couponTableFooterView=[[LSCouponTableFooterView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.width, 160.f)];
+    self.tableView.tableFooterView=couponTableFooterView;
+    [couponTableFooterView release];
+    
+    UITapGestureRecognizer* tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfTap:)];
+    tapGestureRecognizer.delegate=self;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+    [tapGestureRecognizer release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,7 +75,7 @@
 }
 
 #pragma mark- 重载方法
-- (void)backButtonClick:(UIButton *)sender
+- (void)leftBarButtonItemClick:(UIBarButtonItem *)sender
 {
     for(int i=0;i<_couponMArray.count;i++)
     {
@@ -108,49 +106,20 @@
     }
 }
 
-#pragma mark- 私有方法
-- (void)useButtonClick:(UIButton*)sender
-{
-    for(int i=0;i<_couponMArray.count;i++)
-    {
-        LSCoupon* coupon=[_couponMArray objectAtIndex:i];
-        if(coupon.couponValid==LSCouponValidInvalid || coupon.couponStatus==LSCouponStatusUnuse)
-        {
-            [_couponMArray removeObject:coupon];
-            i-=1;
-        }
-    }
-    
-    if(_couponMArray.count>0)
-    {
-        _order.isUseCoupon=LSOrderUseCouponYes;
-        if([_delegate respondsToSelector:@selector(LSCouponViewControllerDidChangeCoupon)])
-        {
-            [_delegate LSCouponViewControllerDidChangeCoupon];
-        }
-    }
-    else
-    {
-        [LSAlertView showWithTag:1 title:nil message:@"没有可用惠券" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
-    }
-}
-
 - (void)keyboardWillShow:(NSNotification*)notification
 {
-    _useButton.hidden=YES;
-    _tapGestureRecognizer=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfTap:)];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
-    [_tapGestureRecognizer release];
+    _isHideButton=YES;
+    [self.tableView reloadData];
 }
 - (void)keyboardWillHide:(NSNotification*)notification
 {
-    _useButton.hidden=NO;
-    [self.view removeGestureRecognizer:_tapGestureRecognizer];
+    _isHideButton=NO;
+    [self.tableView reloadData];
 }
 
 - (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
-    [self.tableView reloadData];
+    [_couponHeaderView resignFirstResponder];
 }
 
 #pragma mark- 通知中心消息
@@ -220,29 +189,31 @@
 }
 
 #pragma mark - UITableView委托方法
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 84.f;
+}
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if(_couponHeaderView==nil)
+    {
+        _couponHeaderView=[[[LSCouponHeaderView alloc] initWithFrame:CGRectZero] autorelease];
+        _couponHeaderView.delegate=self;
+    }
+    return _couponHeaderView;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return _couponMArray.count>0?64.f:0.f;
+    return _isHideButton?0.f:84.f;
 }
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if(_useButton==nil)
+    if(_couponFooterView==nil)
     {
-        _useButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _useButton.frame = CGRectMake((320.f-265.f)/2, 10.f, 265.f, 44.f);
-        [_useButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"corder_confirm.png"] top:23 left:4 bottom:23 right:4] forState:UIControlStateNormal];
-        [_useButton setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:@"corder_confirm_d.png"] top:23 left:4 bottom:23 right:4] forState:UIControlStateHighlighted];
-        _useButton.titleLabel.font = LSFontBold18;
-        [_useButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _useButton.tag=LSPayTypeBalance;
-        [_useButton setTitle:@"使用优惠券" forState:UIControlStateNormal];
-        [_useButton addTarget:self action:@selector(useButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        _couponFooterView=[[[LSCouponFooterView alloc] initWithFrame:CGRectZero] autorelease];
+        _couponFooterView.delegate=self;
     }
-    
-    UIView* view=[[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    view.backgroundColor=[UIColor clearColor];
-    [view addSubview:_useButton];
-    return view;
+    return _couponFooterView;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -273,57 +244,37 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0)
+    LSCoupon* coupon=[_couponMArray objectAtIndex:indexPath.row];
+    if(coupon.couponType==LSCouponTypeCommon)
     {
-        LSCouponInputCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCouponInputCell"];
+        LSCouponCommonCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCouponCommonCell"];
         if(cell==nil)
         {
-            cell=[[[LSCouponInputCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCouponInputCell"] autorelease];
+            cell=[[[LSCouponCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCouponCommonCell"] autorelease];
             cell.delegate=self;
         }
+        cell.coupon=coupon;
+        [cell setNeedsLayout];
+        [cell setNeedsDisplay];
+        return cell;
+    }
+    else if(coupon.couponType==LSCouponTypeMoney)
+    {
+        LSCouponMoneyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCouponMoneyCell"];
+        if(cell==nil)
+        {
+            cell=[[[LSCouponMoneyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCouponMoneyCell"] autorelease];
+            cell.delegate=self;
+        }
+        cell.coupon=coupon;
+        [cell setNeedsLayout];
+        [cell setNeedsDisplay];
         return cell;
     }
     else
     {
-        LSCoupon* coupon=[_couponMArray objectAtIndex:indexPath.row-1];
-        if(coupon.couponType==LSCouponTypeCommon)
-        {
-            LSCouponCommonCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCouponCommonCell"];
-            if(cell==nil)
-            {
-                cell=[[[LSCouponCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCouponCommonCell"] autorelease];
-                cell.delegate=self;
-            }
-            cell.coupon=coupon;
-            [cell setNeedsLayout];
-            [cell setNeedsDisplay];
-            return cell;
-        }
-        else if(coupon.couponType==LSCouponTypeMoney)
-        {
-            LSCouponMoneyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSCouponMoneyCell"];
-            if(cell==nil)
-            {
-                cell=[[[LSCouponMoneyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSCouponMoneyCell"] autorelease];
-                cell.delegate=self;
-            }
-            cell.coupon=coupon;
-            [cell setNeedsLayout];
-            [cell setNeedsDisplay];
-            return cell;
-        }
-        else
-        {
-            return nil;
-        }
+        return nil;
     }
-}
-
-#pragma mark- LSCouponInputCell的委托方法
-- (void)LSCouponInputCellDidUseCoupon:(NSString *)couponID
-{
-    [hud show:YES];
-    [messageCenter LSMCCouponUseWithOrderID:_order.orderID cinemaID:_order.cinema.cinemaID couponID:couponID];
 }
 
 #pragma maek- LSCouponCommonCell的委托方法
@@ -338,6 +289,40 @@
 {
     [hud show:YES];
     [messageCenter LSMCCouponCancelWithOrderID:_order.orderID cinemaID:_order.cinema.cinemaID couponID:coupon.couponID];
+}
+
+#pragma mark- LSCouponHeaderView的委托方法
+- (void)LSCouponHeaderView:(LSCouponHeaderView *)couponHeaderView didClickAddButton:(UIButton *)addButton withCouponTextField:(UITextField *)couponTextField
+{
+    [hud show:YES];
+    [messageCenter LSMCCouponUseWithOrderID:_order.orderID cinemaID:_order.cinema.cinemaID couponID:couponTextField.text];
+}
+
+#pragma mark- LSCouponFooterView的委托方法
+- (void)LSCouponFooterView:(LSCouponFooterView *)couponFooterView didClickUseButton:(UIButton *)useButton
+{
+    for(int i=0;i<_couponMArray.count;i++)
+    {
+        LSCoupon* coupon=[_couponMArray objectAtIndex:i];
+        if(coupon.couponValid==LSCouponValidInvalid || coupon.couponStatus==LSCouponStatusUnuse)
+        {
+            [_couponMArray removeObject:coupon];
+            i-=1;
+        }
+    }
+    
+    if(_couponMArray.count>0)
+    {
+        _order.isUseCoupon=LSOrderUseCouponYes;
+        if([_delegate respondsToSelector:@selector(LSCouponViewControllerDidChangeCoupon)])
+        {
+            [_delegate LSCouponViewControllerDidChangeCoupon];
+        }
+    }
+    else
+    {
+        [LSAlertView showWithTag:1 title:nil message:@"没有可用惠券" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+    }
 }
 
 #pragma mark- UIAlertView的委托方法
@@ -365,10 +350,7 @@
         _order.couponArray=nil;
     }
     
-    if([_delegate respondsToSelector:@selector(LSCouponViewControllerDidChangeCoupon)])
-    {
-        [_delegate LSCouponViewControllerDidChangeCoupon];
-    }
+    [_delegate LSCouponViewControllerDidChangeCoupon];
 }
 
 @end

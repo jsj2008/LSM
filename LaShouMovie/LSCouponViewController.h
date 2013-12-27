@@ -8,20 +8,27 @@
 
 #import "LSTableViewController.h"
 #import "LSOrder.h"
-#import "LSCouponInputCell.h"
 #import "LSCouponCommonCell.h"
 #import "LSCouponMoneyCell.h"
+#import "LSCouponHeaderView.h"
+#import "LSCouponFooterView.h"
 
 @protocol LSCouponViewControllerDelegate;
-@interface LSCouponViewController : LSTableViewController<UIAlertViewDelegate,LSCouponInputCellDelegate,LSCouponCommonCellDelegate,LSCouponMoneyCellDelegate>
+@interface LSCouponViewController : LSTableViewController
+<
+UIAlertViewDelegate,
+LSCouponCommonCellDelegate,
+LSCouponMoneyCellDelegate,
+LSCouponHeaderViewDelegate,
+LSCouponFooterViewDelegate
+>
 {
     LSOrder* _order;
     id<LSCouponViewControllerDelegate> _delegate;
     NSMutableArray* _couponMArray;
-    
-    UITapGestureRecognizer* _tapGestureRecognizer;
-    
-    UIButton* _useButton;
+    LSCouponHeaderView* _couponHeaderView;
+    LSCouponFooterView* _couponFooterView;
+    BOOL _isHideButton;
 }
 @property(nonatomic,retain) LSOrder* order;
 @property(nonatomic,assign) id<LSCouponViewControllerDelegate> delegate;
@@ -30,6 +37,7 @@
 
 @protocol LSCouponViewControllerDelegate <NSObject>
 
+@required
 - (void)LSCouponViewControllerDidChangeCoupon;
 
 @end

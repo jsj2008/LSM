@@ -21,7 +21,6 @@
     if (self) {
         // Initialization code
         _textField=[[UITextField alloc] initWithFrame:CGRectZero];
-        _textField.textColor = [UIColor blackColor];
         _textField.clearButtonMode=UITextFieldViewModeWhileEditing;
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _textField.keyboardType=UIKeyboardTypeNumberPad;

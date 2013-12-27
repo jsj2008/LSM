@@ -30,8 +30,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRectangleInRect:rect borderWidth:0.f fillColor:LSColorWhite strokeColor:LSColorWhite];
-
     CGSize size=[_title sizeWithAttributes:[LSAttribute attributeFont:LSFontRemark]];
     [_title drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withAttributes:[LSAttribute attributeFont:LSFontRemark color:LSColorTextGray]];
 }

@@ -8,10 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol LSCouponFooterViewDelegate;
 @interface LSCouponFooterView : UIView
 {
-    NSInteger _seatNumber;
+    UIButton* _useButton;
+    id<LSCouponFooterViewDelegate> _delegate;
 }
-@property(nonatomic,assign) NSInteger seatNumber;
+@property(nonatomic,assign)id<LSCouponFooterViewDelegate> delegate;
+
+@end
+
+@protocol LSCouponFooterViewDelegate <NSObject>
+
+@required
+- (void)LSCouponFooterView:(LSCouponFooterView*)couponFooterView didClickUseButton:(UIButton*)useButton;
 
 @end

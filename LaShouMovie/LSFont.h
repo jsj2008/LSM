@@ -45,7 +45,7 @@
 #define LSFontNavigationTitle       LSFont20
 #define LSFontNavigationButton      LSFont16
 
-#define LSFontSectionHeader         LSFont14
+#define LSFontSectionHeader         LSFont13
 
 #define LSFontCity                  LSFont18
 
@@ -76,11 +76,15 @@
 #define LSFontCreateOrderTitle      LSFont14
 #define LSFontCreateOrderSubtitle   LSFont13
 
-#define LSFontPayTime               LSFont16
+#define LSFontPayTime               LSFont18
 #define LSFontPayTitle              LSFont14
 #define LSFontPayPrice              LSFont16
 #define LSFontPayY                  LSFont10
 #define LSFontPaySubtitle           LSFont10
+
+#define LSFontCouponAdd             LSFont18
+#define LSFontCouponTitle           LSFont14
+#define LSFontCouponSubtitle        LSFont10
 
 @interface LSFont : NSObject
 

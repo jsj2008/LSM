@@ -14,11 +14,23 @@
 #import "LSPaidOrdersViewController.h"
 #import "LSCouponViewController.h"
 #import "UPOMP.h"
+#import "LSPayFooterView.h"
 
 @protocol LSPayViewControllerDelegate;
-@interface LSPayViewController : LSTableViewController<UPOMPDelegate,LSPaidOrdersViewControllerDelegate,LSCouponViewControllerDelegate,UIAlertViewDelegate,LSSecurityCodeViewDelegate,LSCountDownViewDelegate,LSPayCouponCellDelegate>
+@interface LSPayViewController : LSTableViewController
+<
+UPOMPDelegate,
+LSPaidOrdersViewControllerDelegate,
+LSCouponViewControllerDelegate,
+LSSecurityCodeViewDelegate,
+LSCountDownViewDelegate,
+LSPayFooterViewDelegate,
+LSPayCouponCellDelegate,
+UIAlertViewDelegate
+>
 {
     LSCountDownView* _countDownView;
+    LSPayFooterView* _payFooterView;
     BOOL _isSpread;
     
     LSOrder* _order;

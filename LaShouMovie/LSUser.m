@@ -7,6 +7,7 @@
 //
 
 #import "LSUser.h"
+#import "LSPayWay.h"
 
 @implementation LSUser
 
@@ -78,6 +79,20 @@ static LSUser* user=nil;
 - (id)autorelease
 {
     return self;//确保计数唯一
+}
+
+- (NSArray*)createUserBasicPayWayArray
+{
+    NSMutableArray* payWayArray=[NSMutableArray arrayWithCapacity:0];
+    
+    LSPayWay* alipayPayWay=[[LSPayWay alloc] init];
+    alipayPayWay.payWayID=0;
+    alipayPayWay.payWayName=@"支付宝支付";
+    alipayPayWay.information=@"推荐支付宝用户使用";
+    [payWayArray addObject:alipayPayWay];
+    [alipayPayWay release];
+    
+    return payWayArray;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -159,6 +174,15 @@ static LSUser* user=nil;
         
         user.isImageOnlyWhenWifi=preUser.isImageOnlyWhenWifi;
         user.isCreateCard=preUser.isCreateCard;
+        
+        if(preUser.payWayArray.count>0)
+        {
+            user.payWayArray=preUser.payWayArray;
+        }
+        else
+        {
+            user.payWayArray=[user createUserBasicPayWayArray];
+        }
     }
 }
 
