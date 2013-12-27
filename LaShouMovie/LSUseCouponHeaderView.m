@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSCouponHeaderView.h"
+#import "LSUseCouponHeaderView.h"
 
-@implementation LSCouponHeaderView
+@implementation LSUseCouponHeaderView
 
 @synthesize delegate=_delegate;
 
@@ -62,7 +62,7 @@
 {
     if(_couponTextField.text!=nil)
     {
-        [_delegate LSCouponHeaderView:self didClickAddButton:sender withCouponTextField:_couponTextField];
+        [_delegate LSUseCouponHeaderView:self didClickAddButton:sender withCouponTextField:_couponTextField];
     }
 }
 
@@ -71,7 +71,7 @@
 {
     if(textField.text!=nil)
     {
-        [_delegate LSCouponHeaderView:self didClickAddButton:_addButton withCouponTextField:textField];
+        [_delegate LSUseCouponHeaderView:self didClickAddButton:_addButton withCouponTextField:textField];
     }
     return YES;
 }

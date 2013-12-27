@@ -7,12 +7,15 @@
 //
 
 #import "LSMyViewController.h"
-#import "LSMyInfoCell.h"
 #import "LSMyCell.h"
+#import "LSMyCouponCell.h"
+#import "LSMyLogoutCell.h"
+#import "LSSeparatorCell.h"
 #import "LSPaidOrdersViewController.h"
 #import "LSUnpayOrdersViewController.h"
 #import "LSGroupsViewController.h"
 #import "LSTicketsViewController.h"
+#import "LSCouponsViewController.h"
 #import "LSTabBarController.h"
 
 @interface LSMyViewController ()
@@ -34,23 +37,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.internetStatusRemindType=LSInternetStatusRemindTypeNon;
-    
-    CGSize size=[@"我的账户" sizeWithFont:[UIFont systemFontOfSize:21.0]];
-    UILabel* label=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    label.backgroundColor=[UIColor clearColor];
-    label.textAlignment=NSTextAlignmentCenter;
-    label.font=[UIFont systemFontOfSize:21.0];
-    label.textColor=[UIColor whiteColor];
-    label.text=@"我的账户";
-    self.navigationItem.titleView=label;
-    [label release];
+    self.navigationController.navigationBarHidden=YES;
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeUserProfile object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeOrderCount object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:LSNotificationAlipayUserInfo object:nil];
-    
-    [self setBarButtonItemWithImageName:@"nav_logout.png" clickedImageName:@"nav_logout_d.png" isRight:YES buttonType:LSOtherButtonTypeLogout];
     
     [self initRefreshControl];
 }
@@ -77,15 +68,6 @@
 }
 
 #pragma mark- 重载方法
-- (void)otherButtonClick:(UIButton *)sender
-{
-    [super otherButtonClick:sender];
-    if(sender.tag==LSOtherButtonTypeLogout)
-    {
-        [LSAlertView showWithTag:0 title:nil message:@"是否退出？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    }
-}
-//
 - (void)refreshControlEventValueChanged
 {
     if(user.userID!=nil && user.password!=nil)
@@ -94,9 +76,9 @@
         
         [messageCenter LSMCUserProfile];
         [messageCenter LSMCOrderCount];
-        
     }
 }
+
 //刷新方法
 - (void)refreshBecauseInternet
 {
@@ -166,8 +148,8 @@
             //    type2 = 0;
             //}
             
-            user.paidCount=[[notification.object objectForKey:@"type0"] integerValue];
-            user.unpayCount=[[notification.object objectForKey:@"type1"] integerValue];
+            user.paidCount=[[notification.object objectForKey:@"type0"] intValue];
+            user.unpayCount=[[notification.object objectForKey:@"type1"] intValue];
             if(_isMovieOpen)
             {
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
@@ -181,165 +163,186 @@
 }
 
 
-#pragma mark - Table view data source
+#pragma mark- UITableViewd的委托方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if(user.networkStatus==NotReachable)
-    {
-        return 2;
-    }
-    else
-    {
-        return 3;
-    }
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(section!=0)
-    {
-        return 44.f+10.f;
-    }
-    return 0.f;
+    return 65.f;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if(section==1)
+    if(_myHeaderView==nil)
     {
-        LSMySectionHeader* mySectionHeader=[[[LSMySectionHeader alloc] initWithFrame:CGRectZero] autorelease];
-        mySectionHeader.mySectionHeaderType=LSMySectionHeaderTypeMovie;
-        mySectionHeader.isOpen=_isMovieOpen;
-        mySectionHeader.delegate=self;
-        return mySectionHeader;
+        _myHeaderView=[[LSMyHeaderView alloc] initWithFrame:CGRectZero];
     }
-    else if(section==2)
-    {
-        LSMySectionHeader* mySectionHeader=[[[LSMySectionHeader alloc] initWithFrame:CGRectZero] autorelease];
-        mySectionHeader.mySectionHeaderType=LSMySectionHeaderTypeGroup;
-        mySectionHeader.isOpen=_isGroupOpen;
-        mySectionHeader.delegate=self;
-        return mySectionHeader;
-    }
-    return nil;
+    [_myHeaderView setNeedsDisplay];
+    return _myHeaderView;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section==0)
+    if(user.networkStatus==NotReachable)
     {
-        if(user.networkStatus==NotReachable)
-        {
-            return 1;
-        }
-        else
-        {
-            return 2;
-        }
-    }
-    if(section==1)
-    {
-        if(user.networkStatus==NotReachable)
-        {
-            _isMovieOpen=YES;
-            return _isMovieOpen?1:0;
-        }
-        else
-        {
-            return _isMovieOpen?2:0;
-        }
+        return 3;
     }
     else
     {
-        return _isGroupOpen?2:0;
+        return 15;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section==0)
+    if(indexPath.row==0 || indexPath.row==2 || indexPath.row==6 || indexPath.row==10 || indexPath.row==12 || indexPath.row==14)
     {
-        if(indexPath.row==0)
+        return 20.f;
+    }
+    else
+    {
+        if(indexPath.row==4 || indexPath.row==5)
         {
-            return [LSMyInfoCell heightOfUser];
+            if(_isMovieOpen)
+            {
+                return 44.f;
+            }
+            else
+            {
+                return 0.f;
+            }
+        }
+        else if(indexPath.row==8 || indexPath.row==9)
+        {
+            if(_isGroupOpen)
+            {
+                return 44.f;
+            }
+            else
+            {
+                return 0.f;
+            }
         }
         else
         {
-            return 44.f+10.f;
+            return 44.f;
         }
     }
-    return 44.f;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section==0)
+    if(indexPath.row==0 || indexPath.row==2 || indexPath.row==6 || indexPath.row==10 || indexPath.row==12 || indexPath.row==14)
     {
-        if(indexPath.row==0)
+        LSSeparatorCell* cell=[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"LSSeparatorCell%d",indexPath.row]];
+        if(cell==nil)
         {
-            LSMyInfoCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyInfoCell"];
-            if(cell==nil)
-            {
-                cell=[[[LSMyInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyInfoCell"] autorelease];
-            }
-            [cell setNeedsDisplay];
-            return cell;
+            cell=[[[LSSeparatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSSeparatorCell%d",indexPath.row]] autorelease];
         }
-        else
+        return cell;
+    }
+    else
+    {
+        if(indexPath.row==1)
         {
-            LSMyMobileCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyMobileCell"];
+            LSMyPhoneCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyPhoneCell"];
             if(cell==nil)
             {
-                cell=[[[LSMyMobileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyMobileCell"] autorelease];
+                cell=[[[LSMyPhoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyMobileCell"] autorelease];
+                if(user.mobile==nil)
+                {
+                    cell.title=@"未绑定手机号码";
+                    cell.titleClick=@"绑定";
+                }
+                else
+                {
+                    cell.title=user.mobile;
+                    cell.titleClick=@"更换";
+                }
                 cell.delegate=self;
             }
             [cell setNeedsDisplay];
             return cell;
         }
-    }
-    else if(indexPath.section==1)
-    {
-        if(indexPath.row==0)
+        else if(indexPath.row==3)
         {
-            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellPaid"];
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellMovieTitle"];
             if(cell==nil)
             {
-                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellPaid"] autorelease];
-                cell.category=@"已付款";
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellMovieTitle"] autorelease];
+                cell.title=@"订座电影票";
+                cell.imageName=@"";
             }
-            cell.count=user.paidCount;
-            [cell setNeedsDisplay];
+            return cell;
+        }
+        else if(indexPath.row==4)
+        {
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellMoviePaid"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellMoviePaid"] autorelease];
+                cell.title=[NSString stringWithFormat:@"已付款(%d)",user.paidCount];
+            }
+            return cell;
+        }
+        else if(indexPath.row==5)
+        {
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellMovieUnpay"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellMovieUnpay"] autorelease];
+                cell.title=[NSString stringWithFormat:@"待付款(%d)",user.unpayCount];
+            }
+            return cell;
+        }
+        else if(indexPath.row==7)
+        {
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellGroupTitle"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellGroupTitle"] autorelease];
+                cell.title=@"团购电影票";
+                cell.imageName=@"";
+            }
+            return cell;
+        }
+        else if(indexPath.row==8)
+        {
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellGroupOrder"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellGroupOrder"] autorelease];
+                cell.title=@"我的订单";
+            }
+            return cell;
+        }
+        else if(indexPath.row==9)
+        {
+            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellGroupTicket"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellGroupTicket"] autorelease];
+                cell.title=@"我的拉手券";
+            }
+            return cell;
+        }
+        else if(indexPath.row==11)
+        {
+            LSMyCouponCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCouponCell"];
+            if(cell==nil)
+            {
+                cell=[[[LSMyCouponCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCouponCell"] autorelease];
+                cell.title=@"我的抵用券";
+                cell.imageName=@"";
+            }
             return cell;
         }
         else
         {
-            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellUnpay"];
+            LSMyLogoutCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyLogoutCell"];
             if(cell==nil)
             {
-                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellUnpay"] autorelease];
-                cell.category=@"待付款";
-            }
-            cell.count=user.unpayCount;
-            [cell setNeedsDisplay];
-            return cell;
-        }
-    }
-    else
-    {
-        if(indexPath.row==0)
-        {
-            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellGroup"];
-            if(cell==nil)
-            {
-                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellGroup"] autorelease];
-                cell.category=@"我的订单";
-                cell.count=-1;
-            }
-            return cell;
-        }
-        else
-        {
-            LSMyCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSMyCellTicket"];
-            if(cell==nil)
-            {
-                cell=[[[LSMyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyCellTicket"] autorelease];
-                cell.category=@"我的拉手券";
-                cell.count=-1;
+                cell=[[[LSMyLogoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSMyLogoutCell"] autorelease];
+                cell.title=@"注销";
+                cell.imageName=@"";
             }
             return cell;
         }
@@ -347,59 +350,59 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section==1)
+    if(indexPath.row==3)
     {
-        if(indexPath.row==0)
-        {
-            LSPaidOrdersViewController* paidOrdersViewController=[[LSPaidOrdersViewController alloc] init];
-            paidOrdersViewController.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:paidOrdersViewController animated:YES];
-            [paidOrdersViewController release];
-        }
-        else
-        {
-            LSUnpayOrdersViewController* unpayOrdersViewController=[[LSUnpayOrdersViewController alloc] init];
-            unpayOrdersViewController.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:unpayOrdersViewController animated:YES];
-            [unpayOrdersViewController release];
-        }
+        _isMovieOpen=!_isMovieOpen;
+        [self.tableView reloadData];
     }
-    else if(indexPath.section==2)
+    else if(indexPath.row==4)
     {
-        if(indexPath.row==0)
-        {
-            LSGroupsViewController* groupsViewController=[[LSGroupsViewController alloc] init];
-            groupsViewController.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:groupsViewController animated:YES];
-            [groupsViewController release];
-        }
-        else
-        {
-            LSTicketsViewController* ticketsViewController=[[LSTicketsViewController alloc] init];
-            ticketsViewController.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:ticketsViewController animated:YES];
-            [ticketsViewController release];
-        }
+        LSPaidOrdersViewController* paidOrdersViewController=[[LSPaidOrdersViewController alloc] init];
+        paidOrdersViewController.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:paidOrdersViewController animated:YES];
+        [paidOrdersViewController release];
+    }
+    else if(indexPath.row==5)
+    {
+        LSUnpayOrdersViewController* unpayOrdersViewController=[[LSUnpayOrdersViewController alloc] init];
+        unpayOrdersViewController.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:unpayOrdersViewController animated:YES];
+        [unpayOrdersViewController release];
+    }
+    else if(indexPath.row==7)
+    {
+        _isGroupOpen=!_isGroupOpen;
+        [self.tableView reloadData];
+    }
+    else if(indexPath.row==8)
+    {
+        LSGroupsViewController* groupsViewController=[[LSGroupsViewController alloc] init];
+        groupsViewController.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:groupsViewController animated:YES];
+        [groupsViewController release];
+    }
+    else if(indexPath.row==9)
+    {
+        LSTicketsViewController* ticketsViewController=[[LSTicketsViewController alloc] init];
+        ticketsViewController.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:ticketsViewController animated:YES];
+        [ticketsViewController release];
+    }
+    else if(indexPath.row==11)
+    {
+        LSCouponsViewController* couponsViewController=[[LSCouponsViewController alloc] init];
+        couponsViewController.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:couponsViewController animated:YES];
+        [couponsViewController release];
+    }
+    else if(indexPath.row==13)
+    {
+        [LSAlertView showWithTag:0 title:@"确定注销？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"注销", nil];
     }
 }
 
-#pragma mark- LSMySectionHeader的委托方法
-- (void)LSMySectionHeader:(LSMySectionHeader *)mySectionHeader isOpen:(BOOL)isOpen
-{
-    if(mySectionHeader.mySectionHeaderType==LSMySectionHeaderTypeMovie)
-    {
-        _isMovieOpen=isOpen;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else
-    {
-        _isGroupOpen=isOpen;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-#pragma mark- LSMyMobileCell的委托方法
-- (void)LSMyMobileCellDidSelect
+#pragma mark- LSMyPhoneCell的委托方法
+- (void)LSMyPhoneCell:(LSMyPhoneCell *)myPhoneCell didClickBindButton:(UIButton *)bindButton
 {
     LSBindViewController* bindViewController=[[LSBindViewController alloc] init];
     bindViewController.delegate=self;

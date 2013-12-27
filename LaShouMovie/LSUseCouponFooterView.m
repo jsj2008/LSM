@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSCouponFooterView.h"
+#import "LSUseCouponFooterView.h"
 
-@implementation LSCouponFooterView
+@implementation LSUseCouponFooterView
 @synthesize delegate=_delegate;
 
 - (id)initWithFrame:(CGRect)frame
@@ -45,7 +45,7 @@
 
 - (void)useButtonClick:(UIButton*)sender
 {
-    [_delegate LSCouponFooterView:self didClickUseButton:sender];
+    [_delegate LSUseCouponFooterView:self didClickUseButton:sender];
 }
 
 @end

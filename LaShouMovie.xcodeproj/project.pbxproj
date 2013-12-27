@@ -116,8 +116,15 @@
 		184836B817DDC73B00417C3C /* LSAdvertisment.m in Sources */ = {isa = PBXBuildFile; fileRef = 184836B717DDC73B00417C3C /* LSAdvertisment.m */; };
 		184836BC17DDCA0800417C3C /* LSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 184836BB17DDCA0800417C3C /* LSTableViewController.m */; };
 		18639078186D126200C0DB68 /* LSPayFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639077186D126200C0DB68 /* LSPayFooterView.m */; };
-		1863907C186D246600C0DB68 /* LSCouponTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863907B186D246600C0DB68 /* LSCouponTableFooterView.m */; };
-		18639080186D2ADF00C0DB68 /* LSCouponHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863907F186D2ADF00C0DB68 /* LSCouponHeaderView.m */; };
+		1863907C186D246600C0DB68 /* LSUseCouponTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863907B186D246600C0DB68 /* LSUseCouponTableFooterView.m */; };
+		18639080186D2ADF00C0DB68 /* LSUseCouponHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863907F186D2ADF00C0DB68 /* LSUseCouponHeaderView.m */; };
+		18639085186D678800C0DB68 /* LSSeparatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639084186D678800C0DB68 /* LSSeparatorCell.m */; };
+		18639088186D6A3C00C0DB68 /* LSMyPhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639087186D6A3C00C0DB68 /* LSMyPhoneCell.m */; };
+		1863908B186D6DBF00C0DB68 /* LSMyCouponCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863908A186D6DBF00C0DB68 /* LSMyCouponCell.m */; };
+		1863908E186D6F2A00C0DB68 /* LSMyLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1863908D186D6F2A00C0DB68 /* LSMyLogoutCell.m */; };
+		18639092186D6F8B00C0DB68 /* LSMyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639091186D6F8B00C0DB68 /* LSMyHeaderView.m */; };
+		18639096186D8C5E00C0DB68 /* LSCouponsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639095186D8C5E00C0DB68 /* LSCouponsViewController.m */; };
+		1863909A186D8C8800C0DB68 /* LSCouponCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18639099186D8C8800C0DB68 /* LSCouponCell.m */; };
 		1866865618052BB20065E93B /* LSGroupStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1866865518052BB20065E93B /* LSGroupStatusCell.m */; };
 		1866865918052BD50065E93B /* LSGroupStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1866865818052BD50065E93B /* LSGroupStatusView.m */; };
 		1866865C18052D210065E93B /* my_group_order_tag_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1866865A18052D210065E93B /* my_group_order_tag_down@2x.png */; };
@@ -154,10 +161,10 @@
 		186A647F18643CD6002F8B4C /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186A647E18643CD6002F8B4C /* FXBlurView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		186CF1851822312800A567D4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 186CF1841822312800A567D4 /* libxml2.dylib */; };
 		186CF2D6182360D100A567D4 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CF2D5182360D100A567D4 /* iCarousel.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		186D76751846E6EE00F36035 /* LSCouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76741846E6EE00F36035 /* LSCouponViewController.m */; };
-		186D76791846E7CE00F36035 /* LSCouponCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76781846E7CE00F36035 /* LSCouponCommonCell.m */; };
-		186D767C1846E80C00F36035 /* LSCouponMoneyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D767B1846E80C00F36035 /* LSCouponMoneyCell.m */; };
-		186D76801846ECB200F36035 /* LSCouponFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D767F1846ECB200F36035 /* LSCouponFooterView.m */; };
+		186D76751846E6EE00F36035 /* LSUseCouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76741846E6EE00F36035 /* LSUseCouponViewController.m */; };
+		186D76791846E7CE00F36035 /* LSUseCouponCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D76781846E7CE00F36035 /* LSUseCouponCommonCell.m */; };
+		186D767C1846E80C00F36035 /* LSUseCouponMoneyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D767B1846E80C00F36035 /* LSUseCouponMoneyCell.m */; };
+		186D76801846ECB200F36035 /* LSUseCouponFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186D767F1846ECB200F36035 /* LSUseCouponFooterView.m */; };
 		186F744117DEE783001B61D3 /* LSCinemasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F744017DEE783001B61D3 /* LSCinemasViewController.m */; };
 		186F744A17DEF7E7001B61D3 /* LSCinema.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F744917DEF7E7001B61D3 /* LSCinema.m */; };
 		186F744D17DEFF19001B61D3 /* LSCinemaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F744C17DEFF19001B61D3 /* LSCinemaCell.m */; };
@@ -492,7 +499,6 @@
 		18DCE3A317F445D400016442 /* NSURL+scheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE3A217F445D400016442 /* NSURL+scheme.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		18DF2B33186965B600A3992B /* LSConfirmButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF2B32186965B600A3992B /* LSConfirmButtonView.m */; };
 		18EC155417F9535D008AAE60 /* LSMyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EC155317F9535D008AAE60 /* LSMyCell.m */; };
-		18EC155817F95E11008AAE60 /* LSMySectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EC155717F95E11008AAE60 /* LSMySectionHeader.m */; };
 		18F1D3F517F7CB98002AD7B7 /* LSAlipay.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D3F417F7CB98002AD7B7 /* LSAlipay.m */; };
 		18F1D3F817F7F470002AD7B7 /* LSPaidOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D3F717F7F470002AD7B7 /* LSPaidOrdersViewController.m */; };
 		18F1D3FB17F7F4A7002AD7B7 /* LSUnpayOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D3FA17F7F4A7002AD7B7 /* LSUnpayOrdersViewController.m */; };
@@ -501,8 +507,6 @@
 		18F1D40817F81402002AD7B7 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D40717F81402002AD7B7 /* NSDate+Extension.m */; };
 		18F1D40F17F82A22002AD7B7 /* LSSecurityCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D40E17F82A22002AD7B7 /* LSSecurityCodeView.m */; };
 		18F1D41317F93F13002AD7B7 /* LSMyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D41217F93F13002AD7B7 /* LSMyViewController.m */; };
-		18F1D41717F93F4A002AD7B7 /* LSMyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D41617F93F4A002AD7B7 /* LSMyInfoCell.m */; };
-		18F1D41A17F94A50002AD7B7 /* LSMyMobileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F1D41917F94A4F002AD7B7 /* LSMyMobileCell.m */; };
 		18F4F06D1814BBA500F155CE /* LSShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4F06C1814BBA500F155CE /* LSShareViewController.m */; };
 		18F4F0751814C1A000F155CE /* LSShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F4F0741814C1A000F155CE /* LSShare.m */; };
 		1D1B45EC17E42E5D001DBB72 /* LSCinemasByFilmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1B45EB17E42E5C001DBB72 /* LSCinemasByFilmViewController.m */; };
@@ -782,10 +786,24 @@
 		184836BB17DDCA0800417C3C /* LSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTableViewController.m; sourceTree = "<group>"; };
 		18639076186D126200C0DB68 /* LSPayFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPayFooterView.h; sourceTree = "<group>"; };
 		18639077186D126200C0DB68 /* LSPayFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSPayFooterView.m; sourceTree = "<group>"; };
-		1863907A186D246600C0DB68 /* LSCouponTableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponTableFooterView.h; sourceTree = "<group>"; };
-		1863907B186D246600C0DB68 /* LSCouponTableFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponTableFooterView.m; sourceTree = "<group>"; };
-		1863907E186D2ADF00C0DB68 /* LSCouponHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponHeaderView.h; sourceTree = "<group>"; };
-		1863907F186D2ADF00C0DB68 /* LSCouponHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponHeaderView.m; sourceTree = "<group>"; };
+		1863907A186D246600C0DB68 /* LSUseCouponTableFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponTableFooterView.h; sourceTree = "<group>"; };
+		1863907B186D246600C0DB68 /* LSUseCouponTableFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponTableFooterView.m; sourceTree = "<group>"; };
+		1863907E186D2ADF00C0DB68 /* LSUseCouponHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponHeaderView.h; sourceTree = "<group>"; };
+		1863907F186D2ADF00C0DB68 /* LSUseCouponHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponHeaderView.m; sourceTree = "<group>"; };
+		18639083186D678800C0DB68 /* LSSeparatorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSSeparatorCell.h; sourceTree = "<group>"; };
+		18639084186D678800C0DB68 /* LSSeparatorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSSeparatorCell.m; sourceTree = "<group>"; };
+		18639086186D6A3C00C0DB68 /* LSMyPhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyPhoneCell.h; sourceTree = "<group>"; };
+		18639087186D6A3C00C0DB68 /* LSMyPhoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyPhoneCell.m; sourceTree = "<group>"; };
+		18639089186D6DBF00C0DB68 /* LSMyCouponCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyCouponCell.h; sourceTree = "<group>"; };
+		1863908A186D6DBF00C0DB68 /* LSMyCouponCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyCouponCell.m; sourceTree = "<group>"; };
+		1863908C186D6F2A00C0DB68 /* LSMyLogoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyLogoutCell.h; sourceTree = "<group>"; };
+		1863908D186D6F2A00C0DB68 /* LSMyLogoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyLogoutCell.m; sourceTree = "<group>"; };
+		18639090186D6F8B00C0DB68 /* LSMyHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyHeaderView.h; sourceTree = "<group>"; };
+		18639091186D6F8B00C0DB68 /* LSMyHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyHeaderView.m; sourceTree = "<group>"; };
+		18639094186D8C5E00C0DB68 /* LSCouponsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponsViewController.h; sourceTree = "<group>"; };
+		18639095186D8C5E00C0DB68 /* LSCouponsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponsViewController.m; sourceTree = "<group>"; };
+		18639098186D8C8800C0DB68 /* LSCouponCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponCell.h; sourceTree = "<group>"; };
+		18639099186D8C8800C0DB68 /* LSCouponCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponCell.m; sourceTree = "<group>"; };
 		1866865418052BB20065E93B /* LSGroupStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSGroupStatusCell.h; sourceTree = "<group>"; };
 		1866865518052BB20065E93B /* LSGroupStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSGroupStatusCell.m; sourceTree = "<group>"; };
 		1866865718052BD50065E93B /* LSGroupStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSGroupStatusView.h; sourceTree = "<group>"; };
@@ -853,14 +871,14 @@
 		186CF1841822312800A567D4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		186CF2D4182360D100A567D4 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		186CF2D5182360D100A567D4 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		186D76731846E6EE00F36035 /* LSCouponViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponViewController.h; sourceTree = "<group>"; };
-		186D76741846E6EE00F36035 /* LSCouponViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponViewController.m; sourceTree = "<group>"; };
-		186D76771846E7CE00F36035 /* LSCouponCommonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponCommonCell.h; sourceTree = "<group>"; };
-		186D76781846E7CE00F36035 /* LSCouponCommonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponCommonCell.m; sourceTree = "<group>"; };
-		186D767A1846E80C00F36035 /* LSCouponMoneyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponMoneyCell.h; sourceTree = "<group>"; };
-		186D767B1846E80C00F36035 /* LSCouponMoneyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponMoneyCell.m; sourceTree = "<group>"; };
-		186D767E1846ECB200F36035 /* LSCouponFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCouponFooterView.h; sourceTree = "<group>"; };
-		186D767F1846ECB200F36035 /* LSCouponFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCouponFooterView.m; sourceTree = "<group>"; };
+		186D76731846E6EE00F36035 /* LSUseCouponViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponViewController.h; sourceTree = "<group>"; };
+		186D76741846E6EE00F36035 /* LSUseCouponViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponViewController.m; sourceTree = "<group>"; };
+		186D76771846E7CE00F36035 /* LSUseCouponCommonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponCommonCell.h; sourceTree = "<group>"; };
+		186D76781846E7CE00F36035 /* LSUseCouponCommonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponCommonCell.m; sourceTree = "<group>"; };
+		186D767A1846E80C00F36035 /* LSUseCouponMoneyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponMoneyCell.h; sourceTree = "<group>"; };
+		186D767B1846E80C00F36035 /* LSUseCouponMoneyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponMoneyCell.m; sourceTree = "<group>"; };
+		186D767E1846ECB200F36035 /* LSUseCouponFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSUseCouponFooterView.h; sourceTree = "<group>"; };
+		186D767F1846ECB200F36035 /* LSUseCouponFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSUseCouponFooterView.m; sourceTree = "<group>"; };
 		186F743F17DEE783001B61D3 /* LSCinemasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinemasViewController.h; sourceTree = "<group>"; };
 		186F744017DEE783001B61D3 /* LSCinemasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LSCinemasViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		186F744817DEF7E7001B61D3 /* LSCinema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCinema.h; sourceTree = "<group>"; };
@@ -1292,8 +1310,6 @@
 		18DF2B32186965B600A3992B /* LSConfirmButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSConfirmButtonView.m; sourceTree = "<group>"; };
 		18EC155217F9535D008AAE60 /* LSMyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyCell.h; sourceTree = "<group>"; };
 		18EC155317F9535D008AAE60 /* LSMyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyCell.m; sourceTree = "<group>"; };
-		18EC155617F95E11008AAE60 /* LSMySectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMySectionHeader.h; sourceTree = "<group>"; };
-		18EC155717F95E11008AAE60 /* LSMySectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMySectionHeader.m; sourceTree = "<group>"; };
 		18F1D3F317F7CB98002AD7B7 /* LSAlipay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSAlipay.h; sourceTree = "<group>"; };
 		18F1D3F417F7CB98002AD7B7 /* LSAlipay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSAlipay.m; sourceTree = "<group>"; };
 		18F1D3F617F7F470002AD7B7 /* LSPaidOrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSPaidOrdersViewController.h; sourceTree = "<group>"; };
@@ -1310,10 +1326,6 @@
 		18F1D40E17F82A22002AD7B7 /* LSSecurityCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSSecurityCodeView.m; sourceTree = "<group>"; };
 		18F1D41117F93F13002AD7B7 /* LSMyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyViewController.h; sourceTree = "<group>"; };
 		18F1D41217F93F13002AD7B7 /* LSMyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyViewController.m; sourceTree = "<group>"; };
-		18F1D41517F93F4A002AD7B7 /* LSMyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyInfoCell.h; sourceTree = "<group>"; };
-		18F1D41617F93F4A002AD7B7 /* LSMyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyInfoCell.m; sourceTree = "<group>"; };
-		18F1D41817F94A4F002AD7B7 /* LSMyMobileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMyMobileCell.h; sourceTree = "<group>"; };
-		18F1D41917F94A4F002AD7B7 /* LSMyMobileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMyMobileCell.m; sourceTree = "<group>"; };
 		18F4F06B1814BBA500F155CE /* LSShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShareViewController.h; sourceTree = "<group>"; };
 		18F4F06C1814BBA500F155CE /* LSShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSShareViewController.m; sourceTree = "<group>"; };
 		18F4F0731814C1A000F155CE /* LSShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShare.h; sourceTree = "<group>"; };
@@ -1985,6 +1997,7 @@
 		1822394617CEE3A600F61D5F /* My */ = {
 			isa = PBXGroup;
 			children = (
+				18639093186D8C2D00C0DB68 /* Coupons */,
 				188175AD180522CF005D6C5C /* Groups */,
 				1822396817CEE85900F61D5F /* Tickets */,
 				1822396017CEE71B00F61D5F /* UnpayOrders */,
@@ -2048,6 +2061,7 @@
 		1822395B17CEE61700F61D5F /* My */ = {
 			isa = PBXGroup;
 			children = (
+				1863908F186D6F6D00C0DB68 /* MyHeaderView */,
 				18F1D41417F93F1F002AD7B7 /* MyCell */,
 				18F1D41117F93F13002AD7B7 /* LSMyViewController.h */,
 				18F1D41217F93F13002AD7B7 /* LSMyViewController.m */,
@@ -2440,8 +2454,8 @@
 		18639079186D241A00C0DB68 /* CouponTableFooterView */ = {
 			isa = PBXGroup;
 			children = (
-				1863907A186D246600C0DB68 /* LSCouponTableFooterView.h */,
-				1863907B186D246600C0DB68 /* LSCouponTableFooterView.m */,
+				1863907A186D246600C0DB68 /* LSUseCouponTableFooterView.h */,
+				1863907B186D246600C0DB68 /* LSUseCouponTableFooterView.m */,
 			);
 			name = CouponTableFooterView;
 			sourceTree = "<group>";
@@ -2449,10 +2463,47 @@
 		1863907D186D2AC800C0DB68 /* CouponHeaderView */ = {
 			isa = PBXGroup;
 			children = (
-				1863907E186D2ADF00C0DB68 /* LSCouponHeaderView.h */,
-				1863907F186D2ADF00C0DB68 /* LSCouponHeaderView.m */,
+				1863907E186D2ADF00C0DB68 /* LSUseCouponHeaderView.h */,
+				1863907F186D2ADF00C0DB68 /* LSUseCouponHeaderView.m */,
 			);
 			name = CouponHeaderView;
+			sourceTree = "<group>";
+		};
+		18639082186D672A00C0DB68 /* SeparatorCell */ = {
+			isa = PBXGroup;
+			children = (
+				18639083186D678800C0DB68 /* LSSeparatorCell.h */,
+				18639084186D678800C0DB68 /* LSSeparatorCell.m */,
+			);
+			name = SeparatorCell;
+			sourceTree = "<group>";
+		};
+		1863908F186D6F6D00C0DB68 /* MyHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				18639090186D6F8B00C0DB68 /* LSMyHeaderView.h */,
+				18639091186D6F8B00C0DB68 /* LSMyHeaderView.m */,
+			);
+			name = MyHeaderView;
+			sourceTree = "<group>";
+		};
+		18639093186D8C2D00C0DB68 /* Coupons */ = {
+			isa = PBXGroup;
+			children = (
+				18639097186D8C6500C0DB68 /* CouponCell */,
+				18639094186D8C5E00C0DB68 /* LSCouponsViewController.h */,
+				18639095186D8C5E00C0DB68 /* LSCouponsViewController.m */,
+			);
+			name = Coupons;
+			sourceTree = "<group>";
+		};
+		18639097186D8C6500C0DB68 /* CouponCell */ = {
+			isa = PBXGroup;
+			children = (
+				18639098186D8C8800C0DB68 /* LSCouponCell.h */,
+				18639099186D8C8800C0DB68 /* LSCouponCell.m */,
+			);
+			name = CouponCell;
 			sourceTree = "<group>";
 		};
 		1866865218052B3C0065E93B /* GroupStatusView */ = {
@@ -2791,8 +2842,8 @@
 				18639079186D241A00C0DB68 /* CouponTableFooterView */,
 				186D767D1846EC8000F36035 /* CouponFooterView */,
 				186D76761846E75500F36035 /* CouponCell */,
-				186D76731846E6EE00F36035 /* LSCouponViewController.h */,
-				186D76741846E6EE00F36035 /* LSCouponViewController.m */,
+				186D76731846E6EE00F36035 /* LSUseCouponViewController.h */,
+				186D76741846E6EE00F36035 /* LSUseCouponViewController.m */,
 			);
 			name = Coupon;
 			sourceTree = "<group>";
@@ -2800,10 +2851,10 @@
 		186D76761846E75500F36035 /* CouponCell */ = {
 			isa = PBXGroup;
 			children = (
-				186D76771846E7CE00F36035 /* LSCouponCommonCell.h */,
-				186D76781846E7CE00F36035 /* LSCouponCommonCell.m */,
-				186D767A1846E80C00F36035 /* LSCouponMoneyCell.h */,
-				186D767B1846E80C00F36035 /* LSCouponMoneyCell.m */,
+				186D76771846E7CE00F36035 /* LSUseCouponCommonCell.h */,
+				186D76781846E7CE00F36035 /* LSUseCouponCommonCell.m */,
+				186D767A1846E80C00F36035 /* LSUseCouponMoneyCell.h */,
+				186D767B1846E80C00F36035 /* LSUseCouponMoneyCell.m */,
 			);
 			name = CouponCell;
 			sourceTree = "<group>";
@@ -2811,8 +2862,8 @@
 		186D767D1846EC8000F36035 /* CouponFooterView */ = {
 			isa = PBXGroup;
 			children = (
-				186D767E1846ECB200F36035 /* LSCouponFooterView.h */,
-				186D767F1846ECB200F36035 /* LSCouponFooterView.m */,
+				186D767E1846ECB200F36035 /* LSUseCouponFooterView.h */,
+				186D767F1846ECB200F36035 /* LSUseCouponFooterView.m */,
 			);
 			name = CouponFooterView;
 			sourceTree = "<group>";
@@ -2869,11 +2920,11 @@
 		186F745A17DF2EBE001B61D3 /* BasicView */ = {
 			isa = PBXGroup;
 			children = (
+				18639082186D672A00C0DB68 /* SeparatorCell */,
 				186A647218642B49002F8B4C /* DistrictSelectorView */,
 				18F4F0761815218800F155CE /* WelcomeView */,
 				184836B117DDC50F00417C3C /* AdView */,
 				1DACCF6517FBA92100855F27 /* NothingCell */,
-				18EC155517F95DDB008AAE60 /* MySectionHeader */,
 				18DCE34917F027AD00016442 /* CinemaStatusView */,
 				186F744E17DF0326001B61D3 /* PositionSectionHeader */,
 				184836AD17DD79DA00417C3C /* SegmentedControl */,
@@ -3554,15 +3605,6 @@
 			name = ConfirmButtonView;
 			sourceTree = "<group>";
 		};
-		18EC155517F95DDB008AAE60 /* MySectionHeader */ = {
-			isa = PBXGroup;
-			children = (
-				18EC155617F95E11008AAE60 /* LSMySectionHeader.h */,
-				18EC155717F95E11008AAE60 /* LSMySectionHeader.m */,
-			);
-			name = MySectionHeader;
-			sourceTree = "<group>";
-		};
 		18F1D40217F7F549002AD7B7 /* PaidOrderCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3584,12 +3626,14 @@
 		18F1D41417F93F1F002AD7B7 /* MyCell */ = {
 			isa = PBXGroup;
 			children = (
-				18F1D41517F93F4A002AD7B7 /* LSMyInfoCell.h */,
-				18F1D41617F93F4A002AD7B7 /* LSMyInfoCell.m */,
-				18F1D41817F94A4F002AD7B7 /* LSMyMobileCell.h */,
-				18F1D41917F94A4F002AD7B7 /* LSMyMobileCell.m */,
 				18EC155217F9535D008AAE60 /* LSMyCell.h */,
 				18EC155317F9535D008AAE60 /* LSMyCell.m */,
+				18639086186D6A3C00C0DB68 /* LSMyPhoneCell.h */,
+				18639087186D6A3C00C0DB68 /* LSMyPhoneCell.m */,
+				18639089186D6DBF00C0DB68 /* LSMyCouponCell.h */,
+				1863908A186D6DBF00C0DB68 /* LSMyCouponCell.m */,
+				1863908C186D6F2A00C0DB68 /* LSMyLogoutCell.h */,
+				1863908D186D6F2A00C0DB68 /* LSMyLogoutCell.m */,
 			);
 			name = MyCell;
 			sourceTree = "<group>";
@@ -4107,6 +4151,7 @@
 				1822385417CDF0C000F61D5F /* NSString+Extension.m in Sources */,
 				1822385717CDF50A00F61D5F /* NSData+Extension.m in Sources */,
 				182238E617CE00E800F61D5F /* STKeychain.m in Sources */,
+				18639096186D8C5E00C0DB68 /* LSCouponsViewController.m in Sources */,
 				180864811861887F0077B97B /* LSBindFooterView.m in Sources */,
 				18CCD1AC17CF338300BEF2C9 /* LSViewController.m in Sources */,
 				18CCD1AF17CF33CD00BEF2C9 /* LSTabBarController.m in Sources */,
@@ -4119,7 +4164,7 @@
 				18CCD1F617CF382E00BEF2C9 /* LSUser.m in Sources */,
 				18CCD20D17CF450300BEF2C9 /* SBJsonParser.m in Sources */,
 				18CCD20E17CF450300BEF2C9 /* SBJsonStreamParser.m in Sources */,
-				186D76751846E6EE00F36035 /* LSCouponViewController.m in Sources */,
+				186D76751846E6EE00F36035 /* LSUseCouponViewController.m in Sources */,
 				18CCD20F17CF450300BEF2C9 /* SBJsonStreamParserAccumulator.m in Sources */,
 				18CCD21017CF450300BEF2C9 /* SBJsonStreamParserAdapter.m in Sources */,
 				18CCD21117CF450300BEF2C9 /* SBJsonStreamParserState.m in Sources */,
@@ -4170,10 +4215,11 @@
 				18086487186194260077B97B /* LSBindCell.m in Sources */,
 				186F744A17DEF7E7001B61D3 /* LSCinema.m in Sources */,
 				186F744D17DEFF19001B61D3 /* LSCinemaCell.m in Sources */,
+				18639085186D678800C0DB68 /* LSSeparatorCell.m in Sources */,
 				186F745417DF038D001B61D3 /* LSPositionSectionHeader.m in Sources */,
 				186F745817DF1EDF001B61D3 /* LSCinemasMapViewController.m in Sources */,
 				186F745E17DF2F22001B61D3 /* LSGroup.m in Sources */,
-				186D76791846E7CE00F36035 /* LSCouponCommonCell.m in Sources */,
+				186D76791846E7CE00F36035 /* LSUseCouponCommonCell.m in Sources */,
 				186F746D17E036BC001B61D3 /* LSLocationManager.m in Sources */,
 				187AB14217E16DCA008D3E47 /* LSFilmsSchedulesByCinemaViewController.m in Sources */,
 				187AB14F17E16EA9008D3E47 /* LSCinemaInfoInfoCell.m in Sources */,
@@ -4190,7 +4236,7 @@
 				1D1B45EC17E42E5D001DBB72 /* LSCinemasByFilmViewController.m in Sources */,
 				18D4AF36184F3D43000AAE01 /* ASIDataDecompressor.m in Sources */,
 				1D1B45F417E5DCE2001DBB72 /* LSSwitchScheduleView.m in Sources */,
-				186D76801846ECB200F36035 /* LSCouponFooterView.m in Sources */,
+				186D76801846ECB200F36035 /* LSUseCouponFooterView.m in Sources */,
 				1D1B45FA17E5ED05001DBB72 /* LSSwitchScheduleCell.m in Sources */,
 				1D1B45FE17E5F3DB001DBB72 /* LSSwitchSectionHeader.m in Sources */,
 				1D1B460217E6036D001DBB72 /* LSSeat.m in Sources */,
@@ -4203,6 +4249,7 @@
 				181BB24117E6CA4A00745B70 /* LSSection.m in Sources */,
 				181BB24517E6E3DA00745B70 /* LSSeatMapView.m in Sources */,
 				181BB24917E6E45200745B70 /* LSRowNumberView.m in Sources */,
+				1863908B186D6DBF00C0DB68 /* LSMyCouponCell.m in Sources */,
 				181BB24D17E7024500745B70 /* LSSeatView.m in Sources */,
 				1D7B652217EDEDFB0068C6CA /* LSQQAuthViewController.m in Sources */,
 				18DCE34C17F027FD00016442 /* LSCinemaStatusView.m in Sources */,
@@ -4232,18 +4279,15 @@
 				18F1D40817F81402002AD7B7 /* NSDate+Extension.m in Sources */,
 				18F1D40F17F82A22002AD7B7 /* LSSecurityCodeView.m in Sources */,
 				18F1D41317F93F13002AD7B7 /* LSMyViewController.m in Sources */,
-				18F1D41717F93F4A002AD7B7 /* LSMyInfoCell.m in Sources */,
-				18F1D41A17F94A50002AD7B7 /* LSMyMobileCell.m in Sources */,
 				183441D81845E430003D1AB6 /* LSPayNeedPayCell.m in Sources */,
 				18EC155417F9535D008AAE60 /* LSMyCell.m in Sources */,
-				18EC155817F95E11008AAE60 /* LSMySectionHeader.m in Sources */,
 				1DACCF6817FBA95000855F27 /* LSNothingCell.m in Sources */,
 				1DACCF6C17FBBCB700855F27 /* LSUnpayOrderCell.m in Sources */,
 				1DACCF7017FDB90D00855F27 /* LSSimpleCountDownView.m in Sources */,
 				1DACCF7317FE9D0400855F27 /* LSSettingViewController.m in Sources */,
 				1DACCF7717FE9DC900855F27 /* LSSettingSwitchCell.m in Sources */,
 				1DACCF7A17FE9E0B00855F27 /* LSSettingTextCell.m in Sources */,
-				186D767C1846E80C00F36035 /* LSCouponMoneyCell.m in Sources */,
+				186D767C1846E80C00F36035 /* LSUseCouponMoneyCell.m in Sources */,
 				18D54159186AE1ED004D161A /* LSCreateOrderFooterView.m in Sources */,
 				1DACCF7D17FE9E2700855F27 /* LSSettingCell.m in Sources */,
 				1DACCF8017FEF63200855F27 /* LSAboutViewController.m in Sources */,
@@ -4262,9 +4306,10 @@
 				188175BB18052714005D6C5C /* LSGroupCell.m in Sources */,
 				1866865618052BB20065E93B /* LSGroupStatusCell.m in Sources */,
 				1866865918052BD50065E93B /* LSGroupStatusView.m in Sources */,
+				1863908E186D6F2A00C0DB68 /* LSMyLogoutCell.m in Sources */,
 				1808648F1861B5060077B97B /* LSAttribute.m in Sources */,
 				186A645E1862EF6C002F8B4C /* LSFilmPosterShowCell.m in Sources */,
-				18639080186D2ADF00C0DB68 /* LSCouponHeaderView.m in Sources */,
+				18639080186D2ADF00C0DB68 /* LSUseCouponHeaderView.m in Sources */,
 				186686621805633B0065E93B /* LSGroupPayCell.m in Sources */,
 				1866866518063E110065E93B /* LSGroupPayNeedPayCell.m in Sources */,
 				1866866918064CB60065E93B /* LSGroupPaySectionFooter.m in Sources */,
@@ -4288,8 +4333,9 @@
 				18668694180796120065E93B /* LSGroupInfoPhoneCell.m in Sources */,
 				186686971807B37B0065E93B /* LSGroupInfoDetailCell.m in Sources */,
 				18072AE51807EA670013CCA6 /* LSGroupCreateOrderCell.m in Sources */,
-				1863907C186D246600C0DB68 /* LSCouponTableFooterView.m in Sources */,
+				1863907C186D246600C0DB68 /* LSUseCouponTableFooterView.m in Sources */,
 				18D4AF3B184F3D43000AAE01 /* ASINetworkQueue.m in Sources */,
+				18639088186D6A3C00C0DB68 /* LSMyPhoneCell.m in Sources */,
 				18072AE81807EAA10013CCA6 /* LSGroupCreateOrderAmountCell.m in Sources */,
 				18072AEF1807ED310013CCA6 /* LSGroupCreateOrderSectionFooter.m in Sources */,
 				18072AF21808E11B0013CCA6 /* LSGroupCreateOrderMobileCell.m in Sources */,
@@ -4303,6 +4349,7 @@
 				1835E1B9180BE2DB00E80602 /* LSFont.m in Sources */,
 				1835E1BD180BF3BA00E80602 /* LSColor.m in Sources */,
 				1835E1C4180BF76D00E80602 /* LSFilmListWillCell.m in Sources */,
+				18639092186D6F8B00C0DB68 /* LSMyHeaderView.m in Sources */,
 				1835E255180E1F0000E80602 /* LSStillCell.m in Sources */,
 				1808645E186147FB0077B97B /* LSLoginCell.m in Sources */,
 				1835E258180E1F2E00E80602 /* LSStillsViewController.m in Sources */,
@@ -4317,6 +4364,7 @@
 				1808646218614C060077B97B /* LSLoginFooterView.m in Sources */,
 				1835E278180F94DB00E80602 /* LSTicketInfoInfoCell.m in Sources */,
 				1835E27B180F951200E80602 /* LSTicketInfoPositionCell.m in Sources */,
+				1863909A186D8C8800C0DB68 /* LSCouponCell.m in Sources */,
 				1835E27E180F96B900E80602 /* LSTicketInfoDetailCell.m in Sources */,
 				1835E281180FCE2900E80602 /* LSTicketInfoWebCell.m in Sources */,
 				1835E285180FEB0200E80602 /* LSADWebViewController.m in Sources */,

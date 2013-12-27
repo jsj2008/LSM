@@ -86,6 +86,9 @@
 #define LSFontCouponTitle           LSFont14
 #define LSFontCouponSubtitle        LSFont10
 
+#define LSFontMyTitle               LSFont14
+#define LSFontMySubtitle              LSFont10
+
 @interface LSFont : NSObject
 
 @end

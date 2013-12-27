@@ -1,13 +1,13 @@
 //
-//  LSCouponTableFooterView.h
+//  LSSeparatorCell.h
 //  LaShouMovie
 //
 //  Created by LiXiangYu on 13-12-27.
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 
-@interface LSCouponTableFooterView : UIView
+@interface LSSeparatorCell : LSTableViewCell
 
 @end

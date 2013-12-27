@@ -7,15 +7,19 @@
 //
 
 #import "LSTableViewController.h"
-#import "LSMySectionHeader.h"
+#import "LSMyHeaderView.h"
 #import "LSBindViewController.h"
-#import "LSMyMobileCell.h"
+#import "LSMyPhoneCell.h"
 
-@interface LSMyViewController : LSTableViewController<LSMySectionHeaderDelegate,LSBindViewControllerDelegate,LSMyMobileCellDelegate,UIAlertViewDelegate>
+@interface LSMyViewController : LSTableViewController
+<
+LSBindViewControllerDelegate,
+LSMyPhoneCellDelegate,
+UIAlertViewDelegate
+>
 {
     BOOL _isMovieOpen;
     BOOL _isGroupOpen;
-    
-    BOOL _isRefresh;
+    LSMyHeaderView* _myHeaderView;
 }
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import "LSCouponTableFooterView.h"
+#import "LSUseCouponTableFooterView.h"
 
-@implementation LSCouponTableFooterView
+@implementation LSUseCouponTableFooterView
 
 - (id)initWithFrame:(CGRect)frame
 {
