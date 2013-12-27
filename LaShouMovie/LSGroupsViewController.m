@@ -274,37 +274,7 @@
     [self.navigationController pushViewController:groupPayViewController animated:YES];
     [groupPayViewController release];
 }
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
-//    {
-//        [self soapSmooth];
-//    }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-//    [self soapSmooth];
-}
 
-
-#pragma mark 肥皂滑代码实现
-- (void)soapSmooth
-{
-    NSArray* cellArray=[_tableView visibleCells];
-    for(LSGroupCell* cell in cellArray)
-    {
-//        NSIndexPath* indexPath=[_tableView indexPathForCell:cell];
-//        LSCinema* cinema=nil;
-//        if(_cinemaStatus==LSCinemaStatusOnline)
-//        {
-//            cinema=[_onlineCinemaMArray objectAtIndex:indexPath.row];
-//        }
-//        else if(_cinemaStatus==LSCinemaStatusAll)
-//        {
-//            cinema=[_allCinemaMArray objectAtIndex:indexPath.row];
-//        }
-    }
-}
 
 #pragma mark- LSGroupInfoViewController的委托方法
 - (void)LSGroupPayViewControllerDidPay
