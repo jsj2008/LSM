@@ -205,7 +205,7 @@
 - (void)LSTicketInfoWebCellDidLoadHTMLContentHeight:(CGFloat)height
 {
     _webHeight=height;
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadData];
 }
 
 @end

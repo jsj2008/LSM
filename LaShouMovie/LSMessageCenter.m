@@ -441,20 +441,19 @@ static LSUser* user=nil;
 
 #pragma mark- 拉手券相关
 #pragma mark 获取拉手券列表
-- (void)LSMCTicketsWithStatus:(LSTicketStatus)status offset:(int)offset pageSize:(int)pageSize
+- (void)LSMCTicketsWithOffset:(int)offset pageSize:(int)pageSize
 {
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
                        user.userName, @"username",
                        user.password,@"password",
                        lsURLSource, @"source",
-                       [NSString stringWithFormat:@"%d", status],@"codeType",
                        [NSString stringWithFormat:@"%d", offset],@"offset",
                        [NSString stringWithFormat:@"%d", pageSize],@"pageSize",
                        [[NSString stringWithFormat:@"%@|%@|%@|%@",lsURLSource,user.userName,user.password,lsURLSign] SHA256],@"signValue",
                        nil];
     
-    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLTicketsByType_Offset_PageSize, lsURLSTID]];
-    [self requestWithURL:url requestType:lsRequestTypeTicketsByType_Offset_PageSize requestMark:status params:dic];
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLTicketsByOffset_PageSize, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeTicketsByOffset_PageSize params:dic];
 }
 - (void)LSMCTicketPasswordWithTicketID:(NSString*)ticketID
 {

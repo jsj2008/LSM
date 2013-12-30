@@ -34,8 +34,8 @@
 @synthesize userBalance=_userBalance; //用户账户余额
 @synthesize needPay=_needPay;//需支付
 
+@synthesize confirmStatus=_confirmStatus;
 @synthesize confirmationID=_confirmationID;
-@synthesize message=_message;
 
 #pragma mark- 属性方法
 - (void)setSectionArray:(NSArray *)sectionArray
@@ -150,14 +150,8 @@
         self.totalPrice=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"total_fee"]];
         self.orderTime=[NSDate dateWithTimeIntervalSince1970:[[safeDic objectForKey:@"trade_time"] doubleValue]];
         
-        if(![[safeDic objectForKey:@"confirmationId"] isEqualToString:@""])
-        {
-            self.message=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"confirmationId"]];
-        }
-        else
-        {
-            self.message=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"message"]];
-        }
+        self.confirmStatus=[[safeDic objectForKey:@"confirmStatus"] intValue];
+        self.confirmationID=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"confirmationId"]];
     }
     return self;
 }
@@ -289,8 +283,8 @@
 //    self.needPay=nil;//需支付
 //    self.userBalance=nil; //用户账户余额
     
+//    self.confirmStatus=nil;
     self.confirmationID=nil;
-    self.message=nil;
     
     [super dealloc];
 }
@@ -319,8 +313,8 @@
     [aCoder encodeFloat:_needPay forKey:@"needPay"];
     [aCoder encodeFloat:_userBalance forKey:@"userBalance"];
     
+    [aCoder encodeInt:_confirmStatus forKey:@"confirmStatus"];
     [aCoder encodeObject:_confirmationID forKey:@"confirmationID"];
-    [aCoder encodeObject:_message forKey:@"message"];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
@@ -347,8 +341,9 @@
     self.needPay=[decoder decodeFloatForKey:@"needPay"];//需支付
     self.userBalance=[decoder decodeFloatForKey:@"userBalance"];//用户账户余额
     
+    self.confirmStatus=[decoder decodeIntForKey:@"confirmStatus"];
     self.confirmationID=[decoder decodeObjectForKey:@"confirmationID"];
-    self.message=[decoder decodeObjectForKey:@"message"];
+    
     return self;
 }
 

@@ -9,5 +9,8 @@
 #import "LSTableViewController.h"
 
 @interface LSCouponsViewController : LSTableViewController
+{
+    NSMutableArray* _couponMArray;
+}
 
 @end

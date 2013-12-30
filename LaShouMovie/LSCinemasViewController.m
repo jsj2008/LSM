@@ -67,12 +67,12 @@
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeAdvertisements object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:LSNotificationCityChanged object:nil];
     
-    _cinemaStatusView=[[LSCinemaStatusView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f, self.view.width, 44.f)];
+    _cinemaStatusView=[[LSCinemaStatusView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f, self.view.width, 54.f)];
     _cinemaStatusView.delegate=self;
     [self.view addSubview:_cinemaStatusView];
     [_cinemaStatusView release];
     
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f+44.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-44.f)) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 20.f+44.f+54.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-54.f)) style:UITableViewStylePlain];
     _tableView.showsVerticalScrollIndicator=NO;
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     _tableView.delegate=self;
@@ -217,12 +217,7 @@
                     [_selectMArray addObjectsFromArray:otherCinemaMArray];
                 }
                 
-                //如果没有影院，添加字符串占位
-                if(_selectMArray.count==0)
-                {
-                    [_selectMArray addObject:@"暂无影院"];
-                }
-                else
+                if(_selectMArray.count>0)
                 {
                     [_selectMArray sortUsingSelector:@selector(distanceSort:)];
                 }
@@ -314,12 +309,7 @@
         [_selectMArray addObjectsFromArray:[_cinemaMArray objectAtIndex:LSCinemaArrayIndexNon]];
     }
     
-    //如果没有影院，添加字符串占位
-    if(_selectMArray.count==0)
-    {
-        [_selectMArray addObject:@"暂无影院"];
-    }
-    else
+    if(_selectMArray.count>0)
     {
         [_selectMArray sortUsingSelector:@selector(distanceSort:)];
     }
@@ -425,11 +415,7 @@
         }
         
         //如果没有影院，添加字符串占位
-        if(_selectMArray.count==0)
-        {
-            [_selectMArray addObject:@"暂无影院"];
-        }
-        else
+        if(_selectMArray.count>1)
         {
             [_selectMArray sortUsingSelector:@selector(distanceSort:)];
         }
@@ -537,38 +523,12 @@
         }
         else
         {
-            if([[_selectMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-            {
-                LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
-                if(cell==nil)
-                {
-                    cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
-                    cell.title=[_selectMArray objectAtIndex:0];
-                }
-                return cell;
-            }
-            else
-            {
-                cinema=[_selectMArray objectAtIndex:indexPath.row];
-            }
+            cinema=[_selectMArray objectAtIndex:indexPath.row];
         }
     }
     else
     {
-        if([[_selectMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-        {
-            LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
-            if(cell==nil)
-            {
-                cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
-                cell.title=[_selectMArray objectAtIndex:0];
-            }
-            return cell;
-        }
-        else
-        {
-            cinema=[_selectMArray objectAtIndex:indexPath.row];
-        }
+        cinema=[_selectMArray objectAtIndex:indexPath.row];
     }
     
     cell.cinema=cinema;

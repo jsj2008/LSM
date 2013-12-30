@@ -87,7 +87,23 @@
 #define LSFontCouponSubtitle        LSFont10
 
 #define LSFontMyTitle               LSFont14
-#define LSFontMySubtitle              LSFont10
+#define LSFontMySubtitle            LSFont10
+
+#define LSFontPaidOrderTitle        LSFont16
+#define LSFontPaidOrderSubtitle     LSFont10
+
+#define LSFontPaidOrderInfoWrong    LSFont16
+#define LSFontPaidOrderInfoTitle    LSFont14
+#define LSFontPaidOrderInfoSubtitle LSFont10
+
+#define LSFontUnpaidOrderTitle      LSFont16
+#define LSFontUnpaidOrderSubtitle   LSFont10
+
+#define LSFontGroupsTitle           LSFont16
+#define LSFontGroupsSubtitle        LSFont10
+
+#define LSFontTicketsTitle          LSFont14
+#define LSFontTicketsSubtitle       LSFont10
 
 @interface LSFont : NSObject
 

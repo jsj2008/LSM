@@ -58,12 +58,12 @@
 //            longitude = "116.303135";
 //            phone = "010-88178889";
 //        };
+//        confirmStatus = "";
 //        confirmationId = "";
 //        film =             {
 //            filmId = 2038;
 //            filmName = "\U795e\U5947";
 //        };
-//        message = "\U53d6\U7968\U7801\U83b7\U53d6\U4e2d\Uff0c\U8bf7\U7a0d\U540e";
 //        schedule =             {
 //            dimensional = 1;
 //            duration = 105;//影片时长怎么放在这里了
@@ -182,8 +182,9 @@
 @property (nonatomic, assign) CGFloat userBalance; //用户账户余额
 @property (nonatomic, assign) CGFloat needPay;//需支付
 
+@property (nonatomic, assign) LSConfirmStatus confirmStatus;
 @property (nonatomic, retain) NSString* confirmationID;
-@property (nonatomic, retain) NSString* message;
+
 
 - (id)initWithDictionaryOfPaid:(NSDictionary*)safeDic;
 - (id)initWithDictionaryOfUnpay:(NSDictionary*)safeDic;

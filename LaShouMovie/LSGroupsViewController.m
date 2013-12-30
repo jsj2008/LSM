@@ -9,9 +9,6 @@
 #import "LSGroupsViewController.h"
 #import "LSGroupOrder.h"
 #import "LSGroupCell.h"
-#import "LSNothingCell.h"
-#import "LSTicket.h"
-#import "LSTicketInfoViewController.h"
 
 @interface LSGroupsViewController ()
 
@@ -43,7 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title=@"我的团购";
+    self.title=@"我的团购订单";
     
     //初始化数据数组
     _unpayGroupMArray=[[NSMutableArray alloc] initWithCapacity:0];
@@ -60,25 +57,6 @@
     
     //添加通知
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeGroupsByType_Offset_PageSize object:nil];
-    
-    
-    _groupStatusView=[[LSGroupStatusView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 42.f)];
-    _groupStatusView.groupStatus=_groupStatus-1;
-    _groupStatusView.delegate=self;
-    [self.view addSubview:_groupStatusView];
-    [_groupStatusView release];
-    
-    
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0.f, 42.f, self.view.width, HeightOfiPhoneX(480.f-20.f-44.f-42.f)) style:UITableViewStylePlain];
-    //_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _tableView.backgroundColor=[UIColor clearColor];
-    _tableView.backgroundView=nil;
-    _tableView.showsVerticalScrollIndicator=NO;
-    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    _tableView.delegate=self;
-    _tableView.dataSource=self;
-    [self.view addSubview:_tableView];
-    [_tableView release];
     
     [hud show:YES];
     [messageCenter LSMCGroupsWithStatus:_groupStatus offset:_offset pageSize:_pageSize];
@@ -188,37 +166,12 @@
                 {
                     dispatch_async(dispatch_get_main_queue(),^{
                         
-                        [_tableView reloadData];
+                        [self.tableView reloadData];
                     });
                 }
             });
             dispatch_release(queue_0);
         }
-    }
-}
-
-
-#pragma mark- LSGroupStatusView的委托方法
-- (void)LSGroupStatusView:(LSGroupStatusView *)groupStatusView didSelectRowAtIndexPath:(LSGroupStatus)status
-{
-    _groupStatus=status;
-    if(_groupStatus==LSGroupStatusUnpay)
-    {
-        _groupMArray=_unpayGroupMArray;
-    }
-    else
-    {
-        _groupMArray=_paidGroupMArray;
-    }
-    
-    if(_groupMArray.count==0)
-    {
-        [messageCenter LSMCGroupsWithStatus:_groupStatus offset:_offset pageSize:_pageSize];
-        [hud show:YES];
-    }
-    else
-    {
-        [_tableView reloadData];
     }
 }
 
@@ -230,28 +183,10 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_groupMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        return 44.f;
-    }
-    else
-    {
-        return [LSGroupCell heightForGroupOrder:[_groupMArray objectAtIndex:indexPath.row]];
-    }
+    return 60.f;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_groupMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
-        if(cell==nil)
-        {
-            cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
-            cell.title=[_groupMArray objectAtIndex:0];
-        }
-        return cell;
-    }
-    
     LSGroupCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSGroupCell"];
     if(cell==nil)
     {
@@ -263,11 +198,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[_groupMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        return;
-    }
-
     LSGroupPayViewController* groupPayViewController=[[LSGroupPayViewController alloc] init];
     groupPayViewController.groupOrder=[_groupMArray objectAtIndex:indexPath.row];
     groupPayViewController.delegate=self;
@@ -275,19 +205,41 @@
     [groupPayViewController release];
 }
 
+#pragma mark- LSGroupsHeaderView的委托方法
+- (void)LSGroupsHeaderView:(LSGroupsHeaderView *)groupsHeaderView didSelectGroupStatus:(LSGroupStatus)groupStatus
+{
+    _groupStatus=groupStatus;
+    if(_groupStatus==LSGroupStatusUnpay)
+    {
+        _groupMArray=_unpayGroupMArray;
+    }
+    else
+    {
+        _groupMArray=_paidGroupMArray;
+    }
+    
+    if(_groupMArray.count==0)
+    {
+        [hud show:YES];
+        [messageCenter LSMCGroupsWithStatus:_groupStatus offset:_offset pageSize:_pageSize];
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
+}
 
-#pragma mark- LSGroupInfoViewController的委托方法
+#pragma mark- LSGroupPayViewController的委托方法
 - (void)LSGroupPayViewControllerDidPay
 {
     [self.navigationController popToViewController:self animated:YES];
     
     _offset=0;
     _groupStatus=LSGroupStatusPaid;
-    _groupStatusView.groupStatus=_groupStatus-1;
-    [_groupStatusView setNeedsLayout];
+    _groupsHeaderView.groupStatus=_groupStatus;
+    [_groupsHeaderView setNeedsLayout];
     
     [hud show:YES];
-    
     [messageCenter LSMCGroupsWithStatus:LSGroupStatusPaid offset:_offset pageSize:_pageSize];
     [messageCenter LSMCGroupsWithStatus:LSGroupStatusUnpay offset:_offset pageSize:_pageSize];
 }

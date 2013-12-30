@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 LiXiangYu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "LSTableViewCell.h"
 #import "LSGroupOrder.h"
 
 @interface LSGroupCell : LSTableViewCell
@@ -14,7 +14,5 @@
     LSGroupOrder* _groupOrder;
 }
 @property(nonatomic,retain) LSGroupOrder* groupOrder;
-
-+ (CGFloat)heightForGroupOrder:(LSGroupOrder*)groupOrder;
 
 @end

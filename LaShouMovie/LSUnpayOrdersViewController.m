@@ -8,8 +8,8 @@
 
 #import "LSUnpayOrdersViewController.h"
 #import "LSOrder.h"
-#import "LSNothingCell.h"
-#import "LSCinemaMapViewController.h"
+#import "LSUnpayOrderCell.h"
+#import "LSFilmsSchedulesByCinemaViewController.h"
 
 @interface LSUnpayOrdersViewController ()
 
@@ -55,25 +55,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    if(!_isRefresh)
-    {
-        [self.tableView reloadData];
-    }
-}
-
-
-#pragma mark- 下拉刷新
+#pragma mark- 重载方法
 - (void)refreshControlEventValueChanged
 {
     _offset=0;
     _isRefresh=YES;
     
-    [messageCenter LSMCOrdersWithStatus:LSOrderStatusUnpay offset:_offset pageSize:_pageSize];
     [hud show:YES];
+    [messageCenter LSMCOrdersWithStatus:LSOrderStatusUnpay offset:_offset pageSize:_pageSize];
 }
-
 
 #pragma mark- 消息中心通知
 - (void)lsHttpRequestNotification:(NSNotification*)notification
@@ -130,12 +120,7 @@
                 [_orderMArray addObject:order];
                 [order release];
             }
-            
-            if(_orderMArray.count==0)
-            {
-                [_orderMArray addObject:@"无订单"];
-            }
-            
+
             _isRefresh=NO;
             _isAdd=NO;
             [self.tableView reloadData];
@@ -145,48 +130,47 @@
 
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _orderMArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_orderMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        return 44.f;
-    }
-    else
-    {
-        return [LSUnpayOrderCell heightOfOrder:[_orderMArray objectAtIndex:indexPath.row]];
-    }
+    return 60.f;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_orderMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
-        if(cell==nil)
-        {
-            cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
-            cell.title=[_orderMArray objectAtIndex:0];
-        }
-        return cell;
-    }
-    
-    LSUnpayOrderCell* cell=[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"LSUnpayOrderCell%d",indexPath.row]];
+    LSUnpayOrderCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSUnpayOrderCell"];
     if(cell==nil)
     {
-        cell=[[[LSUnpayOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSUnpayOrderCell%d",indexPath.row]] autorelease];
-        cell.order=[_orderMArray objectAtIndex:indexPath.row];
-        cell.delegate=self;
+        cell=[[[LSUnpayOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSUnpayOrderCell"] autorelease];
     }
+    cell.order=[_orderMArray objectAtIndex:indexPath.row];
+    [cell setNeedsDisplay];
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    LSOrder* order=[_orderMArray objectAtIndex:indexPath.row];
+    if([order expireSecond]>0)
+    {
+        LSPayViewController* payViewController=[[LSPayViewController alloc] init];
+        payViewController.order=[_orderMArray objectAtIndex:indexPath.row];
+        payViewController.delegate=self;
+        [self.navigationController pushViewController:payViewController animated:YES];
+        [payViewController release];
+    }
+    else
+    {
+        LSFilmsSchedulesByCinemaViewController* filmsSchedulesByCinemaViewController=[[LSFilmsSchedulesByCinemaViewController alloc] init];
+        filmsSchedulesByCinemaViewController.cinema=order.cinema;
+        filmsSchedulesByCinemaViewController.film=order.film;
+        [self.navigationController pushViewController:filmsSchedulesByCinemaViewController animated:YES];
+        [filmsSchedulesByCinemaViewController release];
+    }
+}
 
+/*
 #pragma mark- LSUnpayOrderCell的委托方法
 - (void)LSUnpayOrderCell:(LSUnpayOrderCell *)unpayOrderCell didClickMapButtonForOrder:(LSOrder *)order
 {
@@ -204,11 +188,7 @@
 }
 - (void)LSUnpayOrderCell:(LSUnpayOrderCell *)unpayOrderCell didClickPayButtonForOrder:(LSOrder *)order
 {
-    LSPayViewController* payViewController=[[LSPayViewController alloc] init];
-    payViewController.order=order;
-    payViewController.delegate=self;
-    [self.navigationController pushViewController:payViewController animated:YES];
-    [payViewController release];
+ 
 }
 - (void)LSUnpayOrderCell:(LSUnpayOrderCell *)unpayOrderCell didTimeoutForOrder:(LSOrder *)order
 {
@@ -224,6 +204,7 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", order.cinema.phone]]];
     }
 }
+ */
 
 #pragma mark- LSPayViewController的委托方法
 - (void)LSPayViewControllerDidPay

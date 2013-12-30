@@ -12,7 +12,7 @@
 #import "LSSecurityCodeView.h"
 #import "LSPayCouponCell.h"
 #import "LSPaidOrdersViewController.h"
-#import "LSCouponViewController.h"
+#import "LSUseCouponViewController.h"
 #import "UPOMP.h"
 #import "LSPayFooterView.h"
 
@@ -21,7 +21,7 @@
 <
 UPOMPDelegate,
 LSPaidOrdersViewControllerDelegate,
-LSCouponViewControllerDelegate,
+LSUseCouponViewControllerDelegate,
 LSSecurityCodeViewDelegate,
 LSCountDownViewDelegate,
 LSPayFooterViewDelegate,

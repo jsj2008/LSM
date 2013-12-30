@@ -7,10 +7,13 @@
 //
 
 #import "LSTableViewController.h"
-#import "LSUnpayOrderCell.h"
 #import "LSPayViewController.h"
 
-@interface LSUnpayOrdersViewController : LSTableViewController<LSUnpayOrderCellDelegate,LSPayViewControllerDelegate,UIActionSheetDelegate>
+@interface LSUnpayOrdersViewController : LSTableViewController
+<
+LSUnpayOrderCellDelegate,
+LSPayViewControllerDelegate
+>
 {
     NSMutableArray* _orderMArray;//已付款订单列表
     int _offset;

@@ -7,7 +7,16 @@
 //
 
 #import "LSViewController.h"
+#include "LSOrder.h"
+#import "LSPaidWrongView.h"
 
 @interface LSPaidOrderInfoViewController : LSViewController
+<
+LSPaidWrongViewDelegate
+>
+{
+    LSOrder* _order;
+}
+@property(nonatomic,retain) LSOrder* order;
 
 @end

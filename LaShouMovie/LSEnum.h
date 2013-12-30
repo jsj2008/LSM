@@ -174,7 +174,7 @@ typedef enum
     
 } LSCouponType;
 
-#pragma mark- 券有效
+#pragma mark- 券有效性
 typedef enum
 {
     LSCouponValidInvalid = 0,//无效
@@ -201,6 +201,15 @@ typedef enum
     LSOrderStatusUnpay = 1 //未付款
     
 } LSOrderStatus;
+
+#pragma mark- 出票状态
+typedef enum
+{
+    LSConfirmStatusDone  = 0,//已经出票
+    LSConfirmStatusDoing = 1,//正在出票
+    LSConfirmStatusWrong = 2 //错误
+    
+} LSConfirmStatus;
 
 #pragma mark- 团购状态
 typedef enum

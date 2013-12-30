@@ -10,6 +10,8 @@
 
 @implementation LSCouponCell
 
+@synthesize coupon=_coupon;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -24,6 +26,11 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    
 }
 
 @end

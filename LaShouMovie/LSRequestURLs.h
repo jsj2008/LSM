@@ -45,7 +45,7 @@
 #define lsURLGroupCancelByOrderID                                           @"/GroupOrder/cancelOrderByApi"
 
 #pragma mark- 拉手券相关
-#define lsURLTicketsByType_Offset_PageSize                                  @"/GroupOrder/lashouCodeList"
+#define lsURLTicketsByOffset_PageSize                                  @"/GroupOrder/lashouCodeList"
 #define lsURLTicketPasswordByTicketID                                       @"/GroupOrder/sendLashouCodePwd"
 
 

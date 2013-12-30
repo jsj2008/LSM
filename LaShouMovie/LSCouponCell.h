@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSCoupon.h"
 
 @interface LSCouponCell : UITableViewCell
+{
+    LSCoupon* _coupon;
+}
+@property(nonatomic,retain) LSCoupon* coupon;
 
 @end

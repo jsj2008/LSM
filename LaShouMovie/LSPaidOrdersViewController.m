@@ -7,8 +7,6 @@
 //
 
 #import "LSPaidOrdersViewController.h"
-#import "LSOrder.h"
-#import "LSCinemaMapViewController.h"
 #import "LSPaidOrderCell.h"
 
 @interface LSPaidOrdersViewController ()
@@ -88,7 +86,6 @@
     }
 }
 
-#pragma mark- 下拉刷新
 - (void)refreshControlEventValueChanged
 {
     _offset=0;
@@ -158,11 +155,6 @@
             
             [LSDataCache saveWithFolderType:LSFolderTypeDocuments subFolder:LSSubFolderTypeNon name:lsDataCachePaidOrders data:_orderMArray];
             
-            if(_orderMArray.count==0)
-            {
-                [_orderMArray addObject:@"无订单"];
-            }
-            
             _isRefresh=NO;
             _isAdd=NO;
             [self.tableView reloadData];
@@ -176,55 +168,35 @@
 }
 
 
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
+#pragma mark - UITableView的委托方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _orderMArray.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_orderMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        return 44.f;
-    }
-    else
-    {
-        return [LSPaidOrderCell heightOfOrder:[_orderMArray objectAtIndex:indexPath.row]];
-    }
+    return 60.f;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[_orderMArray objectAtIndex:0] isKindOfClass:[NSString class]])
-    {
-        LSNothingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSNothingCell"];
-        if(cell==nil)
-        {
-            cell=[[[LSNothingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSNothingCell"] autorelease];
-            cell.title=[_orderMArray objectAtIndex:0];
-        }
-        return cell;
-    }
-    
-    LSPaidOrderCell* cell=[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"LSPaidOrderCell%d",indexPath.row]];
+    LSPaidOrderCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSPaidOrderCell"];
     if(cell==nil)
     {
-        cell=[[[LSPaidOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSPaidOrderCell%d",indexPath.row]] autorelease];
-        cell.delegate=self;
+        cell=[[[LSPaidOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSPaidOrderCell"] autorelease];
     }
-    LSOrder* order=[_orderMArray objectAtIndex:indexPath.row];
-    cell.order=order;
+    cell.order=[_orderMArray objectAtIndex:indexPath.row];
+    [cell setNeedsDisplay];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //重复的点击需要首先取消之前的操作
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    LSPaidOrderInfoViewController* paidOrderInfoViewController=[[LSPaidOrderInfoViewController alloc] init];
+    paidOrderInfoViewController.order=[_orderMArray objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:paidOrderInfoViewController animated:YES];
+    [paidOrderInfoViewController release];
 }
 
+/*
 #pragma mark- LSPaidOrderCell的委托方法
 - (void)LSPaidOrderCell:(LSPaidOrderCell *)paidOrderCell didClickMapButtonForOrder:(LSOrder *)order
 {
@@ -253,5 +225,6 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", order.cinema.phone]]];
     }
 }
+ */
 
 @end

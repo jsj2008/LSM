@@ -75,7 +75,7 @@
 #define lsRequestTypeGroupCancelByOrderID                           @"lsRequestTypeGroupCancelByOrderID"
 
 #pragma mark- 拉手券相关
-#define lsRequestTypeTicketsByType_Offset_PageSize                  @"lsRequestTypeTicketsByType_Offset_PageSize"
+#define lsRequestTypeTicketsByOffset_PageSize                       @"lsRequestTypeTicketsByOffset_PageSize"
 #define lsRequestTypeTicketPasswordByTicketID                       @"lsRequestTypeTicketPasswordByTicketID"
 
 #pragma mark- 支付相关
@@ -176,7 +176,7 @@
 - (void)LSMCGroupCancelWithOrderID:(NSString*)orderID;
 
 #pragma mark- 拉手券相关
-- (void)LSMCTicketsWithStatus:(LSTicketStatus)status offset:(int)offset pageSize:(int)pageSize;
+- (void)LSMCTicketsWithOffset:(int)offset pageSize:(int)pageSize;
 - (void)LSMCTicketPasswordWithTicketID:(NSString*)ticketID;
 
 #pragma mark- 支付相关

@@ -8,30 +8,11 @@
 
 #import "LSTicketCell.h"
 
-#define gapL 30.f
-#define basicWidth 260.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSTicketCell
 
 @synthesize ticket=_ticket;
-
-+ (CGFloat)heightForTicket:(LSTicket*)ticket
-{
-    CGFloat contentY=10.f;
-    
-    if(ticket.groupTitle!=nil)
-    {
-        CGSize size=[ticket.groupTitle sizeWithFont:LSFont15 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
-    
-    NSString* text=[NSString stringWithFormat:@"有效时间"];
-    CGSize size=[text sizeWithFont:LSFont15];
-    contentY+=(size.height+5.f);
-    
-    return contentY;
-}
 
 - (void)dealloc
 {
@@ -44,10 +25,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.contentView.clipsToBounds = YES;
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -61,65 +38,38 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawLineAtStartPointX:0 y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorLineLightGrayColor lineWidth:1];
+    CGFloat contentY=gap;
+    CGFloat contentX=gap;
+
+    NSString* text=nil;
     
+    text=_ticket.groupTitle;
+    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsTitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+    
+    contentY+=20.f;
+    
+    text=[NSString stringWithFormat:@"拉手券号：%@",_ticket.ticketID];
+    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+    
+    contentY+=15.f;
+    
+    text=[NSString stringWithFormat:@"有效期至：%@",_ticket.expireTime];
+    [text drawInRect:CGRectMake(contentX, contentY, 240.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+
     if(_ticket.ticketStatus==LSTicketStatusUnuse)
     {
-        [[UIImage lsImageNamed:@"my_ticket_not_used.png"] drawInRect:CGRectMake(0, 0, 35, 35)];
+        text=@"未使用";
     }
     else if(_ticket.ticketStatus==LSTicketStatusUsed)
     {
-        [[UIImage lsImageNamed:@"my_ticket_used.png"] drawInRect:CGRectMake(0, 0, 35, 35)];
+        text=@"未使用";
     }
     else
     {
-        [[UIImage lsImageNamed:@"my_ticket_expire.png"] drawInRect:CGRectMake(0, 0, 35, 35)];
+        text=@"未使用";
     }
-    
-    CGFloat contentY=10.f;
-    CGFloat contentX=gapL;
-    
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackGrayColor.CGColor);
-    
-    if(_ticket.groupTitle!=nil)
-    {
-        CGSize size=[_ticket.groupTitle sizeWithFont:LSFont15 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        [_ticket.groupTitle drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15 lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
-    
-    CGContextSetFillColorWithColor(contextRef,  [UIColor grayColor].CGColor);
-    NSString* text=[NSString stringWithFormat:@"有效时间"];
-    CGSize size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15];
-    contentX+=(size.width+33.f);
-    
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackRedColor.CGColor);
-    text=_ticket.expireTime;
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15];
-    
-    contentY+=(size.height+5.f);
-    
-    [[UIImage lsImageNamed:@"cinemas_arrow.png"] drawInRect:CGRectMake(self.width - 30, (self.height-15)/2, 10, 15)];
-}
-
-#pragma mark- 重载触摸方法
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=LSColorBgRedYellowColor;
-    [super touchesBegan:touches withEvent:event];
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesEnded:touches withEvent:event];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesCancelled:touches withEvent:event];
+    CGSize statusSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-statusSize.height)/2, 50.f, statusSize.height) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorTextRed:LSColorTextGray) textAlignment:NSTextAlignmentRight]];
 }
 
 @end

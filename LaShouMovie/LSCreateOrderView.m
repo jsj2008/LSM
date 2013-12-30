@@ -38,9 +38,8 @@
 {
     // Drawing code
     [[UIImage stretchableImageWithImageName:@"" top:0.f left:0.f bottom:0.f right:0.f] drawInRect:CGRectZero];
-    [[UIImage stretchableImageWithImageName:@"" top:0.f left:0.f bottom:0.f right:0.f] drawInRect:CGRectZero];
     
-    _contentY=30.f;
+    _contentY=20.f;
     CGFloat contentX=gap;
     CGFloat basicWith=rect.size.width-gap*2-20.f;
     NSString* text=nil;

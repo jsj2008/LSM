@@ -55,6 +55,7 @@
         
         createOrderView.frame=CGRectMake(0.f, 0.f, self.view.width, createOrderView.contentY);
     } completion:^(BOOL finished) {
+        [createOrderView setNeedsDisplay];
         
         LSCreateOrderFooterView* createOrderFooterView=[[LSCreateOrderFooterView alloc] initWithFrame:CGRectMake(0.f, createOrderView.bottom, self.view.width, 128.f)];
         createOrderFooterView.delegate=self;

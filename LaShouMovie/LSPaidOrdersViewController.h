@@ -9,7 +9,7 @@
 #import "LSTableViewController.h"
 
 @protocol LSPaidOrdersViewControllerDelegate;
-@interface LSPaidOrdersViewController : LSTableViewController<UIActionSheetDelegate>
+@interface LSPaidOrdersViewController : LSTableViewController
 {
     NSMutableArray* _orderMArray;//已付款订单列表
     int _offset;

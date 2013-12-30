@@ -8,30 +8,11 @@
 
 #import "LSGroupCell.h"
 
-#define gapL 30.f
-#define basicWidth 260.f
-#define basicSize CGSizeMake(basicWidth, INT32_MAX)
+#define gap 10.f
 
 @implementation LSGroupCell
 
 @synthesize groupOrder=_groupOrder;
-
-+ (CGFloat)heightForGroupOrder:(LSGroupOrder*)groupOrder
-{
-    CGFloat contentY=10.f;
-    
-    if(groupOrder.groupTitle!=nil)
-    {
-        CGSize size=[groupOrder.groupTitle sizeWithFont:LSFont15 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
-    
-    NSString* text=[NSString stringWithFormat:@"数量%@  |  总价:",groupOrder.amount];
-    CGSize size=[text sizeWithFont:LSFont15];
-    
-    contentY+=(size.height+5.f);
-    return contentY;
-}
 
 - (void)dealloc
 {
@@ -44,10 +25,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor=[UIColor clearColor];
-        self.contentView.backgroundColor = [UIColor clearColor];
-        self.contentView.clipsToBounds = YES;
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
 }
@@ -61,61 +39,22 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawLineAtStartPointX:0 y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorLineLightGrayColor lineWidth:1];
+    CGFloat contentY=gap;
+    CGFloat contentX=gap;
     
-    if (!_groupOrder.isPaid)
-    {
-        [[UIImage lsImageNamed:@"my_order_waiting.png"] drawInRect:CGRectMake(0, 0, 35, 35)];
-    }
-    else
-    {
-        [[UIImage lsImageNamed:@"my_order_payed.png"] drawInRect:CGRectMake(0, 0, 35, 35)];
-    }
+    NSString* text=_groupOrder.groupTitle;
     
-    CGFloat contentY=10.f;
-    CGFloat contentX=gapL;
+    [text drawInRect:CGRectMake(contentX, contentY, 230.f, 25.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsTitle lineBreakMode:NSLineBreakByTruncatingTail]];
+    contentY+=25.f;
     
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackGrayColor.CGColor);
-
-    if(_groupOrder.groupTitle!=nil)
-    {
-        CGSize size=[_groupOrder.groupTitle sizeWithFont:LSFont15 constrainedToSize:basicSize lineBreakMode:NSLineBreakByCharWrapping];
-        [_groupOrder.groupTitle drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15 lineBreakMode:NSLineBreakByCharWrapping];
-        contentY+=(size.height+5.f);
-    }
+    text=[NSString stringWithFormat:@"数量%@ | 总价:￥%@",_groupOrder.amount,_groupOrder.totalPrice];
+    [text drawInRect:CGRectMake(contentX, contentY, 230.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:LSColorTextGray lineBreakMode:NSLineBreakByTruncatingTail]];
     
-    CGContextSetFillColorWithColor(contextRef, [UIColor grayColor].CGColor);
-    NSString* text=[NSString stringWithFormat:@"数量%@  |  总价:",_groupOrder.amount];
-    CGSize size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15];
-    contentX+=size.width;
+    contentX=230.f+gap*2;
     
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackRedColor.CGColor);
-    text=[NSString stringWithFormat:@"￥%@",_groupOrder.totalPrice];
-    size=[text sizeWithFont:LSFont15];
-    [text drawInRect:CGRectMake(contentX, contentY, size.width, size.height) withFont:LSFont15];
-    
-    contentY+=(size.height+5.f);
-    
-    [[UIImage lsImageNamed:@"cinemas_arrow.png"] drawInRect:CGRectMake(self.width - 30, (self.height-15)/2, 10, 15)];
-}
-
-#pragma mark- 重载触摸方法
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=LSColorBgRedYellowColor;
-    [super touchesBegan:touches withEvent:event];
-}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesEnded:touches withEvent:event];
-}
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.backgroundColor=[UIColor clearColor];
-    [super touchesCancelled:touches withEvent:event];
+    text=_groupOrder.orderStatus==LSGroupOrderStatusPaid?@"已付款":@"等待付款";
+    CGSize statusSize=[text sizeWithAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle]];
+    [text drawInRect:CGRectMake(contentX, (rect.size.height-statusSize.height)/2, 50.f, statusSize.height) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_groupOrder.orderStatus==LSGroupOrderStatusPaid?LSColorTextGray:LSColorTextRed) textAlignment:NSTextAlignmentRight]];
 }
 
 @end

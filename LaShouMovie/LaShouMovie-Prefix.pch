@@ -68,7 +68,6 @@
 #define lsURLScheme                 @"LASHOUMOVIE"
 #define lsSoftwareVersion           [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]
 #define lsSoftwareName              @"拉手电影"
-#define lsServicePhoneDes           @"4000-517-317转2"
 #define lsServicePhoneCall          @"4000-517-317"
 #define lsServicePhoneReal          @"4000517317"
 #define lsChannelID                 @"10000" //APPSTORE渠道号
