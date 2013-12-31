@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface LSTableViewCell : UITableViewCell
+{
+    BOOL _standardBottomLine;
+    BOOL _wholeBottomLine;
+}
+@property(nonatomic,assign) BOOL standardBottomLine;
+@property(nonatomic,assign) BOOL wholeBottomLine;
 
 @end

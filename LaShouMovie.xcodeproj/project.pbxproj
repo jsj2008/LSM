@@ -108,6 +108,14 @@
 		1805C1A21872BA5400169A37 /* tool_user_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1421872BA5400169A37 /* tool_user_sel@2x.png */; };
 		1805C1A31872BA5400169A37 /* weibo_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1431872BA5400169A37 /* weibo_nor@2x.png */; };
 		1805C1A41872BA5400169A37 /* weibo_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1441872BA5400169A37 /* weibo_sel@2x.png */; };
+		1805C1AD1872BFB500169A37 /* icon-iOS7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1A51872BFB500169A37 /* icon-iOS7@2x.png */; };
+		1805C1AE1872BFB500169A37 /* icon-setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1A61872BFB500169A37 /* icon-setting.png */; };
+		1805C1AF1872BFB500169A37 /* icon-setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1A71872BFB500169A37 /* icon-setting@2x.png */; };
+		1805C1B01872BFB500169A37 /* icon-spotlight-iOS7.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1A81872BFB500169A37 /* icon-spotlight-iOS7.png */; };
+		1805C1B11872BFB500169A37 /* icon-spotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1A91872BFB500169A37 /* icon-spotlight.png */; };
+		1805C1B21872BFB500169A37 /* icon-spotlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1AA1872BFB500169A37 /* icon-spotlight@2x.png */; };
+		1805C1B31872BFB500169A37 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1AB1872BFB500169A37 /* icon.png */; };
+		1805C1B41872BFB500169A37 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1805C1AC1872BFB500169A37 /* icon@2x.png */; };
 		18072AE51807EA670013CCA6 /* LSGroupCreateOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18072AE41807EA670013CCA6 /* LSGroupCreateOrderCell.m */; };
 		18072AE81807EAA10013CCA6 /* LSGroupCreateOrderAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18072AE71807EAA10013CCA6 /* LSGroupCreateOrderAmountCell.m */; };
 		18072AEF1807ED310013CCA6 /* LSGroupCreateOrderSectionFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18072AEE1807ED310013CCA6 /* LSGroupCreateOrderSectionFooter.m */; };
@@ -726,6 +734,14 @@
 		1805C1421872BA5400169A37 /* tool_user_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tool_user_sel@2x.png"; sourceTree = "<group>"; };
 		1805C1431872BA5400169A37 /* weibo_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo_nor@2x.png"; sourceTree = "<group>"; };
 		1805C1441872BA5400169A37 /* weibo_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo_sel@2x.png"; sourceTree = "<group>"; };
+		1805C1A51872BFB500169A37 /* icon-iOS7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-iOS7@2x.png"; sourceTree = "<group>"; };
+		1805C1A61872BFB500169A37 /* icon-setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting.png"; sourceTree = "<group>"; };
+		1805C1A71872BFB500169A37 /* icon-setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting@2x.png"; sourceTree = "<group>"; };
+		1805C1A81872BFB500169A37 /* icon-spotlight-iOS7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-spotlight-iOS7.png"; sourceTree = "<group>"; };
+		1805C1A91872BFB500169A37 /* icon-spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-spotlight.png"; sourceTree = "<group>"; };
+		1805C1AA1872BFB500169A37 /* icon-spotlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-spotlight@2x.png"; sourceTree = "<group>"; };
+		1805C1AB1872BFB500169A37 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		1805C1AC1872BFB500169A37 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		18072AE31807EA670013CCA6 /* LSGroupCreateOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSGroupCreateOrderCell.h; sourceTree = "<group>"; };
 		18072AE41807EA670013CCA6 /* LSGroupCreateOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSGroupCreateOrderCell.m; sourceTree = "<group>"; };
 		18072AE61807EAA10013CCA6 /* LSGroupCreateOrderAmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSGroupCreateOrderAmountCell.h; sourceTree = "<group>"; };
@@ -2962,6 +2978,14 @@
 		186789BF17C5C9FD007405DE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1805C1A61872BFB500169A37 /* icon-setting.png */,
+				1805C1A71872BFB500169A37 /* icon-setting@2x.png */,
+				1805C1A81872BFB500169A37 /* icon-spotlight-iOS7.png */,
+				1805C1A91872BFB500169A37 /* icon-spotlight.png */,
+				1805C1AA1872BFB500169A37 /* icon-spotlight@2x.png */,
+				1805C1A51872BFB500169A37 /* icon-iOS7@2x.png */,
+				1805C1AB1872BFB500169A37 /* icon.png */,
+				1805C1AC1872BFB500169A37 /* icon@2x.png */,
 				186789C017C5C9FD007405DE /* LaShouMovie-Info.plist */,
 				186789C117C5C9FD007405DE /* InfoPlist.strings */,
 				186789C417C5C9FD007405DE /* main.m */,
@@ -4103,6 +4127,7 @@
 			files = (
 				186789C317C5C9FD007405DE /* InfoPlist.strings in Resources */,
 				1871DE8A17D43C3D00B285F5 /* add_gray@2x.png in Resources */,
+				1805C1B31872BFB500169A37 /* icon.png in Resources */,
 				1805C1671872BA5400169A37 /* icon_arrow_under@2x.png in Resources */,
 				1871DE8B17D43C3D00B285F5 /* add_red@2x.png in Resources */,
 				1871DE8C17D43C3D00B285F5 /* add_red_click@2x.png in Resources */,
@@ -4157,6 +4182,7 @@
 				1871DEB117D43C3D00B285F5 /* city_section_bg@2x.png in Resources */,
 				1871DEB217D43C3D00B285F5 /* clock@2x.png in Resources */,
 				1871DEB317D43C3D00B285F5 /* close@2x.png in Resources */,
+				1805C1B01872BFB500169A37 /* icon-spotlight-iOS7.png in Resources */,
 				1871DEB417D43C3D00B285F5 /* corder_bg@2x.png in Resources */,
 				1805C1A21872BA5400169A37 /* tool_user_sel@2x.png in Resources */,
 				1871DEB517D43C3D00B285F5 /* corder_bg_b@2x.png in Resources */,
@@ -4231,6 +4257,7 @@
 				1871DEE717D43C3D00B285F5 /* line_s@2x.png in Resources */,
 				1871DEE817D43C3D00B285F5 /* login_line@2x.png in Resources */,
 				1871DEE917D43C3D00B285F5 /* login_qq@2x.png in Resources */,
+				1805C1AF1872BFB500169A37 /* icon-setting@2x.png in Resources */,
 				1805C17B1872BA5400169A37 /* icon_presell@2x.png in Resources */,
 				1871DEEA17D43C3D00B285F5 /* login_sina@2x.png in Resources */,
 				1871DEEB17D43C3D00B285F5 /* login_t_qq@2x.png in Resources */,
@@ -4284,6 +4311,7 @@
 				1871DF0E17D43C3D00B285F5 /* my_group_ticket_detail_tkz@2x.png in Resources */,
 				1871DF0F17D43C3D00B285F5 /* my_group_ticket_detail_wsy@2x.png in Resources */,
 				1805C1981872BA5400169A37 /* qq_sel@2x.png in Resources */,
+				1805C1B11872BFB500169A37 /* icon-spotlight.png in Resources */,
 				1805C1791872BA5400169A37 /* icon_payway_zhifubao@2x.png in Resources */,
 				1871DF1017D43C3D00B285F5 /* my_group_ticket_detail_yes@2x.png in Resources */,
 				1805C1751872BA5400169A37 /* icon_payway_bank@2x.png in Resources */,
@@ -4306,8 +4334,10 @@
 				1871DF1C17D43C3D00B285F5 /* nav_bg@2x.png in Resources */,
 				1871DF1D17D43C3D00B285F5 /* nav_city@2x.png in Resources */,
 				1871DF1E17D43C3D00B285F5 /* nav_city_d@2x.png in Resources */,
+				1805C1AD1872BFB500169A37 /* icon-iOS7@2x.png in Resources */,
 				1871DF1F17D43C3D00B285F5 /* nav_item_back@2x.png in Resources */,
 				1871DF2017D43C3D00B285F5 /* nav_item_back_d@2x.png in Resources */,
+				1805C1B21872BFB500169A37 /* icon-spotlight@2x.png in Resources */,
 				1805C1761872BA5400169A37 /* icon_payway_bankofchina.png in Resources */,
 				1871DF2117D43C3D00B285F5 /* nav_item_down@2x.png in Resources */,
 				1871DF2217D43C3D00B285F5 /* nav_item_list@2x.png in Resources */,
@@ -4324,6 +4354,7 @@
 				1871DF2917D43C3D00B285F5 /* nav_list_d@2x.png in Resources */,
 				1805C1931872BA5400169A37 /* map_icon_mark_none@2x.png in Resources */,
 				1871DF2A17D43C3D00B285F5 /* nav_logout@2x.png in Resources */,
+				1805C1AE1872BFB500169A37 /* icon-setting.png in Resources */,
 				1805C19A1872BA5400169A37 /* tengxunweibo_sel@2x.png in Resources */,
 				1805C1631872BA5400169A37 /* button_sch_tel_nor@2x.png in Resources */,
 				1871DF2B17D43C3D00B285F5 /* nav_logout_d@2x.png in Resources */,
@@ -4338,6 +4369,7 @@
 				1805C1601872BA5400169A37 /* button_pay_select_sel@2x.png in Resources */,
 				1871DF3017D43C3D00B285F5 /* nav_poster@2x.png in Resources */,
 				1871DF3117D43C3D00B285F5 /* nav_poster_d@2x.png in Resources */,
+				1805C1B41872BFB500169A37 /* icon@2x.png in Resources */,
 				1871DF3217D43C3D00B285F5 /* nav_share@2x.png in Resources */,
 				1871DF3317D43C3D00B285F5 /* nav_share_d@2x.png in Resources */,
 				1871DF3417D43C3D00B285F5 /* no_wifi@2x.png in Resources */,

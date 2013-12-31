@@ -21,6 +21,8 @@
 #define LSFont20 [UIFont systemFontOfSize:20.f]
 #define LSFont21 [UIFont systemFontOfSize:21.f]
 #define LSFont22 [UIFont systemFontOfSize:22.f]
+#define LSFont23 [UIFont systemFontOfSize:23.f]
+#define LSFont24 [UIFont systemFontOfSize:24.f]
 
 #define LSFontBold10 [UIFont boldSystemFontOfSize:10.f]
 #define LSFontBold11 [UIFont boldSystemFontOfSize:11.f]
@@ -36,13 +38,9 @@
 #define LSFontBold21 [UIFont boldSystemFontOfSize:21.f]
 #define LSFontBold22 [UIFont boldSystemFontOfSize:22.f]
 
-
-#define LSFontDefault               LSFont14
-#define LSFontRemark                LSFont12
-#define LSFontTool                  LSFont13
 #define LSFontButton                LSFont14
 
-#define LSFontNavigationTitle       LSFont20
+#define LSFontNavigationTitle       LSFont24
 #define LSFontNavigationButton      LSFont16
 
 #define LSFontSectionHeader         LSFont13

@@ -10,11 +10,12 @@
 
 @implementation LSSeparatorCell
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.backgroundColor=LSColorBackgroundGray;
     }
     return self;
 }
@@ -26,6 +27,6 @@
 {
     // Drawing code
 }
-*/
+ */
 
 @end

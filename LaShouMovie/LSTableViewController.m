@@ -85,10 +85,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    [self.navigationController.navigationBar setTitleTextAttributes:[LSAttribute attributeFont:LSFontNavigationTitle color:LSColorWhite]];
+    
     self.tableView.showsVerticalScrollIndicator=NO;
     self.tableView.showsHorizontalScrollIndicator=NO;
     self.tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundView=nil;
     
     //实例化用户
     user=[LSUser currentUser];
@@ -276,7 +278,7 @@
         button.frame = CGRectMake(0.f, 0.f, 44.f+10.f, 31.f);
         [button setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:imageName] top:31 left:10 bottom:31 right:10]  forState:UIControlStateNormal];
         button.titleLabel.adjustsFontSizeToFitWidth=YES;
-        button.titleLabel.font = LSFontTool;
+        button.titleLabel.font = LSFontButton;
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button setTitle:title forState:UIControlStateNormal];
 

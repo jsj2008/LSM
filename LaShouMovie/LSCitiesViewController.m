@@ -45,7 +45,10 @@
     self.title = @"切换城市";
     self.tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
     
-    self.leftBarButtonSystemItem=UIBarButtonSystemItemStop;
+    if(user.cityID!=nil && user.cityName!=nil)
+    {
+        self.leftBarButtonSystemItem=UIBarButtonSystemItemStop;
+    }
 
     _cityMArray=[[NSMutableArray alloc] initWithCapacity:0];
     _titleMArray=[[NSMutableArray alloc] initWithCapacity:0];

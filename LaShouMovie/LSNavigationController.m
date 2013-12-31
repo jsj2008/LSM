@@ -42,11 +42,20 @@
     return self;
 }
 
+- (id)initWithRootViewController:(UIViewController *)rootViewController
+{
+    self = [super initWithRootViewController:rootViewController];
+    if (self) {
+        // Custom initialization
+        [self.navigationBar setBarTintColor:LSColorNavigationRed];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.navigationBar setBarTintColor:LSColorNavigationRed];
 }
 
 - (void)didReceiveMemoryWarning

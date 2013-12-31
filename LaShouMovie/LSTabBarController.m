@@ -292,7 +292,7 @@
     LSCitiesViewController* citiesViewController=[[LSCitiesViewController alloc] init];
     citiesViewController.delegate=self;
     
-    UINavigationController* navigationController=[[UINavigationController alloc] initWithRootViewController:citiesViewController];
+    LSNavigationController* navigationController=[[LSNavigationController alloc] initWithRootViewController:citiesViewController];
     [self presentViewController:navigationController animated:YES completion:^{}];
     
     [citiesViewController release];

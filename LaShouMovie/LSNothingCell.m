@@ -28,10 +28,4 @@
     // Configure the view for the selected state
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    CGSize size=[_title sizeWithAttributes:[LSAttribute attributeFont:LSFontRemark]];
-    [_title drawInRect:CGRectMake((rect.size.width-size.width)/2, (rect.size.height-size.height)/2, size.width, size.height) withAttributes:[LSAttribute attributeFont:LSFontRemark color:LSColorTextGray]];
-}
-
 @end

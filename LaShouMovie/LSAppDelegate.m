@@ -28,7 +28,8 @@
 #ifdef LSDEBUG
     NSLog(@"\n%@\n",NSHomeDirectory());
 #endif
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //设置状态栏文字颜色
+    [UIApplication sharedApplication].statusBarStyle=UIStatusBarStyleLightContent;
     
     messageCenter=[LSMessageCenter defaultCenter];
     

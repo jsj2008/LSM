@@ -108,22 +108,27 @@
 {
     if(indexPath.row==0 || indexPath.row==4 || indexPath.row==6 || indexPath.row==11)
     {
-        LSSeparatorCell* separatorCell=[tableView dequeueReusableCellWithIdentifier:@"LSSeparatorCell"];
-        if(separatorCell==0)
+        LSSeparatorCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSeparatorCell"];
+        if(cell==nil)
         {
-            separatorCell=[[[LSSeparatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSeparatorCell"] autorelease];
+            cell=[[[LSSeparatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSeparatorCell"] autorelease];
+            if(indexPath.row!=11)
+            {
+                cell.wholeBottomLine=YES;
+            }
         }
-        return separatorCell;
+        return cell;
     }
     else if(indexPath.row==1)
     {
         LSSettingSwitchCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingSwitchCellWifi"];
         if(cell==nil)
         {
-            cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingSwitchCellWifi"] autorelease];
+            cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingSwitchCellWifi"] autorelease];
             cell.isTurnOn=user.isImageOnlyWhenWifi;
             cell.textLabel.text=@"仅Wifi下显示图片";
             cell.delegate=self;
+            cell.standardBottomLine=YES;
         }
         return cell;
     }
@@ -132,10 +137,11 @@
         LSSettingSwitchCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingSwitchCellCard"];
         if(cell==nil)
         {
-            cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingSwitchCellCard"] autorelease];
+            cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingSwitchCellCard"] autorelease];
             cell.isTurnOn=user.isCreateCard;
             cell.textLabel.text=@"生成支付宝卡券";
             cell.delegate=self;
+            cell.standardBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
@@ -145,9 +151,10 @@
         LSSettingTextCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingTextCellCache"];
         if(cell==nil)
         {
-            cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingTextCellCache"] autorelease];
+            cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingTextCellCache"] autorelease];
             cell.textLabel.text=@"清除图片缓存";
             cell.text=[[LSDataCache calculateImageCache] stringByReplacingOccurrencesOfString:@".00" withString:@""];
+            cell.wholeBottomLine=YES;
         }
         return cell;
     }
@@ -156,8 +163,9 @@
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellShare"];
         if(cell==nil)
         {
-            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellShare"] autorelease];
+            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingCellShare"] autorelease];
             cell.textLabel.text=@"分享设置";
+            cell.wholeBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
@@ -167,8 +175,9 @@
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellUpdate"];
         if(cell==nil)
         {
-            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellUpdate"] autorelease];
+            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingCellUpdate"] autorelease];
             cell.textLabel.text=@"软件升级";
+            cell.standardBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
@@ -178,8 +187,9 @@
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellFeedback"];
         if(cell==nil)
         {
-            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellFeedback"] autorelease];
+            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingCellFeedback"] autorelease];
             cell.textLabel.text=@"意见反馈";
+            cell.standardBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
@@ -189,11 +199,10 @@
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellAbout"];
         if(cell==nil)
         {
-            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellAbout"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_about.png"];
+            cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingCellAbout"] autorelease];
             cell.textLabel.text=@"关于拉手电影";
+            cell.standardBottomLine=YES;
         }
-        [cell setNeedsDisplay];
         return cell;
     }
     else
@@ -201,11 +210,11 @@
         LSSettingTextCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingTextCellPhone"];
         if(cell==nil)
         {
-            cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingTextCellPhone"] autorelease];
+            cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingTextCellPhone"] autorelease];
             cell.textLabel.text=@"客服电话";
             cell.text=lsServicePhoneCall;
+            cell.wholeBottomLine=YES;
         }
-        [cell setNeedsDisplay];
         return cell;
     }
 }
