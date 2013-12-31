@@ -37,7 +37,6 @@
 - (void)drawRect:(CGRect)rect
 {
     CGRect bgRect=CGRectMake(10.f, 10.f, rect.size.width-2*10.f, rect.size.height-10.f);
-    [self drawRoundRectangleInRect:bgRect topRadius:3.f bottomRadius:3.f isBottomLine:YES fillColor:LSColorBgWhiteColor strokeColor:LSColorLineLightGrayColor borderWidth:0.5f];
     
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);

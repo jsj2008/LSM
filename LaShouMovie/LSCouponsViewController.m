@@ -35,7 +35,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.title=@"我的抵用券";
+    
+    //初始化数据数组
     _couponMArray=[[NSMutableArray alloc] initWithCapacity:0];
+
+    //添加通知
+    [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeCouponsByOffset_PageSize object:nil];
+    
+    [hud show:YES];
+    [messageCenter LSMCCouponsWithOffset:_offset pageSize:_pageSize];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,7 +60,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70.f;
+    return 75.f;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

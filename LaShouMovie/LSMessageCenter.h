@@ -82,6 +82,7 @@
 #define lsRequestTypePayBalancePayByOrderID_IsCoupon_SecurityCode            @"lsRequestTypePayBalancePayByOrderID_IsCoupon_SecurityCode"
 
 #pragma mark- 优惠券相关
+#define lsRequestTypeCouponsByOffset_PageSize                       @"lsRequestTypeCouponsByOffset_PageSize"
 #define lsRequestTypeCouponUseByOrderID_CinemaID_CouponID           @"lsRequestTypeCouponUseByOrderID_CinemaID_CouponID"
 #define lsRequestTypeCouponCancelByOrderID_CinemaID_CouponID        @"lsRequestTypeCouponCancelByOrderID_CinemaID_CouponID"
 
@@ -183,6 +184,7 @@
 - (void)LSMCPayBalancePayWithOrderID:(NSString*)orderID isUseCoupon:(NSString*)isUseCoupon securityCode:(NSString*)securityCode;
 
 #pragma mark- 优惠券相关
+- (void)LSMCCouponsWithOffset:(int)offset pageSize:(int)pageSize;
 - (void)LSMCCouponUseWithOrderID:(NSString*)orderID cinemaID:(NSString*)cinemaID couponID:(NSString*)couponID;
 - (void)LSMCCouponCancelWithOrderID:(NSString*)orderID cinemaID:(NSString*)cinemaID couponID:(NSString*)couponID;
 

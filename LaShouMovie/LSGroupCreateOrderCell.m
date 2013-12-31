@@ -54,25 +54,4 @@
     _infoLabel.frame=CGRectMake(self.width-size.width-20, (self.height-size.height)/2, size.width, size.height);
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(contextRef, LSColorLineLightGrayColor.CGColor);
-    CGContextSetFillColorWithColor(contextRef, LSColorBgWhiteColor.CGColor);
-    
-    CGContextSetAllowsAntialiasing(contextRef,true);
-    CGContextSetLineWidth(contextRef, 1.f);
-	CGRect rrect = CGRectMake((10.f + 1.f / 2), 1.f/2, (300.f-1.f), (rect.size.height-(_isBottomLine?1.f:0.f)));
-	
-	CGFloat minx = CGRectGetMinX(rrect), midx = CGRectGetMidX(rrect), maxx = CGRectGetMaxX(rrect);
-	CGFloat miny = CGRectGetMinY(rrect), midy = CGRectGetMidY(rrect), maxy = CGRectGetMaxY(rrect);
-    CGContextMoveToPoint(contextRef, minx, midy);
-    CGContextAddArcToPoint(contextRef, minx, miny, midx, miny, _topRadius);
-    CGContextAddArcToPoint(contextRef, maxx, miny, maxx, midy, _topRadius);
-    CGContextAddArcToPoint(contextRef, maxx, maxy, midx, maxy, _bottomRadius);
-    CGContextAddArcToPoint(contextRef, minx, maxy, minx, midy, _bottomRadius);
-    CGContextClosePath(contextRef);
-	CGContextDrawPath(contextRef, kCGPathFillStroke);
-}
-
 @end

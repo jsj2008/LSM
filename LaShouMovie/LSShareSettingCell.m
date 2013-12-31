@@ -51,16 +51,11 @@
     _statusLabel.font=self.textLabel.font;
     CGSize size=[_statusLabel.text sizeWithFont:_statusLabel.font];
     _statusLabel.frame=CGRectMake(self.width-size.width-40, (self.height-_topMargin-size.height)/2+_topMargin, size.width, size.height);
-    
-    self.textLabel.backgroundColor=LSColorBgWhiteColor;
 }
 
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(contextRef, LSColorLineLightGrayColor.CGColor);
-    CGContextSetFillColorWithColor(contextRef, LSColorBgWhiteColor.CGColor);
-    
     CGContextSetAllowsAntialiasing(contextRef,true);
     CGContextSetLineWidth(contextRef, 1.f);
 	CGRect rrect = CGRectMake((10 + 1.f / 2), (_topMargin+1.f/2), (300 - 1.f), (rect.size.height-_topMargin-(_isBottomLine?1.f:0.f)));

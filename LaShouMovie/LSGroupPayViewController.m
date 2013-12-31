@@ -40,8 +40,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title=@"订单详情";
-    self.view.backgroundColor=LSColorBgWhiteColor;
-    
+
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeGroupCancelByOrderID object:nil];
 }
 
@@ -107,7 +106,6 @@
     UILabel* label=[[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     label.backgroundColor=[UIColor clearColor];
     label.font=LSFont14;
-    label.textColor=LSColorBlackRedColor;
     label.text=@" 订单信息";
     return label;
 }

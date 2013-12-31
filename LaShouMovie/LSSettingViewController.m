@@ -9,6 +9,7 @@
 #import "LSSettingViewController.h"
 #import "LSSettingTextCell.h"
 #import "LSSettingCell.h"
+#import "LSSeparatorCell.h"
 #import "LSShareSettingViewController.h"
 #import "LSFeedbackViewController.h"
 #import "LSAboutViewController.h"
@@ -32,17 +33,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.internetStatusRemindType=LSInternetStatusRemindTypeAlert;
-    
-    CGSize size=[@"设置" sizeWithFont:[UIFont systemFontOfSize:21.0]];
-    UILabel* label=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    label.backgroundColor=[UIColor clearColor];
-    label.textAlignment=NSTextAlignmentCenter;
-    label.font=[UIFont systemFontOfSize:21.0];
-    label.textColor=[UIColor whiteColor];
-    label.text=@"设置";
-    self.navigationItem.titleView=label;
-    [label release];
+    self.title=@"设置";
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeUpdateInfo object:nil];
 }
@@ -97,111 +88,103 @@
 }
 
 
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
+#pragma mark- UITableView的委托方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 12;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0 || indexPath.row==3 || indexPath.row==4)
+    if(indexPath.row==0 || indexPath.row==4 || indexPath.row==6 || indexPath.row==11)
     {
-        return 44.f+10.f;
+        return 20.f;
     }
-    return 44.f;
+    else
+    {
+        return 44.f;
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0)
+    if(indexPath.row==0 || indexPath.row==4 || indexPath.row==6 || indexPath.row==11)
+    {
+        LSSeparatorCell* separatorCell=[tableView dequeueReusableCellWithIdentifier:@"LSSeparatorCell"];
+        if(separatorCell==0)
+        {
+            separatorCell=[[[LSSeparatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSeparatorCell"] autorelease];
+        }
+        return separatorCell;
+    }
+    else if(indexPath.row==1)
     {
         LSSettingSwitchCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingSwitchCellWifi"];
         if(cell==nil)
         {
             cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingSwitchCellWifi"] autorelease];
             cell.isTurnOn=user.isImageOnlyWhenWifi;
-            cell.topRadius=3.f;
-            cell.topMargin=10.f;
-            cell.imageView.image=[UIImage lsImageNamed:@"s_wifi.png"];
             cell.textLabel.text=@"仅Wifi下显示图片";
             cell.delegate=self;
         }
-        [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==1)
+    else if(indexPath.row==2)
     {
         LSSettingSwitchCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingSwitchCellCard"];
         if(cell==nil)
         {
             cell=[[[LSSettingSwitchCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingSwitchCellCard"] autorelease];
             cell.isTurnOn=user.isCreateCard;
-            cell.imageView.image=[UIImage lsImageNamed:@"s_card.png"];
             cell.textLabel.text=@"生成支付宝卡券";
             cell.delegate=self;
         }
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==2)
+    else if(indexPath.row==3)
     {
         LSSettingTextCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingTextCellCache"];
         if(cell==nil)
         {
             cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingTextCellCache"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_clear.png"];
-            cell.textLabel.text=@"清除图片缓存"; 
+            cell.textLabel.text=@"清除图片缓存";
+            cell.text=[[LSDataCache calculateImageCache] stringByReplacingOccurrencesOfString:@".00" withString:@""];
         }
-        cell.text=[[NSString stringWithFormat:@"%.2fM", [LSDataCache calculateImageCache]] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-        [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==3)
+    else if(indexPath.row==5)
     {
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellShare"];
         if(cell==nil)
         {
             cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellShare"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_share.png"];
             cell.textLabel.text=@"分享设置";
-            cell.topMargin=10.f;
-            cell.topRadius=3.f;
-            cell.bottomRadius=3.f;
-            cell.isBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==4)
+    else if(indexPath.row==7)
     {
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellUpdate"];
         if(cell==nil)
         {
             cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellUpdate"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_update.png"];
             cell.textLabel.text=@"软件升级";
-            cell.topMargin=10.f;
-            cell.topRadius=3.f;
         }
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==5)
+    else if(indexPath.row==8)
     {
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellFeedback"];
         if(cell==nil)
         {
             cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingCellFeedback"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_feedback.png"];
             cell.textLabel.text=@"意见反馈";
         }
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==6)
+    else if(indexPath.row==9)
     {
         LSSettingCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingCellAbout"];
         if(cell==nil)
@@ -213,60 +196,58 @@
         [cell setNeedsDisplay];
         return cell;
     }
-    else if(indexPath.row==7)
+    else
     {
         LSSettingTextCell* cell=[tableView dequeueReusableCellWithIdentifier:@"LSSettingTextCellPhone"];
         if(cell==nil)
         {
             cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LSSettingTextCellPhone"] autorelease];
-            cell.imageView.image=[UIImage lsImageNamed:@"s_phone.png"];
             cell.textLabel.text=@"客服电话";
-            cell.text=lsServicePhoneDes;
+            cell.text=lsServicePhoneCall;
         }
         [cell setNeedsDisplay];
         return cell;
     }
-    return nil;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row==0)
+    if(indexPath.row==1)
     {
-    }
-    else if(indexPath.row==1)
-    {
-        [LSSave saveObject:LSCardRemind forKey:LSCardRemind];
     }
     else if(indexPath.row==2)
     {
-        [LSAlertView showWithTag:0 title:@"提示" message:@"清空全部图片缓存？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
+        [LSSave saveObject:LSCardRemind forKey:LSCardRemind];
     }
     else if(indexPath.row==3)
+    {
+        [LSAlertView showWithTag:0 title:@"提示" message:@"清空全部图片缓存？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
+    }
+    else if(indexPath.row==5)
     {
         LSShareSettingViewController* shareSettingViewController=[[LSShareSettingViewController alloc] init];
         shareSettingViewController.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:shareSettingViewController animated:YES];
         [shareSettingViewController release];
     }
-    else if(indexPath.row==4)
+    else if(indexPath.row==7)
     {
         [messageCenter LSMCUpdateInfo];
     }
-    else if(indexPath.row==5)
+    else if(indexPath.row==8)
     {
         LSFeedbackViewController* feedbackViewController=[[LSFeedbackViewController alloc] init];
         feedbackViewController.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:feedbackViewController animated:NO];
         [feedbackViewController release];
     }
-    else if(indexPath.row==6)
+    else if(indexPath.row==9)
     {
         LSAboutViewController* aboutViewController=[[LSAboutViewController alloc] init];
         aboutViewController.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:aboutViewController animated:YES];
         [aboutViewController release];
     }
-    else if(indexPath.row==7)
+    else if(indexPath.row==11)
     {
         UIActionSheet* actionSheet=[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:[NSString stringWithFormat:@"呼叫 %@",lsServicePhoneCall] otherButtonTitles:nil];
         [actionSheet showFromTabBar:self.tabBarController.tabBar];

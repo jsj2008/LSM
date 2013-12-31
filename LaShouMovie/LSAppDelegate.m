@@ -28,6 +28,7 @@
 #ifdef LSDEBUG
     NSLog(@"\n%@\n",NSHomeDirectory());
 #endif
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     messageCenter=[LSMessageCenter defaultCenter];
     

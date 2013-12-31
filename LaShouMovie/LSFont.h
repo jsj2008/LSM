@@ -105,6 +105,15 @@
 #define LSFontTicketsTitle          LSFont14
 #define LSFontTicketsSubtitle       LSFont10
 
+#define LSFontCouponsPrice          LSFont18
+#define LSFontCouponsInfo           LSFont14
+#define LSFontCouponsTime           LSFont10
+#define LSFontCouponsY              LSFont10
+
+#define LSFontSetTitle              LSFont14
+
+#define LSFontShareTitle            LSFont14
+
 @interface LSFont : NSObject
 
 @end

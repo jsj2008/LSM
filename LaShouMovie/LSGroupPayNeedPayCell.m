@@ -48,8 +48,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawRoundRectangleInRect:CGRectMake(10.f, 0.f, rect.size.width-2*10.f, rect.size.height) topRadius:_topRadius bottomRadius:_bottomRadius isBottomLine:_isBottomLine fillColor:LSColorBgWhiteColor strokeColor:LSColorLineLightGrayColor borderWidth:0.5f];
-    
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
     
     NSString* text=nil;
@@ -73,7 +71,6 @@
     [text drawInRect:CGRectMake(contentX, (rect.size.height-size0.height)/2+1, size0.width, size0.height) withFont:basicFont];
     contentX+=size0.width;
     
-    CGContextSetFillColorWithColor(contextRef, LSColorBlackRedColor.CGColor);
     text=[NSString stringWithFormat:@"%.2f",[_needPay floatValue]];
     [text drawInRect:CGRectMake(contentX, (rect.size.height-size1.height)/2, size1.width, size1.height) withFont:[UIFont systemFontOfSize:22.f]];
     contentX+=size1.width;

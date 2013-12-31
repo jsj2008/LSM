@@ -9,7 +9,12 @@
 #import "LSTableViewController.h"
 #import "LSSettingSwitchCell.h"
 
-@interface LSSettingViewController : LSTableViewController<LSSettingSwitchCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
+@interface LSSettingViewController : LSTableViewController
+<
+LSSettingSwitchCellDelegate,
+UIActionSheetDelegate,
+UIAlertViewDelegate
+>
 {
     LSVersion* version;
 }

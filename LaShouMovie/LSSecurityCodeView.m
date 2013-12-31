@@ -63,15 +63,11 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    [self drawRoundRectangleInRect:CGRectMake(20, 65, 280, 155) topRadius:8.f bottomRadius:3.f isBottomLine:YES fillColor:LSColorBgWhiteColor strokeColor:LSColorBgWhiteColor borderWidth:0.f];
-
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
     
     NSString* text = @"输入验证码";
     [text drawInRect:CGRectMake(40, 70, 240, 26) withFont:[UIFont boldSystemFontOfSize:21.f] lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
-    
-    [self drawRoundRectangleInRect:CGRectMake(40, 111, 240, 35) topRadius:3.f bottomRadius:3.f isBottomLine:YES fillColor:LSColorBgWhiteColor strokeColor:LSColorLineLightGrayColor borderWidth:0.5f];
 }
 
 

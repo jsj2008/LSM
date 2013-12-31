@@ -11,7 +11,6 @@
 
 @interface LSUnpayOrdersViewController : LSTableViewController
 <
-LSUnpayOrderCellDelegate,
 LSPayViewControllerDelegate
 >
 {

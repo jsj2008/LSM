@@ -11,6 +11,11 @@
 @interface LSCouponsViewController : LSTableViewController
 {
     NSMutableArray* _couponMArray;
+    
+    int _offset;
+    int _pageSize;
+    BOOL _isRefresh;//刷新标记
+    BOOL _isAdd;//添加标记
 }
 
 @end

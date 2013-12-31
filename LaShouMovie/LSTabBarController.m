@@ -293,7 +293,7 @@
     citiesViewController.delegate=self;
     
     UINavigationController* navigationController=[[UINavigationController alloc] initWithRootViewController:citiesViewController];
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:^{}];
     
     [citiesViewController release];
     [navigationController release];
@@ -324,7 +324,7 @@
             loginViewController.delegate=self;
             
             LSNavigationController* navigationController=[[LSNavigationController alloc] initWithRootViewController:loginViewController];
-            [self presentModalViewController:navigationController animated:YES];
+            [self presentViewController:navigationController animated:YES completion:^{}];
             
             [loginViewController release];
             [navigationController release];
@@ -339,7 +339,7 @@
 }
 - (void)dismissModalViewController
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{}];
     [self makeTabBarViewController];
     if([LSSave obtainForKey:LSWelcome]==nil)
     {
@@ -350,7 +350,7 @@
 #pragma mark- LSLoginViewController的委托方法
 - (void)LSLoginViewControllerDidLoginByType:(LSLoginType)loginType
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{}];
     if(loginType==LSLoginTypeNon)//未成功登陆
     {
         _myTabBar.currentIndex=0;

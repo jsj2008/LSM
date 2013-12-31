@@ -48,8 +48,8 @@
     //添加通知
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeTicketsByOffset_PageSize object:nil];
     
-    [messageCenter LSMCTicketsWithOffset:_offset pageSize:_pageSize];
     [hud show:YES];
+    [messageCenter LSMCTicketsWithOffset:_offset pageSize:_pageSize];
 }
 
 - (void)didReceiveMemoryWarning

@@ -151,7 +151,6 @@
     UILabel* label=[[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     label.backgroundColor=[UIColor clearColor];
     label.font=LSFont14;
-    label.textColor=LSColorBlackRedColor;
     label.text=@" 订单详情";
     return label;
 }
@@ -223,7 +222,6 @@
             cell=[[[LSGroupCreateOrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSGroupCreateOrderCellTotalPrice"] autorelease];
 
             cell.textLabel.text=@"总价";
-            cell.infoLabel.textColor=LSColorBlackRedColor;
             cell.infoLabel.font=[UIFont systemFontOfSize:18.0];
             cell.bottomRadius=3.f;
             cell.isBottomLine=YES;

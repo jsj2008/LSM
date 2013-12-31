@@ -32,23 +32,7 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(contextRef, LSColorLineLightGrayColor.CGColor);
-    CGContextSetFillColorWithColor(contextRef, LSColorBgWhiteColor.CGColor);
-    
-    CGContextSetAllowsAntialiasing(contextRef,true);
-    CGContextSetLineWidth(contextRef, 1.f);
-	CGRect rrect = CGRectMake((10 + 1.f / 2), (10.f+1.f/2), (300 - 1.f), (rect.size.height-10.f-1.f));
-	
-	CGFloat minx = CGRectGetMinX(rrect), midx = CGRectGetMidX(rrect), maxx = CGRectGetMaxX(rrect);
-	CGFloat miny = CGRectGetMinY(rrect), midy = CGRectGetMidY(rrect), maxy = CGRectGetMaxY(rrect);
-    CGContextMoveToPoint(contextRef, minx, midy);
-    CGContextAddArcToPoint(contextRef, minx, miny, midx, miny, 3.f);
-    CGContextAddArcToPoint(contextRef, maxx, miny, maxx, midy, 3.f);
-    CGContextAddArcToPoint(contextRef, maxx, maxy, midx, maxy, 3.f);
-    CGContextAddArcToPoint(contextRef, minx, maxy, minx, midy, 3.f);
-    CGContextClosePath(contextRef);
-	CGContextDrawPath(contextRef, kCGPathFillStroke);
-    
+
     CGContextSetFillColorWithColor(contextRef, [UIColor blackColor].CGColor);
     NSString* text=@"查看图文详情";
     CGSize size=[text sizeWithFont:LSFont15];

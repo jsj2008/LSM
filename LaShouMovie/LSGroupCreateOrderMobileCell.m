@@ -48,8 +48,7 @@
 - (void)drawRect:(CGRect)rect
 {
     CGRect bgRect=CGRectMake(10, 10, rect.size.width-2*10, rect.size.height-10);
-    [self drawRoundRectangleInRect:bgRect topRadius:3.f bottomRadius:3.f isBottomLine:YES fillColor:LSColorBgWhiteColor strokeColor:LSColorLineLightGrayColor borderWidth:0.5f];
-    
+
     LSUser* user=[LSUser currentUser];
     
     CGContextRef contextRef=UIGraphicsGetCurrentContext();

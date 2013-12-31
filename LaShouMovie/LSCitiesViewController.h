@@ -20,7 +20,6 @@
     
     id<LSCitiesViewControllerDelegate> _delegate;
 }
-
 @property(nonatomic,assign) id<LSCitiesViewControllerDelegate> delegate;
 
 @end

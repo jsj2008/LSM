@@ -493,6 +493,20 @@ static LSUser* user=nil;
 
 
 #pragma mark- 优惠券相关
+- (void)LSMCCouponsWithOffset:(int)offset pageSize:(int)pageSize
+{
+    NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:
+                       user.userName, @"username",
+                       user.password,@"password",
+                       lsURLSource, @"source",
+                       [NSString stringWithFormat:@"%d", offset],@"offset",
+                       [NSString stringWithFormat:@"%d", pageSize],@"pageSize",
+                       [[NSString stringWithFormat:@"%@|%@|%@|%@",lsURLSource,user.userName,user.password,lsURLSign] SHA256],@"signValue",
+                       nil];
+    
+    NSURL* url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", API_VERSION_HEADER, lsURLCouponsByOffset_PageSize, lsURLSTID]];
+    [self requestWithURL:url requestType:lsRequestTypeCouponsByOffset_PageSize params:dic];
+}
 - (void)LSMCCouponUseWithOrderID:(NSString*)orderID cinemaID:(NSString*)cinemaID couponID:(NSString*)couponID
 {
     NSDictionary* dic=[NSDictionary dictionaryWithObjectsAndKeys:

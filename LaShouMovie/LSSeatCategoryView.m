@@ -33,13 +33,13 @@
 {
     // Drawing code
     [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(10.f, 5.f, 15.f, 15.f)];
-    [@"可选座位" drawInRect:CGRectMake(25.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [@"可选座位" drawInRect:CGRectMake(25.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatCategory color:LSColorTextGray]];
     [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(85.f, 5.f, 15.f, 15.f)];
-    [@"已售座位" drawInRect:CGRectMake(100.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [@"已售座位" drawInRect:CGRectMake(100.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatCategory color:LSColorTextGray]];
     [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(160.f, 5.f, 15.f, 15.f)];
-    [@"情侣座位" drawInRect:CGRectMake(175.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [@"情侣座位" drawInRect:CGRectMake(175.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatCategory color:LSColorTextGray]];
     [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(235.f, 5.f, 15.f, 15.f)];
-    [@"已选座位" drawInRect:CGRectMake(250.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatInfo color:LSColorTextGray]];
+    [@"已选座位" drawInRect:CGRectMake(250.f, 5.f, 60.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontSeatCategory color:LSColorTextGray]];
 }
 
 

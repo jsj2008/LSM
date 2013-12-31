@@ -7,7 +7,6 @@
 //
 
 #import "LSNavigationController.h"
-#import "UINavigationBar+Extension.h"
 
 @interface LSNavigationController ()
 
@@ -47,6 +46,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationBar setBarTintColor:LSColorNavigationRed];
 }
 
 - (void)didReceiveMemoryWarning

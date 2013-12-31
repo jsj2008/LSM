@@ -50,9 +50,7 @@
 	// Do any additional setup after loading the view.
     self.title=@"商品描述";
     _otherGroupMArray=[[NSMutableArray alloc] initWithCapacity:0];
-    
-    [self setBarButtonItemWithImageName:@"nav_share.png" clickedImageName:@"nav_share_d.png" isRight:YES buttonType:LSOtherButtonTypeShare];
-    
+
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeGroupInfoByGroupID object:nil];
     [messageCenter LSMCGroupInfoWithGroupID:_group.groupID];
     
@@ -86,14 +84,10 @@
 #pragma mark- 重载方法
 - (void)otherButtonClick:(UIButton *)sender
 {
-    [super otherButtonClick:sender];
-    if(sender.tag==LSOtherButtonTypeShare)
-    {
-        UIActionSheet* actionSheet=[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享到新浪微博", @"分享到腾讯微博", nil];
-        actionSheet.tag=0;
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-        [actionSheet release];
-    }
+    UIActionSheet* actionSheet=[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享到新浪微博", @"分享到腾讯微博", nil];
+    actionSheet.tag=0;
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet release];
 }
 
 #pragma mark- 私有方法
@@ -371,7 +365,6 @@
     {
         //在确定按钮的时候首先保证用户是已经登陆的
         LSLoginViewController* loginViewController=[[LSLoginViewController alloc] init];
-        loginViewController.internetStatusRemindType=LSInternetStatusRemindTypeAlert;
         loginViewController.delegate=self;
         
         LSNavigationController* navigationController=[[LSNavigationController alloc] initWithRootViewController:loginViewController];

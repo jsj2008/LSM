@@ -293,11 +293,11 @@
 #pragma mark- LSPayCouponCell的委托
 - (void)LSPayCouponCell:(LSPayCouponCell *)payCouponCell didClickCouponButton:(UIButton *)sender
 {
-    LSCouponViewController* couponViewController=[[LSCouponViewController alloc] init];
-    couponViewController.order=_order;
-    couponViewController.delegate=self;
-    [self.navigationController pushViewController:couponViewController animated:YES];
-    [couponViewController release];
+    LSUseCouponViewController* useCouponViewController=[[LSUseCouponViewController alloc] init];
+    useCouponViewController.order=_order;
+    useCouponViewController.delegate=self;
+    [self.navigationController pushViewController:useCouponViewController animated:YES];
+    [useCouponViewController release];
 }
 
 #pragma mark- LSPayFooterView的委托

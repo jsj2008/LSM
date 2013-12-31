@@ -44,6 +44,7 @@
     
     self.title = @"切换城市";
     self.tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+    
     self.leftBarButtonSystemItem=UIBarButtonSystemItemStop;
 
     _cityMArray=[[NSMutableArray alloc] initWithCapacity:0];

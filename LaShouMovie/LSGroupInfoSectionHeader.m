@@ -34,8 +34,6 @@
 {
     // Drawing code
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(contextRef, LSColorLineLightGrayColor.CGColor);
-    CGContextSetFillColorWithColor(contextRef, LSColorBgWhiteColor.CGColor);
     
     CGContextSetAllowsAntialiasing(contextRef,true);
     CGContextSetLineWidth(contextRef, 1.f);

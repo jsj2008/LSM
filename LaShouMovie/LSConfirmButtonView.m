@@ -46,8 +46,8 @@
     CGRect yRect=[@"￥" boundingRectWithSize:CGSizeMake(10.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontScheduleY] context:nil];
     [@"￥" drawInRect:CGRectMake(10.f, (rect.size.height-yRect.size.height)/2+(yRect.size.height-priceRect.size.height)/2, yRect.size.width, yRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleY color:LSColorWhite]];
     
-    CGRect buyRect=[@"购买" boundingRectWithSize:CGSizeMake(40.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontScheduleBuy] context:nil];
-    [@"购买" drawInRect:CGRectMake(70.f, (rect.size.height-buyRect.size.height)/2+(buyRect.size.height-priceRect.size.height)/2, buyRect.size.width, buyRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleBuy color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
+    CGRect buyRect=[@"购买" boundingRectWithSize:CGSizeMake(40.f, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontScheduleTitle] context:nil];
+    [@"购买" drawInRect:CGRectMake(70.f, (rect.size.height-buyRect.size.height)/2+(buyRect.size.height-priceRect.size.height)/2, buyRect.size.width, buyRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontScheduleTitle color:LSColorWhite textAlignment:NSTextAlignmentCenter]];
 }
 
 #pragma mark- 私有方法

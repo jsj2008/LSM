@@ -31,6 +31,7 @@
     NSString* _exchangeWay;//兑换方式（通兑券有，代金券空）
     NSString* _lessPriceRemind;//补差价提示（通兑券有，代金券空）
     NSString* _expireTime;//过期时间
+    NSString* _description;
 }
 @property (nonatomic, assign) LSCouponValid couponValid;//券有效
 @property (nonatomic, assign) LSCouponStatus couponStatus;//券状态
@@ -40,6 +41,7 @@
 @property (nonatomic, retain) NSString* exchangeWay;//兑换方式（通兑券有，代金券空）
 @property (nonatomic, retain) NSString* lessPriceRemind;//补差价提示（通兑券有，代金券空）
 @property (nonatomic, retain) NSString* expireTime;//过期时间
+@property (nonatomic, retain) NSString* description;
 
 - (id)initWithDictionary:(NSDictionary*)safeDic;
 

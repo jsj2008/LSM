@@ -46,13 +46,13 @@
 
 #pragma mark- 拉手券相关
 #define lsURLTicketsByOffset_PageSize                                  @"/GroupOrder/lashouCodeList"
-#define lsURLTicketPasswordByTicketID                                       @"/GroupOrder/sendLashouCodePwd"
-
+#define lsURLTicketPasswordByTicketID                                  @"/GroupOrder/sendLashouCodePwd"
 
 #pragma mark- 支付相关
-#define lsURLPayBalancePayByOrderID_IsCoupon_SecurityCode                @"/Pay/goPay"
+#define lsURLPayBalancePayByOrderID_IsCoupon_SecurityCode              @"/Pay/goPay"
 
 #pragma mark- 优惠券相关
+#define lsURLCouponsByOffset_PageSize                           @""
 #define lsURLCouponUseByOrderID_CinemaID_CouponID               @"/Voucher/getVouchersFromClients"
 #define lsURLCouponCancelByOrderID_CinemaID_CouponID            @"/Voucher/unOutfLockVoucher"
 

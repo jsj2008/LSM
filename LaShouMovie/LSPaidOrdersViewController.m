@@ -8,6 +8,7 @@
 
 #import "LSPaidOrdersViewController.h"
 #import "LSPaidOrderCell.h"
+#import "LSPaidOrderInfoViewController.h"
 
 @interface LSPaidOrdersViewController ()
 

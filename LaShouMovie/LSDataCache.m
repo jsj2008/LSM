@@ -77,7 +77,7 @@
     return filePath;//拼接文件路径
 }
 
-+ (CGFloat)calculateImageCache
++ (NSString*)calculateImageCache
 {
     NSString* path=[LSDataCache makeFilePathWithFolderType:LSFolderTypeLibrary subFolder:LSSubFolderTypeCaches name:@"com.hackemist.SDWebImageCache.default"];
     
@@ -89,7 +89,14 @@
         NSData* _data=[fileManager contentsAtPath:[path stringByAppendingPathComponent:subPath]];
         [mData appendData:_data];
     }
-    return mData.length/1024/1024;
+    if(mData.length>1024*1024)
+    {
+        return [NSString stringWithFormat:@"%uM",mData.length/1024/1024];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%uK",mData.length/1024];
+    }
 }
 + (void)clearImageCache
 {

@@ -35,7 +35,7 @@ typedef enum
 + (void)saveWithFolderType:(LSFolderType)folderType subFolder:(LSSubFolderType)subFolderType name:(NSString *)fileName data:(id)data;
 + (id)readOfFolderType:(LSFolderType)folderType subFolder:(LSSubFolderType)subFolderType name:(NSString *)fileName;
 
-+ (CGFloat)calculateImageCache;
++ (NSString*)calculateImageCache;
 + (void)clearImageCache;
 
 @end

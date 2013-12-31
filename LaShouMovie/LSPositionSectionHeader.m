@@ -55,8 +55,8 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    CGRect nameRect = [_title boundingRectWithSize:CGSizeMake(rect.size.width, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontSection] context:nil];
-    [_title drawInRect:CGRectMake(10.f, (rect.size.height - nameRect.size.height)/2, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontSection color:LSColorTextGray]];
+    CGRect nameRect = [_title boundingRectWithSize:CGSizeMake(rect.size.width, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontSectionHeader] context:nil];
+    [_title drawInRect:CGRectMake(10.f, (rect.size.height - nameRect.size.height)/2, nameRect.size.width, nameRect.size.height) withAttributes:[LSAttribute attributeFont:LSFontSectionHeader color:LSColorTextGray]];
 }
 
 

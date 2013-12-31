@@ -70,27 +70,6 @@
     _addButton.frame=CGRectMake(self.width-20.f-35.f-5.f-50.f-5.f-35.f, (self.height-35.f)/2, 35.f, 35.f);
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(contextRef, LSColorLineLightGrayColor.CGColor);
-    CGContextSetFillColorWithColor(contextRef, LSColorBgWhiteColor.CGColor);
-    
-    CGContextSetAllowsAntialiasing(contextRef,true);
-    CGContextSetLineWidth(contextRef, 1.f);
-	CGRect rrect = CGRectMake((10.f + 1.f / 2), 1.f/2, (300.f-1.f), rect.size.height);
-	
-	CGFloat minx = CGRectGetMinX(rrect), midx = CGRectGetMidX(rrect), maxx = CGRectGetMaxX(rrect);
-	CGFloat miny = CGRectGetMinY(rrect), midy = CGRectGetMidY(rrect), maxy = CGRectGetMaxY(rrect);
-    CGContextMoveToPoint(contextRef, minx, midy);
-    CGContextAddArcToPoint(contextRef, minx, miny, midx, miny, 0.f);
-    CGContextAddArcToPoint(contextRef, maxx, miny, maxx, midy, 0.f);
-    CGContextAddArcToPoint(contextRef, maxx, maxy, midx, maxy, 0.f);
-    CGContextAddArcToPoint(contextRef, minx, maxy, minx, midy, 0.f);
-    CGContextClosePath(contextRef);
-	CGContextDrawPath(contextRef, kCGPathFillStroke);
-}
-
 #pragma mark- 按钮方法
 - (void)addButtonClick:(UIButton*)sender
 {

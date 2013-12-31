@@ -14,10 +14,11 @@
 @synthesize couponStatus=_couponStatus;//券状态
 @synthesize couponType=_couponType;//券类型
 @synthesize couponID=_couponID;//券号
-@synthesize price=_price;//金额（代金券填，通兑券空）
+@synthesize price=_price;//金额（代金券有，通兑券空）
 @synthesize exchangeWay=_exchangeWay;//兑换方式（通兑券有，代金券空）
 @synthesize lessPriceRemind=_lessPriceRemind;//补差价提示（通兑券有，代金券空）
 @synthesize expireTime=_expireTime;//过期时间
+@synthesize description=_description;
 
 - (id)initWithDictionary:(NSDictionary*)safeDic
 {
@@ -32,6 +33,7 @@
         self.exchangeWay=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"convert"]];//兑换方式（通兑券有，代金券空）
         self.lessPriceRemind=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"charge"]];//补差价提示（通兑券有，代金券空）
         self.expireTime=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"deadline"]];//过期时间
+        self.description=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"description"]];//优惠券说明;
     }
     return self;
 }
@@ -45,6 +47,7 @@
     self.exchangeWay=nil;//兑换方式（通兑券有，代金券空）
     self.lessPriceRemind=nil;//补差价提示（通兑券有，代金券空）
     self.expireTime=nil;//过期时间
+    self.description=nil;
     
     [super dealloc];
 }
@@ -59,6 +62,7 @@
     [aCoder encodeObject:_exchangeWay forKey:@"exchangeWay"];
     [aCoder encodeObject:_lessPriceRemind forKey:@"lessPriceRemind"];
     [aCoder encodeObject:_expireTime forKey:@"expireTime"];
+    [aCoder encodeObject:_description forKey:@"description"];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
@@ -71,6 +75,7 @@
     self.exchangeWay=[decoder decodeObjectForKey:@"exchangeWay"];//兑换方式（通兑券有，代金券空）
     self.lessPriceRemind=[decoder decodeObjectForKey:@"lessPriceRemind"];//补差价提示（通兑券有，代金券空）
     self.expireTime=[decoder decodeObjectForKey:@"expireTime"];//过期
+    self.description=[decoder decodeObjectForKey:@"description"];
     return self;
 }
 
