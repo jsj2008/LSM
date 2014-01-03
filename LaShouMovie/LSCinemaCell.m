@@ -39,18 +39,20 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
     CGFloat contentX=gap;
     CGFloat contentY=gap;
     
     CGRect nameRect;
-    //图标大小：30
+    //图标大小：16*16
     if (_cinema.buyType == LSCinemaBuyTypeOnlySeat || _cinema.buyType == LSCinemaBuyTypeOnlyGroup)
     {
-        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-35.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
+        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-16.f-5.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
     }
     else if (_cinema.buyType == LSCinemaBuyTypeSeatGroup)
     {
-        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-65.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
+        nameRect = [_cinema.cinemaName boundingRectWithSize:CGSizeMake(rect.size.width-gap-16.f-5.f-16.f-5.f-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontCinemaName] context:nil];
     }
     else
     {
@@ -60,22 +62,21 @@
     [_cinema.cinemaName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, 25.f) withAttributes:[LSAttribute attributeFont:LSFontCinemaName lineBreakMode:NSLineBreakByTruncatingTail]];
     contentX+=(nameRect.size.width+5.f);
     
-
     if (_cinema.buyType == LSCinemaBuyTypeOnlySeat)
     {
-        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
-        contentX+=30.f+5.f;
+        [[UIImage lsImageNamed:@"icon_seat.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
+        contentX+=16.f+5.f;
     }
     else if (_cinema.buyType == LSCinemaBuyTypeOnlyGroup)
     {
-        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
-        contentX+=30.f+5.f;
+        [[UIImage lsImageNamed:@"icon_group.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
+        contentX+=16.f+5.f;
     }
     else if (_cinema.buyType == LSCinemaBuyTypeSeatGroup)
     {
-        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
-        contentX+=30.f+5.f;
-        [[UIImage lsImageNamed:@"" ] drawInRect:CGRectMake(contentX, contentY, 30.f, 30.f)];
+        [[UIImage lsImageNamed:@"icon_seat.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
+        contentX+=16.f+5.f;
+        [[UIImage lsImageNamed:@"icon_group.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 16.f, 16.f)];
     }
     
     contentY+=25.f;

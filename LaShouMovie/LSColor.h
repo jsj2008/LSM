@@ -18,9 +18,10 @@
 #define LSColorButtonNormalRed            LSRGBA(190.f, 43.f, 43.f, 1.f)
 #define LSColorButtonHighlightedRed       LSRGBA(156.f, 21.f, 21.f, 1.f)
 
-#define LSColorNavigationRed              LSRGBA(184.f, 20.f, 20.f, 0.9f)
-#define LSColorTabBlack                   LSRGBA(6.f, 9.f, 11.f, 0.9f)
+#define LSColorNavigationRed              LSRGBA(184.f, 20.f, 20.f, 0.98f)
+#define LSColorTabBlack                   LSRGBA(6.f, 9.f, 11.f, 0.98f)
 #define LSColorBackgroundGray             LSRGBA(238.f, 238.f, 238.f, 1.f)
+#define LSColorBackgroundBlack            LSRGBA(0.f, 0.f, 0.f, 0.8f)
 #define LSColorSeparatorLineGray          LSRGBA(211.f, 211.f, 211.f, 1.f)
 
 #define LSColorTextBlack                  LSRGBA(44.f, 46.f, 50.f, 1.f)

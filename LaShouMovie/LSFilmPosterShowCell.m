@@ -42,64 +42,76 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _filmImageView.frame=CGRectMake(0.f, 0.f, self.width, self.height);
+
+    //设置点亮的星星
+    _starImageView.frame=CGRectMake(gap, self.height-(gap+70.f+gap)+50.f+1.f, 67.f*[_film.grade floatValue]/10, 11.f);
+    _starImageView.image = [UIImage imageNamed:@"stars_full.png"];
 }
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
+    if(_filmImageView.image)
+    {
+        [_filmImageView.image drawInRect:rect];
+    }
+    
     CGFloat contentX = gap;
     CGFloat contentY = rect.size.height-(gap+70.f+gap);
     
-    [self drawRectangleInRect:CGRectMake(0.f, contentY, rect.size.width, gap+70.f+gap) fillColor:[UIColor whiteColor]];
+    [self drawRectangleInRect:CGRectMake(0.f, contentY, rect.size.width, gap+70.f+gap) fillColor:LSColorBackgroundBlack];
+    
+    contentY+=gap;
+    
+    NSString* text=nil;
     
     //imax:28  3D:17  预售:35
-    CGRect nameRect = [_film.filmName boundingRectWithSize:CGSizeMake(rect.size.width-contentX-(_film.isPresell?(35.f+5.f):0.f)-(_film.dimensional==LSFilmDimensional3D?(17.f+5.f):0.f)-(_film.isIMAX?(28.f+5.f):0.f)-gap, INT32_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontFilmName] context:nil];
     
-    [_film.filmName drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, 25.f) withAttributes:[LSAttribute attributeFont:LSFontFilmName color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
+    text=_film.filmName;
+    CGRect nameRect = [text boundingRectWithSize:CGSizeMake(rect.size.width-contentX-5.f-(_film.isPresell?(35.f+5.f):0.f)-(_film.dimensional==LSFilmDimensional3D?(17.f+5.f):0.f)-(_film.isIMAX?(28.f+5.f):0.f)-gap, INT32_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[LSAttribute attributeFont:LSFontFilmName] context:nil];
+    
+    [text drawInRect:CGRectMake(contentX, contentY, nameRect.size.width, 25.f) withAttributes:[LSAttribute attributeFont:LSFontFilmName color:LSColorWhite  lineBreakMode:NSLineBreakByTruncatingTail]];
     contentX+=(nameRect.size.width+5.f);
-    
     
     //绘制imax
     if(_film.isIMAX)
     {
-        [[UIImage lsImageNamed:@"film_imax.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 28.f, 11.f)];
+        [[UIImage lsImageNamed:@"icon_imax.png"] drawInRect:CGRectMake(contentX, contentY+3.f, 28.f, 14.f)];
         contentX+=28.f+5.f;
     }
     
     //绘制dimensional
     if(_film.dimensional==LSFilmDimensional3D)
     {
-        [[UIImage lsImageNamed:@"film_3d.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 17.f, 11.f)];
+        [[UIImage lsImageNamed:@"icon_3d.png"] drawInRect:CGRectMake(contentX, contentY+3.f, 17.f, 14.f)];
         contentX+=17.f+5.f;
     }
     
     //绘制是否预售
     if(_film.isPresell)
     {
-        [[UIImage lsImageNamed:@"icon_presell.png" ] drawInRect:CGRectMake(contentX, contentY+2.f, 35.f, 11.f)];
+        [[UIImage lsImageNamed:@"icon_presell.png"] drawInRect:CGRectMake(contentX, contentY+3.f, 35.f, 14.f)];
         contentX+=35.f;
     }
     
     contentX = gap;
     contentY += 25.f;
     
-    [_film.brief drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
+    text=_film.brief;
+    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-20.f-gap, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
     
-    //绘制星级信息
-    [[UIImage lsImageNamed:@""] drawInRect:CGRectMake(contentX, contentY, 70.f, 15.f)];
-    //设置点亮的星星
-    _starImageView.frame=CGRectMake(contentX, contentY, 70.f*[_film.grade floatValue]/10, 13.f);
-    _starImageView.image = [UIImage imageNamed:@""];
+    //绘制星级
+    [[UIImage lsImageNamed:@"stars_empty.png"] drawInRect:CGRectMake(contentX, contentY+1.f, 67.f, 11.f)];
     
     contentY+=1.f;
-    NSString* text = [NSString stringWithFormat:@"%@分", _film.grade];
-    [text drawInRect:CGRectMake(contentX+70.f+10.f, contentY, rect.size.width-(contentX+70.f+10.f)-10.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorTextRed lineBreakMode:NSLineBreakByTruncatingTail]];
+    text = [NSString stringWithFormat:@"%@分", _film.grade];
+    [text drawInRect:CGRectMake(contentX+67.f+5.f, contentY, rect.size.width, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
     
-    text=nil;
     //绘制上映信息
     if(_film.showCinemasCount>0 && _film.showSchedulesCount>0)
     {
@@ -107,9 +119,9 @@
     }
     else
     {
-        text=@"没有影院上映";
+        text=@"没有上映影院";
     }
-    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width-contentX-10.f, INT32_MAX) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, rect.size.width, 15.f) withAttributes:[LSAttribute attributeFont:LSFontFilmInfo color:LSColorWhite lineBreakMode:NSLineBreakByTruncatingTail]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

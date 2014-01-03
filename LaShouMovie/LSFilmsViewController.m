@@ -10,11 +10,8 @@
 #import "LSFilm.h"
 #import "LSFilmInfoViewController.h"
 #import "LSFilmsSchedulesByCinemaViewController.h"
+#import "LSCinemasByFilmViewController.h"
 #import "LSADWebViewController.h"
-#import "LSFilmListShowCell.h"
-#import "LSFilmListWillCell.h"
-#import "LSFilmPosterShowCell.h"
-#import "LSFilmPosterWillCell.h"
 
 @interface LSFilmsViewController ()
 
@@ -24,8 +21,14 @@
 
 - (void)dealloc
 {
+    LSRELEASE(_advertisment)
     LSRELEASE(_showingFilmMArray)
     LSRELEASE(_willShowFilmMArray)
+    
+    LSRELEASE(_showingFilmListCellMArray)
+    LSRELEASE(_willFilmListCellMArray)
+    LSRELEASE(_showingFilmPosterCellMArray)
+    LSRELEASE(_willFilmPosterCellMArray)
     [super dealloc];
 }
 
@@ -53,8 +56,8 @@
     _showingFilmPosterCellMArray=[[NSMutableArray alloc] initWithCapacity:0];
     _willFilmPosterCellMArray=[[NSMutableArray alloc] initWithCapacity:0];
     
-    [self setBarButtonItemWithTitle:user.cityName imageName:@"" isRight:NO];
-    [self setBarButtonItemWithImageName:@"" isRight:YES];
+    [self setBarButtonItemWithTitle:user.cityName imageName:@"icon_arrow_down.png" isRight:NO];
+    [self setBarButtonItemWithImageName:@"btn_pic_nor.png" selectImageName:@"btn_pic_sel.png" isRight:YES];
     
     //添加通知
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmsByStatus object:nil];
@@ -78,28 +81,28 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     
-    if(![_showingFilmMArray isEqual:_filmArray])
+    if(_showingFilmMArray!=_filmArray)
     {
         [_showingFilmMArray removeAllObjects];
     }
-    if(![_willShowFilmMArray isEqual:_filmArray])
+    if(_willShowFilmMArray!=_filmArray)
     {
         [_willShowFilmMArray removeAllObjects];
     }
     
-    if(![_showingFilmListCellMArray isEqual:_filmCellArray])
+    if(_showingFilmListCellMArray!=_filmCellArray)
     {
         [_showingFilmListCellMArray removeAllObjects];
     }
-    if(![_willFilmListCellMArray isEqual:_filmCellArray])
+    if(_willFilmListCellMArray!=_filmCellArray)
     {
         [_willFilmListCellMArray removeAllObjects];
     }
-    if(![_showingFilmPosterCellMArray isEqual:_filmCellArray])
+    if(_showingFilmPosterCellMArray!=_filmCellArray)
     {
         [_showingFilmPosterCellMArray removeAllObjects];
     }
-    if(![_willFilmPosterCellMArray isEqual:_filmCellArray])
+    if(_willFilmPosterCellMArray!=_filmCellArray)
     {
         [_willFilmPosterCellMArray removeAllObjects];
     }
@@ -120,7 +123,16 @@
 - (void)rightBarButtonItemClick:(UIBarButtonItem *)sender
 {
     _displayType=!_displayType;
-    [self setBarButtonItemWithImageName:@"" isRight:YES];
+    if(_displayType==LSFilmDisplayTypeList)
+    {
+        self.tableView.pagingEnabled=NO;
+        [self setBarButtonItemWithImageName:@"btn_list_nor.png" selectImageName:@"btn_list_sel.png" isRight:YES];
+    }
+    else
+    {
+        self.tableView.pagingEnabled=YES;
+        [self setBarButtonItemWithImageName:@"btn_pic_nor.png" selectImageName:@"btn_pic_sel.png" isRight:YES];
+    }
     
     [self refreshTableView];
 }
@@ -146,6 +158,7 @@
                         {
                             LSFilmListShowCell* cell=[[LSFilmListShowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSFilmListShowCell"];
                             cell.film=[_filmArray objectAtIndex:i];
+                            cell.delegate=self;
                             [_filmCellArray addObject:cell];
                             [cell release];
                         }
@@ -157,6 +170,7 @@
                             for(int i=0;i<7;i++)
                             {
                                 LSFilmListShowCell* cell=[_filmCellArray objectAtIndex:i];
+                                //cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
                                 [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
                             }
                         });
@@ -177,6 +191,7 @@
                             
                             for(LSFilmListShowCell* cell in _filmCellArray)
                             {
+                                //cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
                                 [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
                             }
                         });
@@ -190,6 +205,7 @@
                         {
                             LSFilmListShowCell* cell=[[LSFilmListShowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSFilmListShowCell"]];
                             cell.film=[_filmArray objectAtIndex:i];
+                            cell.delegate=self;
                             [_filmCellArray addObject:cell];
                             [cell release];
                         }
@@ -199,6 +215,7 @@
                             for(int i=7;i<_filmCellArray.count;i++)
                             {
                                 LSFilmListShowCell* cell=[_filmCellArray objectAtIndex:i];
+                                //cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
                                 [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
                             }
                         });
@@ -301,9 +318,9 @@
                 dispatch_queue_t queue_0 = dispatch_queue_create("queue_0", NULL);
                 dispatch_async(queue_0, ^{
                     
-                    if(_filmArray.count>7)
+                    if(_filmArray.count>3)
                     {
-                        for(int i=0;i<7;i++)
+                        for(int i=0;i<3;i++)
                         {
                             LSFilmPosterShowCell* cell=[[LSFilmPosterShowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSFilmPosterShowCell"];
                             cell.film=[_filmArray objectAtIndex:i];
@@ -315,10 +332,14 @@
                             
                             [self.tableView reloadData];
                             
-                            for(int i=0;i<7;i++)
+                            for(int i=0;i<3;i++)
                             {
                                 LSFilmPosterShowCell* cell=[_filmCellArray objectAtIndex:i];
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        [cell setNeedsDisplay];
+                                    }];
+                                }];
                             }
                         });
                     }
@@ -338,16 +359,20 @@
                             
                             for(LSFilmPosterShowCell* cell in _filmCellArray)
                             {
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        [cell setNeedsDisplay];
+                                    }];
+                                }];
                             }
                         });
                     }
                 });
                 dispatch_async(queue_0, ^{
                     
-                    if(_filmArray.count>7)
+                    if(_filmArray.count>3)
                     {
-                        for(int i=7;i<_filmArray.count;i++)
+                        for(int i=3;i<_filmArray.count;i++)
                         {
                             LSFilmPosterShowCell* cell=[[LSFilmPosterShowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSFilmPosterShowCell"]];
                             cell.film=[_filmArray objectAtIndex:i];
@@ -357,10 +382,12 @@
                         
                         dispatch_async(dispatch_get_main_queue(), ^{
                             
-                            for(int i=7;i<_filmCellArray.count;i++)
+                            for(int i=3;i<_filmCellArray.count;i++)
                             {
                                 LSFilmPosterShowCell* cell=[_filmCellArray objectAtIndex:i];
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell setNeedsDisplay];
+                                }];
                             }
                         });
                     }
@@ -380,9 +407,9 @@
                 dispatch_queue_t queue_0 = dispatch_queue_create("queue_0", NULL);
                 dispatch_async(queue_0, ^{
                     
-                    if(_filmArray.count>7)
+                    if(_filmArray.count>3)
                     {
-                        for(int i=0;i<7;i++)
+                        for(int i=0;i<3;i++)
                         {
                             LSFilmPosterWillCell* cell=[[LSFilmPosterWillCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSFilmPosterWillCell"];
                             cell.film=[_filmArray objectAtIndex:i];
@@ -394,10 +421,14 @@
                             
                             [self.tableView reloadData];
                             
-                            for(int i=0;i<7;i++)
+                            for(int i=0;i<3;i++)
                             {
                                 LSFilmPosterWillCell* cell=[_filmCellArray objectAtIndex:i];
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        [cell setNeedsDisplay];
+                                    }];
+                                }];
                             }
                         });
                     }
@@ -417,16 +448,20 @@
                             
                             for(LSFilmPosterWillCell* cell in _filmCellArray)
                             {
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                        [cell setNeedsDisplay];
+                                    }];
+                                }];
                             }
                         });
                     }
                 });
                 dispatch_async(queue_0, ^{
                     
-                    if(_filmArray.count>7)
+                    if(_filmArray.count>3)
                     {
-                        for(int i=7;i<_filmArray.count;i++)
+                        for(int i=3;i<_filmArray.count;i++)
                         {
                             LSFilmPosterWillCell* cell=[[LSFilmPosterWillCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[NSString stringWithFormat:@"LSFilmPosterWillCell"]];
                             cell.film=[_filmArray objectAtIndex:i];
@@ -436,10 +471,12 @@
                         
                         dispatch_async(dispatch_get_main_queue(), ^{
                             
-                            for(int i=7;i<_filmCellArray.count;i++)
+                            for(int i=3;i<_filmCellArray.count;i++)
                             {
                                 LSFilmPosterWillCell* cell=[_filmCellArray objectAtIndex:i];
-                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.imageURL]];
+                                [cell.filmImageView setImageWithURL:[NSURL URLWithString:cell.film.posterURL]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                    [cell setNeedsDisplay];
+                                }];
                             }
                         });
                     }
@@ -465,6 +502,12 @@
 - (void)lsHttpRequestNotification:(NSNotification*)notification
 {
     [hud hide:YES];//任何的通知都会导致隐藏
+    
+    if(LSiOS6)
+    {
+        [self.refreshControl endRefreshing];
+    }
+    
     if([self checkIsNotEmpty:notification])
     {
         if([notification.object isEqual:lsRequestFailed])
@@ -530,11 +573,6 @@
                     _filmArray=_willShowFilmMArray;
                 }
                 
-                if(_filmArray.count==0)
-                {
-                    [_filmArray addObject:@"暂无影院"];
-                }
-                
                 if(mark==_filmShowStatus)
                 {
                     dispatch_async(dispatch_get_main_queue(),^{
@@ -558,21 +596,28 @@
     }
 }
 
-#pragma mark- 
+#pragma mark- UITableView的委托方法
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return _advertisment==nil?0.f:50.f;
 }
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if(_adView==nil)
+    if(_advertisment!=nil)
     {
-        _adView=[[[LSAdView alloc] initWithFrame:CGRectZero] autorelease];
-        _adView.delegate=self;
+        if(_adView==nil)
+        {
+            _adView=[[[LSAdView alloc] initWithFrame:CGRectZero] autorelease];
+            _adView.delegate=self;
+        }
+        _adView.advertisment=_advertisment;
+        [_adView setNeedsLayout];
+        return _adView;
     }
-    _adView.advertisment=_advertisment;
-    [_adView setNeedsLayout];
-    return _adView;
+    else
+    {
+        return nil;
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -596,9 +641,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     LSFilmInfoViewController* filmInfoViewController=[[LSFilmInfoViewController alloc] init];
+    filmInfoViewController.hidesBottomBarWhenPushed=YES;
     filmInfoViewController.film=[_filmArray objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:filmInfoViewController animated:YES];
     [filmInfoViewController release];
+}
+
+#pragma mark- LSFilmListShowCell的委托方法
+- (void)LSFilmListShowCell:(LSFilmListShowCell *)filmListShowCell didClickQuickBuyView:(LSQuickBuyView *)quickBuyView
+{
+    LSCinemasByFilmViewController* cinemasByFilmViewController=[[LSCinemasByFilmViewController alloc] init];
+    cinemasByFilmViewController.film=filmListShowCell.film;
+    [self.navigationController pushViewController:cinemasByFilmViewController animated:YES];
+    [cinemasByFilmViewController release];
 }
 
 #pragma mark- LSAdView的委托方法

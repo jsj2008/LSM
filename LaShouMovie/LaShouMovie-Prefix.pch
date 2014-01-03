@@ -42,7 +42,6 @@
     #import "FXBlurView.h"
 #endif
 
-
 #pragma mark- 联合登陆参数
 #define LSQQWBUID                   @"LSQQWBUID"
 #define LSQQWBUserName              @"LSQQWBUserName"
@@ -101,7 +100,7 @@
 
 #pragma mark- 调试相关参数
 
-#define LSDEBUG//此行为开关
+//#define LSDEBUG//此行为开关
 #ifdef LSDEBUG
     //调试版常用函数
     //打印函数
@@ -115,7 +114,7 @@
 #else
     //发布版常用函数
     //打印函数
-    #define LSLOG(INFO,...)             //NSLog((@"\n[File:%s]\n[Line:%d]\n[Function:%s]\n" INFO), __FILE__, __LINE__,__PRETTY_FUNCTION__, ##__VA_ARGS__)
+    #define LSLOG(INFO,...)             NSLog((@"\n[File:%s]\n[Line:%d]\n[Function:%s]\n" INFO), __FILE__, __LINE__,__PRETTY_FUNCTION__, ##__VA_ARGS__)
 
     //发布版API参数
     #define API_VERSION_HEADER          @"http://go.client.lashou.com/movies1-2-1.php"

@@ -10,10 +10,12 @@
 
 @interface LSTableViewCell : UITableViewCell
 {
+    BOOL _isClearBG;
     BOOL _standardBottomLine;
-    BOOL _wholeBottomLine;
+    BOOL _noBottomLine;
 }
+@property(nonatomic,assign) BOOL isClearBG;
 @property(nonatomic,assign) BOOL standardBottomLine;
-@property(nonatomic,assign) BOOL wholeBottomLine;
+@property(nonatomic,assign) BOOL noBottomLine;
 
 @end

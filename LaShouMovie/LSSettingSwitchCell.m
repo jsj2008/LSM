@@ -18,7 +18,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.textLabel.textColor=LSColorBlack;
+        self.textLabel.textColor=LSColorTextBlack;
         self.textLabel.font=LSFontSetTitle;
         
         _switch=[[UISwitch alloc] initWithFrame:CGRectMake(255.f, 7.f, 55.f, 30.f)];

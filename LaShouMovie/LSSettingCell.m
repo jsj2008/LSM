@@ -17,7 +17,7 @@
         // Initialization code
         self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         
-        self.textLabel.textColor=LSColorBlack;
+        self.textLabel.textColor=LSColorTextBlack;
         self.textLabel.font=LSFontSetTitle;
     }
     return self;

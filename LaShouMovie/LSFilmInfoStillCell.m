@@ -31,7 +31,6 @@
         _stillTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _stillTableView.delegate=self;
         _stillTableView.dataSource=self;
-        _stillTableView.pagingEnabled=YES;
         _stillTableView.showsVerticalScrollIndicator=NO;
         _stillTableView.showsHorizontalScrollIndicator=NO;
         _stillTableView.separatorStyle=UITableViewCellSeparatorStyleNone;
@@ -75,41 +74,13 @@
         cell.contentView.transform=CGAffineTransformMakeRotation(M_PI/2);//将视图旋转90
     }
     
-    if(!tableView.isDragging && !tableView.isDecelerating)
-    {
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[_stillArray objectAtIndex:indexPath.row]] placeholderImage:LSPlaceholderImage];
-    }
+    [cell.imageView setImageWithURL:[NSURL URLWithString:[_stillArray objectAtIndex:indexPath.row]] placeholderImage:LSPlaceholderImage];
     
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(_delegate!=nil)
-    {
-        [_delegate LSFilmInfoStillCell:self didSelectRowAtIndexPath:indexPath.row];
-    }
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if(!decelerate)//是否有减速,没有减速说明是匀速拖动
-    {
-        [self soapSmooth];
-    }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self soapSmooth];
-}
-
-#pragma mark 肥皂滑代码实现
-- (void)soapSmooth
-{
-    NSArray* cellArray=[_stillTableView visibleCells];
-    for(LSFilmStillCell* cell in cellArray)
-    {
-        NSIndexPath* indexPath=[_stillTableView indexPathForCell:cell];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:[_stillArray objectAtIndex:indexPath.row]] placeholderImage:LSPlaceholderImage];
-    }
+    [_delegate LSFilmInfoStillCell:self didSelectRowAtIndexPath:indexPath.row];
 }
 
 @end

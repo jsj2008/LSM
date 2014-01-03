@@ -12,11 +12,17 @@
 #import "LSAdView.h"
 #import "LSAdvertisment.h"
 
+#import "LSFilmListShowCell.h"
+#import "LSFilmListWillCell.h"
+#import "LSFilmPosterShowCell.h"
+#import "LSFilmPosterWillCell.h"
+
 @interface LSFilmsViewController : LSTableViewController
 <
 LSCitiesViewControllerDelegate,
 LSSegmentedControlDelegate,
-LSAdViewDelegate
+LSAdViewDelegate,
+LSFilmListShowCellDelegate
 >
 {
     NSMutableArray* _showingFilmMArray;//正在上映的影片数组

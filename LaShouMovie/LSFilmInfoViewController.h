@@ -23,7 +23,9 @@ LSQQWBAuthViewControllerDelegate
 >
 {
     LSFilm* _film;
-
+    UIImageView* _bgImageView;
+    LSFilmInfoFooterView* _filmInfoFooterView;
+    
     BOOL _isDescriptionSpread;
     BOOL _isHideFooter;
 }

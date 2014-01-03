@@ -55,7 +55,8 @@
         self.filmName=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"filmName"]];
         self.releaseDate=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"releaseDate"]];
         self.duration=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"duration"]];
-        self.brief=[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"brief"]];
+        self.brief=[[NSString stringWithFormat:@"%@",[safeDic objectForKey:@"brief"]] stringByReplacingOccurrencesOfString:@"\t" withString:@""];
+        
         self.grade=[NSString stringWithFormat:@"%@", [safeDic objectForKey:@"grade"]];
         self.starCode=[[safeDic objectForKey:@"starCode"] floatValue];
         self.dimensional=[[safeDic objectForKey:@"dimensional"] intValue];

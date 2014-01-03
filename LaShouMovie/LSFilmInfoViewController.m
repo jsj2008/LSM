@@ -44,14 +44,20 @@
 {
     [super viewDidLoad];
     self.title=_film.filmName;
+    
+    [self setBarButtonItemWithImageName:@"btn_share_nor.png" selectImageName:@"btn_share_sel.png" isRight:YES];
     [self setRightBarButtonSystemItem:UIBarButtonSystemItemAction];
     
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeFilmInfoByFilmID object:nil];
     
-    LSFilmInfoFooterView* filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectMake(0.f, self.view.height-(44.f)-10.f, self.view.width, 44.f)];
-    filmInfoFooterView.delegate=self;
-    [self.view addSubview:filmInfoFooterView];
-    [filmInfoFooterView release];
+    _bgImageView=[[UIImageView alloc] initWithFrame:self.view.frame];
+    self.tableView.backgroundView=_bgImageView;
+    [_bgImageView release];
+    
+//    LSFilmInfoFooterView* filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectMake(0.f, self.view.height-44.f-54.f, self.view.width, 54.f)];
+//    filmInfoFooterView.delegate=self;
+//    [self.view addSubview:filmInfoFooterView];
+//    [filmInfoFooterView release];
 
     if(!_film.isFetchDetail)
     {
@@ -174,6 +180,33 @@
         return headerLabel;
     }
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if(section==2)
+    {
+        return 54.f;
+    }
+    else
+    {
+        return 0.f;
+    }
+}
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if(section==2)
+    {
+        if(_filmInfoFooterView==nil)
+        {
+            _filmInfoFooterView=[[LSFilmInfoFooterView alloc] initWithFrame:CGRectZero];
+            _filmInfoFooterView.delegate=self;
+        }
+        return _filmInfoFooterView;
+    }
+    else
+    {
+        return nil;
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
@@ -192,7 +225,7 @@
         }
         else
         {
-            return HeightOfiPhoneX(self.view.height-120.f-84.f-20.f-20.f-54.f);
+            return HeightOfiPhoneX(self.view.height-20.f-44.f-120.f-84.f-20.f-20.f-54.f);
         }
     }
     else
@@ -211,6 +244,24 @@
         {
             cell=[[[LSFilmInfoInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSFilmInfoInfoCell"] autorelease];
             cell.film=_film;
+            [cell.imageView setImageWithURL:[NSURL URLWithString:_film.imageURL] placeholderImage:LSPlaceholderImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                
+                dispatch_queue_t queue_0=dispatch_queue_create("queue_0", NULL);
+                
+                __block UIImage* _image=nil;
+                dispatch_barrier_async(queue_0, ^{
+                    
+                    _image=[[UIImage scaleToSizeWithImage:cell.imageView.image size:CGSizeMake(self.view.width, self.view.height)] blurredImageWithRadius:5 iterations:70 tintColor:LSColorBlack];
+                });
+                dispatch_async(queue_0, ^{
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        _bgImageView.image=_image;
+                    });
+                });
+                dispatch_release(queue_0);
+            }];
         }
         [cell setNeedsDisplay];
         return cell;
@@ -254,7 +305,7 @@
 }
 
 
-#pragma mark-LSSeatSectionFooter委托方法
+#pragma mark- LSSeatSectionFooter委托方法
 - (void)LSFilmInfoFooterView:(LSFilmInfoFooterView *)filmInfoFooterView didClickSelectButton:(UIButton *)selectButton
 {
     LSCinemasByFilmViewController* cinemasByFilmViewController=[[LSCinemasByFilmViewController alloc] init];

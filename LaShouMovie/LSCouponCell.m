@@ -74,7 +74,7 @@
     contentY+=25.f;
     
     text=_coupon.description;
-    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontCouponsInfo color:(_coupon.couponStatus==LSCouponStatusUnuse?LSColorBlack:LSColorTextGray)]];
+    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontCouponsInfo color:(_coupon.couponStatus==LSCouponStatusUnuse?LSColorTextBlack:LSColorTextGray)]];
     
     contentY+=15.f;
     

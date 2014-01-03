@@ -38,7 +38,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorBlack lineWidth:1.f];
+    [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorTextBlack lineWidth:1.f];
     
     CGFloat contentX=gap;
     CGFloat contentY=gap;

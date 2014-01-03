@@ -19,11 +19,11 @@
         // Initialization code
         self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         
-        self.textLabel.textColor=LSColorBlack;
+        self.textLabel.textColor=LSColorTextBlack;
         self.textLabel.font=LSFontSetTitle;
         
         _infoLabel=[[UILabel alloc] initWithFrame:CGRectZero];
-        _infoLabel.textColor=LSColorBlack;
+        _infoLabel.textColor=LSColorTextBlack;
         _infoLabel.font=LSFontSetTitle;
         [self.contentView addSubview:_infoLabel];
         [_infoLabel release];

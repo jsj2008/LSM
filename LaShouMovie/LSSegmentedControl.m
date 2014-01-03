@@ -10,23 +10,18 @@
 
 @implementation LSSegmentedControl
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (id)initWithItems:(NSArray *)items
 {
     self = [super initWithItems:items];
     if (self) {
         // Initialization code
-        [self setDividerImage:[UIImage lsImageNamed:@""] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [self setDividerImage:[UIImage lsImageNamed:@""] forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//        self.backgroundColor=LSColorButtonHighlightedRed;
+        self.tintColor=LSColorButtonHighlightedRed;
+        [self setTitleTextAttributes:[LSAttribute attributeFont:LSFont13 color:LSColorWhite] forState:UIControlStateNormal];
+        [self setTitleTextAttributes:[LSAttribute attributeFont:LSFont13 color:LSColorWhite] forState:UIControlStateHighlighted];
+        [self setTitleTextAttributes:[LSAttribute attributeFont:LSFont13 color:LSColorWhite] forState:UIControlStateSelected];
         [self addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+        self.selectedSegmentIndex=0;
     }
     return self;
 }

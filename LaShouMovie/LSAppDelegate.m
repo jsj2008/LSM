@@ -54,9 +54,7 @@
     self.window.rootViewController=tabBarController;
     [tabBarController release];
     
-#if TARGET_IPHONE_SIMULATOR
-    
-#elif TARGET_OS_IPHONE
+    /*
     if([LSSave obtainForKey:LSWelcome]==nil)
     {
         LSWelcomeView* welcomeView=[[LSWelcomeView alloc] initWithFrame:CGRectMake(0.f, 20.f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
@@ -65,10 +63,10 @@
         [self.window bringSubviewToFront:welcomeView];
         [welcomeView release];
     }
-#endif
+     */
 
     
-//    //启动推送功能
+    //启动推送功能
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
     //判断程序是不是由推送服务启动的

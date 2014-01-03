@@ -44,17 +44,17 @@
     NSString* text=nil;
     
     text=_ticket.groupTitle;
-    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsTitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 20.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsTitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorTextBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=20.f;
     
     text=[NSString stringWithFormat:@"拉手券号：%@",_ticket.ticketID];
-    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, 300.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorTextBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
     
     contentY+=15.f;
     
     text=[NSString stringWithFormat:@"有效期至：%@",_ticket.expireTime];
-    [text drawInRect:CGRectMake(contentX, contentY, 240.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
+    [text drawInRect:CGRectMake(contentX, contentY, 240.f, 15.f) withAttributes:[LSAttribute attributeFont:LSFontGroupsSubtitle color:(_ticket.ticketStatus==LSTicketStatusUnuse?LSColorTextBlack:LSColorTextGray) lineBreakMode:NSLineBreakByTruncatingTail]];
 
     if(_ticket.ticketStatus==LSTicketStatusUnuse)
     {

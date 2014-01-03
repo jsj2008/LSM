@@ -17,7 +17,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor=LSColorClear;
+        self.backgroundColor=LSColorBackgroundGray;
         
         _selectButton=[UIButton buttonWithType:UIButtonTypeCustom];
         _selectButton.layer.cornerRadius=3.f;
@@ -33,7 +33,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _selectButton.frame=CGRectInset(self.frame, 10.f, 0.f);
+    _selectButton.frame=CGRectMake(10.f, 5.f, self.width-20.f, self.height-10.f);
 }
 
 /*

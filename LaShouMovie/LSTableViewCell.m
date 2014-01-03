@@ -10,14 +10,17 @@
 
 @implementation LSTableViewCell
 
+@synthesize isClearBG=_isClearBG;
+@synthesize standardBottomLine=_standardBottomLine;
+@synthesize noBottomLine=_noBottomLine;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.contentView.clipsToBounds = YES;
         self.backgroundColor=LSColorClear;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -31,13 +34,21 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    if(_standardBottomLine)
+    if(!_isClearBG)
     {
-        [self drawLineAtStartPointX:10.f y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:0.5f];
+        [self drawRectangleInRect:rect fillColor:LSColorWhite];
     }
-    else if(_wholeBottomLine)
+    
+    if(!_noBottomLine)
     {
-        [self drawLineAtStartPointX:0.f y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:0.5f];
+        if(_standardBottomLine)
+        {
+            [self drawLineAtStartPointX:10.f y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:0.3f];
+        }
+        else
+        {
+            [self drawLineAtStartPointX:0.f y:rect.size.height endPointX:rect.size.width y:rect.size.height strokeColor:LSColorSeparatorLineGray lineWidth:0.3f];
+        }
     }
 }
 

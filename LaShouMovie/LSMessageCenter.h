@@ -21,6 +21,8 @@
 #define LSNotificationCityChanged               @"LSNotificationCityChanged"
 #define LSNotificationOrderTimeChanged          @"LSNotificationOrderTimeChanged"
 
+#define LSNotificationFilmCellLeftSwiped        @"LSNotificationFilmCellLeftSwiped"
+
 #pragma mark- 联合登陆的第三方应用授权ID
 #define LSQQAppID                   @"218908"//@"100367640"//
 #define LSQQAppKey                  @"21c8b7466c553c29074f923d6f048267"//@"e5cf54420053cc8d33a9d7a8ec755093"//

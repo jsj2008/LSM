@@ -14,7 +14,6 @@
 #import "LSSettingViewController.h"
 #import "LSNavigationController.h"
 
-#import "LSTabBar.h"
 #import "LSTabBarItem.h"
 
 #import "LSAppDelegate.h"
@@ -73,14 +72,10 @@
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:lsRequestTypeLoginAlipayUserInfoByAppID_AuthCode object:nil];
     [messageCenter addObserver:self selector:@selector(lsHttpRequestNotification:) name:LSNotificationLocationChanged object:nil];
     
-#if TARGET_IPHONE_SIMULATOR
-    [self makeTabBarViewController];
-#elif TARGET_OS_IPHONE
     if([LSSave obtainForKey:LSWelcome]!=nil)
     {
         [self makeTabBarViewController];
     }
-#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,13 +87,18 @@
 #pragma mark- 私有方法
 - (void)makeTabBarViewController
 {
+    self.tabBar.barTintColor=LSColorTabBlack;
+    self.tabBar.tintColor=LSColorWhite;
+    self.tabBar.selectionIndicatorImage=[UIImage scaleToSizeWithImageName:@"tab_sel.png" size:CGSizeMake(80.f, self.tabBar.height)];
+    
     NSMutableArray* viewControllers=[NSMutableArray arrayWithCapacity:0];
+    
     //
     LSFilmsViewController* filmsViewController = [[LSFilmsViewController alloc] init];
     filmsViewController.leftBarButtonSystemItem=LSNO;
+    filmsViewController.tabIndex=0;
     
     LSNavigationController* filmsNavigationController = [[LSNavigationController alloc] initWithRootViewController:filmsViewController];
-    filmsNavigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     [viewControllers addObject:filmsNavigationController];
     [filmsNavigationController release];
@@ -108,6 +108,7 @@
     //
     LSCinemasViewController* cinemasViewController = [[LSCinemasViewController alloc] init];
     cinemasViewController.leftBarButtonSystemItem=LSNO;
+    cinemasViewController.tabIndex=1;
     
     LSNavigationController* cinemasNavigationController = [[LSNavigationController alloc] initWithRootViewController:cinemasViewController];
     cinemasNavigationController.navigationBar.barStyle = UIBarStyleBlack;
@@ -120,9 +121,9 @@
     //
     LSMyViewController* myViewController = [[LSMyViewController alloc] init];
     myViewController.leftBarButtonSystemItem=LSNO;
+    myViewController.tabIndex=2;
     
     LSNavigationController* myNavigationController = [[LSNavigationController alloc] initWithRootViewController:myViewController];
-    myNavigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     [viewControllers addObject:myNavigationController];
     [myNavigationController release];
@@ -132,9 +133,9 @@
     //
     LSSettingViewController* settingViewController = [[LSSettingViewController alloc] init];
     settingViewController.leftBarButtonSystemItem=LSNO;
+    settingViewController.tabIndex=3;
     
     LSNavigationController* settingNavigationController = [[LSNavigationController alloc] initWithRootViewController:settingViewController];
-    settingNavigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     [viewControllers addObject:settingNavigationController];
     [settingNavigationController release];
@@ -142,29 +143,6 @@
     
     //设置子控制器
     self.viewControllers=viewControllers;
-    self.tabBar.backgroundImage=nil;
-    self.tabBar.backgroundColor=[UIColor clearColor];
-    
-    
-    //生成假的TabBar
-    _myTabBar=[[LSTabBar alloc] initWithFrame:CGRectMake(0, 0, self.tabBar.width, self.tabBar.height)];
-    _myTabBar.backgroundImage = [UIImage lsImageNamed:@"tab_bg.png"];
-    _myTabBar.delegate=self;
-    [self.tabBar addSubview:_myTabBar];
-    [_myTabBar release];
-    
-    
-    //设置假的TabBar的项
-    NSMutableArray* itemMArray=[NSMutableArray arrayWithCapacity:0];
-    for (NSUInteger i=0; i<self.viewControllers.count; i++)
-    {
-        LSTabBarItem* tabBarItem=[[LSTabBarItem alloc] init];
-        tabBarItem.backgroundImage=[UIImage lsImageNamed:[NSString stringWithFormat:@"tab_%d.png",i]];
-        tabBarItem.itemIndex = i;//设置按钮的排序
-        [itemMArray addObject:tabBarItem];
-        [tabBarItem release];
-    }
-    _myTabBar.itemArray=itemMArray;
 }
 
 - (void)popToMyViewController
@@ -299,24 +277,19 @@
     [navigationController release];
 }
 
-- (void)LSTabBarControllerSelectedIndex:(NSInteger)index
-{
-    [self LSTabBar:_myTabBar selectedIndex:index];
-}
-
 
 #pragma mark- LSTabBar的委托方法
-- (void)LSTabBar:(LSTabBar *)tabBar selectedIndex:(NSInteger)index
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    if(index!=2)
+    if(item.tag!=2)
     {
-        self.selectedIndex=index;
+        self.selectedIndex=item.tag;
     }
     else
     {
         if(user.userID!=nil && user.password!=nil)
         {
-            self.selectedIndex=index;
+            self.selectedIndex=item.tag;
         }
         else
         {
@@ -335,10 +308,6 @@
 #pragma mark- LSCitiesViewController的委托方法
 - (void)LSCitiesViewControllerDidSelect
 {
-    [self performSelector:@selector(dismissModalViewController) withObject:nil afterDelay:1.f];
-}
-- (void)dismissModalViewController
-{
     [self dismissViewControllerAnimated:YES completion:^{}];
     [self makeTabBarViewController];
     if([LSSave obtainForKey:LSWelcome]==nil)
@@ -353,11 +322,11 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
     if(loginType==LSLoginTypeNon)//未成功登陆
     {
-        _myTabBar.currentIndex=0;
+        self.selectedIndex=0;
     }
     else
     {
-        _myTabBar.currentIndex=2;
+        self.selectedIndex=2;
     }
 }
 
@@ -379,7 +348,6 @@
     {
         if(buttonIndex!=alertView.cancelButtonIndex)
         {
-            //[self selectCity];
             user.cityID=user.locationCityID;
             user.cityName=user.locationCityName;
             

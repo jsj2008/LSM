@@ -112,9 +112,9 @@
         if(cell==nil)
         {
             cell=[[[LSSeparatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSeparatorCell"] autorelease];
-            if(indexPath.row!=11)
+            if(indexPath.row==11)
             {
-                cell.wholeBottomLine=YES;
+                cell.noBottomLine=YES;
             }
         }
         return cell;
@@ -154,7 +154,6 @@
             cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingTextCellCache"] autorelease];
             cell.textLabel.text=@"清除图片缓存";
             cell.text=[[LSDataCache calculateImageCache] stringByReplacingOccurrencesOfString:@".00" withString:@""];
-            cell.wholeBottomLine=YES;
         }
         return cell;
     }
@@ -165,7 +164,6 @@
         {
             cell=[[[LSSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingCellShare"] autorelease];
             cell.textLabel.text=@"分享设置";
-            cell.wholeBottomLine=YES;
         }
         [cell setNeedsDisplay];
         return cell;
@@ -213,7 +211,6 @@
             cell=[[[LSSettingTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LSSettingTextCellPhone"] autorelease];
             cell.textLabel.text=@"客服电话";
             cell.text=lsServicePhoneCall;
-            cell.wholeBottomLine=YES;
         }
         return cell;
     }

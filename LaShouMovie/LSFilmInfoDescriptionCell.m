@@ -44,10 +44,12 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
     //绘制信息
     if(_film.description)
     {
-        [_film.description drawInRect:CGRectMake(gap, gap, rect.size.width-gap*2, rect.size.height-34.f) withAttributes:[LSAttribute attributeFont:LSFontFilmBrief lineBreakMode:NSLineBreakByTruncatingTail]];
+        [_film.description drawInRect:CGRectMake(gap, gap, rect.size.width-gap*2, rect.size.height-34.f) withAttributes:[LSAttribute attributeFont:LSFontFilmBrief lineBreakMode:NSLineBreakByCharWrapping]];
     }
     
     [[UIImage lsImageNamed:_isSpread?@"":@""] drawInRect:CGRectMake(gap, rect.size.height-44.f, rect.size.width-gap*2, 34.f)];

@@ -19,9 +19,12 @@
 }
 @property(nonatomic,assign) UIBarButtonSystemItem leftBarButtonSystemItem;
 @property(nonatomic,assign) UIBarButtonSystemItem rightBarButtonSystemItem;
+@property(nonatomic,assign) NSInteger tabIndex;
 
 - (void)initRefreshControl;
+- (void)setBackBarButtonItemWithImageName:(NSString *)imageName selectImageName:(NSString *)selectImageName;
 - (void)setBarButtonItemWithImageName:(NSString *)imageName isRight:(BOOL)isRight;
+- (void)setBarButtonItemWithImageName:(NSString *)imageName selectImageName:(NSString *)selectImageName isRight:(BOOL)isRight;
 - (void)setBarButtonItemWithTitle:(NSString *)title isRight:(BOOL)isRight;
 - (void)setBarButtonItemWithTitle:(NSString *)title imageName:(NSString *)imageName isRight:(BOOL)isRight;
 

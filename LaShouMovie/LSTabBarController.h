@@ -7,18 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LSTabBar.h"
 #import "LSLoginViewController.h"
 #import "LSCitiesViewController.h"
 
-@interface LSTabBarController : UITabBarController<LSTabBarDelegate,LSLoginViewControllerDelegate,LSCitiesViewControllerDelegate,UIAlertViewDelegate>
+@interface LSTabBarController : UITabBarController<LSLoginViewControllerDelegate,LSCitiesViewControllerDelegate,UIAlertViewDelegate>
 {
-    LSTabBar* _myTabBar;
     LSUser* user;
     LSVersion* version;
     LSMessageCenter* messageCenter;
 }
 - (void)selectCity;
-- (void)LSTabBarControllerSelectedIndex:(NSInteger)index;
 
 @end

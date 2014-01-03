@@ -24,6 +24,7 @@
 
 @protocol LSAdViewDelegate <NSObject>
 
+@required
 - (void)LSAdViewDidClose;
 - (void)LSAdViewDidSelect;
 

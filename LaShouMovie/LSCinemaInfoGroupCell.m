@@ -48,7 +48,7 @@
     [self drawRectangleInRect:CGRectInset(rect, gap, 0.f) borderWidth:0.f fillColor:LSColorBackgroundGray strokeColor:LSColorBackgroundGray topRadius:_topRadius bottomRadius:_bottomRadius];
     if(_isBottomLine)
     {
-        [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorBlack lineWidth:1.f];
+        [self drawLineAtStartPointX:gap y:rect.size.height endPointX:rect.size.width-gap*2 y:rect.size.height strokeColor:LSColorTextBlack lineWidth:1.f];
     }
     
     CGRect titleRect=[_title boundingRectWithSize:CGSizeMake(rect.size.width-gap*2-30.f-gap-gap*2, INT32_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:[LSAttribute attributeFont:LSFontCinemaGroup] context:nil];

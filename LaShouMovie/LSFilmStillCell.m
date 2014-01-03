@@ -15,6 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.noBottomLine=YES;
     }
     return self;
 }
@@ -29,8 +30,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGRect rect=UIEdgeInsetsInsetRect(self.contentView.frame, UIEdgeInsetsMake(5, 5, 5, 5));
-    self.imageView.frame=rect;
+    self.imageView.frame=UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5, 5, 5, 5));
 }
 
 @end

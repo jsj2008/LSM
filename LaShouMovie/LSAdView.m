@@ -68,17 +68,11 @@
 #pragma mark- 按钮单击方法
 - (void)closeButtonClick:(UIButton*)sender
 {
-    if([_delegate respondsToSelector:@selector(LSAdViewDidClose)])
-    {
-        [_delegate LSAdViewDidClose];
-    }
+    [_delegate LSAdViewDidClose];
 }
 - (void)selfTap:(UITapGestureRecognizer*)recognizer
 {
-    if([_delegate respondsToSelector:@selector(LSAdViewDidSelect)])
-    {
-        [_delegate LSAdViewDidSelect];
-    }
+    [_delegate LSAdViewDidSelect];
 }
 
 @end

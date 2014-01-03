@@ -9,6 +9,7 @@
 #import "LSViewController.h"
 #import "MobClick.h"
 #import "LSAppDelegate.h"
+#import "LSTabBarItem.h"
 
 @interface LSViewController ()
 
@@ -18,7 +19,9 @@
 
 @synthesize leftBarButtonSystemItem=_leftBarButtonSystemItem;
 @synthesize rightBarButtonSystemItem=_rightBarButtonSystemItem;
+@synthesize tabIndex=_tabIndex;
 
+#pragma mark- 属性方法
 #pragma mark- 属性方法
 - (void)setLeftBarButtonSystemItem:(UIBarButtonSystemItem)leftBarButtonSystemItem
 {
@@ -28,7 +31,7 @@
     }
     else
     {
-        UIBarButtonItem* leftBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(leftBarButtonItemClick:)];
+        UIBarButtonItem* leftBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:leftBarButtonSystemItem target:self action:@selector(leftBarButtonItemClick:)];
         self.navigationItem.leftBarButtonItem=leftBarButtonItem;
         [leftBarButtonItem release];
     }
@@ -37,14 +40,24 @@
 {
     if(rightBarButtonSystemItem<0)
     {
-        self.navigationItem.leftBarButtonItem=nil;
+        self.navigationItem.rightBarButtonItem=nil;
     }
     else
     {
-        UIBarButtonItem* rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(rightBarButtonItemClick:)];
-        self.navigationItem.leftBarButtonItem=rightBarButtonItem;
+        UIBarButtonItem* rightBarButtonItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:rightBarButtonSystemItem target:self action:@selector(rightBarButtonItemClick:)];
+        self.navigationItem.rightBarButtonItem=rightBarButtonItem;
         [rightBarButtonItem release];
     }
+}
+- (void)setTabIndex:(NSInteger)tabIndex
+{
+    _tabIndex=tabIndex;
+    
+    NSArray* titleArray=[NSArray arrayWithObjects:@"电影", @"影院", @"我的", @"设置", nil];
+    LSTabBarItem* tabBarItem=[[LSTabBarItem alloc] initWithTitle:[titleArray objectAtIndex:_tabIndex] image:[UIImage lsImageNamed:[NSString stringWithFormat:@"tab_%d_nor.png",_tabIndex]] selectedImage:[UIImage lsImageNamed:[NSString stringWithFormat:@"tab_%d_sel.png",_tabIndex]]];
+    tabBarItem.tag=_tabIndex;
+    self.tabBarItem=tabBarItem;
+    [tabBarItem release];
 }
 
 #pragma mark- 旋转设置
@@ -86,7 +99,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.navigationController.navigationBar setTitleTextAttributes:[LSAttribute attributeFont:LSFontNavigationTitle color:LSColorWhite]];
+    
+    UIBarButtonItem* backBarButtonItem = [[[UIBarButtonItem alloc] init] autorelease];
+    backBarButtonItem.title = @"";
+    self.navigationItem.backBarButtonItem=backBarButtonItem;
     
     //实例化用户
     user=[LSUser currentUser];
@@ -211,13 +227,53 @@
 }
 
 #pragma mark- 设置右侧按钮
+- (void)setBackBarButtonItemWithImageName:(NSString *)imageName selectImageName:(NSString *)selectImageName
+{
+    if (self.navigationController==nil)
+        return;
+    else
+    {
+        UIButton* button=[UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame=CGRectMake(0.f, 0.f, 44.f, 44.f);
+        [button setImage:[UIImage lsImageNamed:imageName] forState:UIControlStateNormal];
+        [button setImage:[UIImage lsImageNamed:selectImageName] forState:UIControlStateHighlighted];
+        [button addTarget:self action:@selector(leftBarButtonItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.backBarButtonItem = otherBarButtonItem;
+        [otherBarButtonItem release];
+    }
+}
 - (void)setBarButtonItemWithImageName:(NSString *)imageName isRight:(BOOL)isRight
 {
     if (self.navigationController==nil)
         return;
     else
     {
-        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage lsImageNamed:imageName] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage lsImageNamed:imageName] style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
+        if (isRight)
+        {
+            self.navigationItem.rightBarButtonItem = otherBarButtonItem;
+        }
+        else
+        {
+            self.navigationItem.leftBarButtonItem = otherBarButtonItem;
+        }
+        [otherBarButtonItem release];
+    }
+}
+- (void)setBarButtonItemWithImageName:(NSString *)imageName selectImageName:(NSString *)selectImageName isRight:(BOOL)isRight
+{
+    if (self.navigationController==nil)
+        return;
+    else
+    {
+        UIButton* button=[UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame=CGRectMake(0.f, 0.f, 44.f, 44.f);
+        [button setImage:[UIImage lsImageNamed:imageName] forState:UIControlStateNormal];
+        [button setImage:[UIImage lsImageNamed:selectImageName] forState:UIControlStateHighlighted];
+        [button addTarget:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         if (isRight)
         {
             self.navigationItem.rightBarButtonItem = otherBarButtonItem;
@@ -256,14 +312,24 @@
     else
     {
         UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0.f, 0.f, 44.f+10.f, 31.f);
-        [button setBackgroundImage:[UIImage stretchableImageWithImage:[UIImage lsImageNamed:imageName] top:31 left:10 bottom:31 right:10]  forState:UIControlStateNormal];
+        button.frame=CGRectMake(0.f, 0.f, 54.f, 44.f);
         button.titleLabel.adjustsFontSizeToFitWidth=YES;
-        button.titleLabel.font = LSFontButton;
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.titleLabel.textAlignment=NSTextAlignmentLeft;
+        button.titleLabel.font = LSFontNavigationButton;
+        [button setTitleColor:LSColorWhite forState:UIControlStateNormal];
         [button setTitle:title forState:UIControlStateNormal];
         
-        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:)];
+        [button addTarget:self action:isRight?@selector(rightBarButtonItemClick:):@selector(leftBarButtonItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIImageView* imageView=[[[UIImageView alloc] initWithImage:[UIImage lsImageNamed:imageName]] autorelease];
+        imageView.contentMode=UIViewContentModeRight;
+        imageView.frame=CGRectMake(0.f, 0.f, 59.f, 44.f);//下偏2.f
+        
+        UIView* view=[[[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 59.f, 44.f)] autorelease];
+        [view addSubview:button];
+        [view addSubview:imageView];
+        
+        UIBarButtonItem* otherBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
         if (isRight)
         {
             self.navigationItem.rightBarButtonItem = otherBarButtonItem;

@@ -7,6 +7,7 @@
 //
 
 #import "LSFilmInfoInfoCell.h"
+#import "FXBlurView.h"
 
 #define gap 10.f
 
@@ -27,6 +28,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.isClearBG=YES;
     }
     return self;
 }
@@ -42,11 +44,15 @@
 {
     [super layoutSubviews];
     self.imageView.frame=CGRectMake(10.f, 10.f, 80.f, 100.f);
-    [self.imageView setImageWithURL:[NSURL URLWithString:_film.imageURL] placeholderImage:LSPlaceholderImage];
+    
 }
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
+//    [self drawRectangleInRect:rect fillColor:LSRGBA(0, 0, 0, 0.5)];
+    
     CGFloat contentX=gap+80.f+gap;
     CGFloat contentY=gap;
     CGFloat width=rect.size.width-(gap+80.f+gap)-gap;

@@ -7,6 +7,7 @@
 //
 
 #import "LSNavigationController.h"
+#import "LSNavigationBar.h"
 
 @interface LSNavigationController ()
 
@@ -45,9 +46,15 @@
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
     self = [super initWithRootViewController:rootViewController];
+    //self = [super initWithNavigationBarClass:[LSNavigationBar class] toolbarClass:nil];
     if (self) {
         // Custom initialization
-        [self.navigationBar setBarTintColor:LSColorNavigationRed];
+        //self.viewControllers=[NSArray arrayWithObject:rootViewController];
+        
+        self.navigationBar.tintColor=LSColorWhite;
+        self.navigationBar.barTintColor=LSColorNavigationRed;
+        self.navigationBar.translucent=YES;
+        self.navigationBar.titleTextAttributes=[LSAttribute attributeFont:LSFontNavigationTitle color:LSColorWhite];
     }
     return self;
 }

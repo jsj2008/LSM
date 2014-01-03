@@ -18,7 +18,8 @@
 + (UIImage*)lsImageNamed:(NSString*)name is568:(BOOL)is568;
 + (UIImage *)stretchableImageWithImageName:(NSString *)name top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
 + (UIImage *)stretchableImageWithImage:(UIImage *)image top:(CGFloat)top left:(CGFloat)left bottom:(CGFloat)bottom right:(CGFloat)right;
-
++ (UIImage*)scaleToSizeWithImageName:(NSString *)name size:(CGSize)size;
++ (UIImage*)scaleToSizeWithImage:(UIImage *)image size:(CGSize)size;
 //计算图片宽高
 //{
 //    h,
